@@ -1,0 +1,653 @@
+{
+ "v": 3,
+ "createdOnFiles": {
+  "v": 1,
+  "at": "2026-11-05T14:10:00Z"
+ },
+ "title": "Sunnydale School App Concept",
+ "launch": {
+  "view": "canvas",
+  "page": "overview"
+ },
+ "pages": [
+  {
+   "id": "overview",
+   "name": "Overview"
+  },
+  {
+   "id": "admin",
+   "name": "Admin panel"
+  },
+  {
+   "id": "teacher",
+   "name": "Teacher app"
+  },
+  {
+   "id": "parent",
+   "name": "Parent app"
+  }
+ ],
+ "boards": {
+  "Main.dc.html": {
+   "x": 0,
+   "y": 0,
+   "w": 1440,
+   "h": 820,
+   "title": "System overview",
+   "page": "overview"
+  },
+  "FlowMap.dc.html": {
+   "x": 1520,
+   "y": 0,
+   "w": 1440,
+   "h": 1500,
+   "title": "How every feature connects",
+   "page": "overview"
+  },
+  "XGuide.dc.html": {
+   "x": 3040,
+   "y": 0,
+   "w": 1440,
+   "h": 980,
+   "title": "UX guide for Bangladeshi parents",
+   "page": "overview"
+  },
+  "ALogin.dc.html": {
+   "x": 0,
+   "y": 0,
+   "w": 1440,
+   "h": 900,
+   "title": "Sign in",
+   "page": "admin",
+   "is_interactive": true,
+   "expand": "fill"
+  },
+  "AdminDashboard.dc.html": {
+   "x": 1520,
+   "y": 0,
+   "w": 1440,
+   "h": 900,
+   "title": "Dashboard",
+   "page": "admin",
+   "is_interactive": true,
+   "expand": "fill"
+  },
+  "AEmergency.dc.html": {
+   "x": 3040,
+   "y": 0,
+   "w": 1440,
+   "h": 900,
+   "title": "Emergency alert",
+   "page": "admin",
+   "is_interactive": true,
+   "expand": "fill"
+  },
+  "XAdminComms.dc.html": {
+   "x": 4560,
+   "y": 0,
+   "w": 1440,
+   "h": 900,
+   "title": "Communication centre",
+   "page": "admin",
+   "is_interactive": true,
+   "expand": "fill"
+  },
+  "AdminNotices.dc.html": {
+   "x": 0,
+   "y": 1280,
+   "w": 1440,
+   "h": 900,
+   "title": "Notices",
+   "page": "admin",
+   "is_interactive": true,
+   "expand": "fill"
+  },
+  "AdminAttendance.dc.html": {
+   "x": 1520,
+   "y": 1280,
+   "w": 1440,
+   "h": 1260,
+   "title": "Attendance \u00b7 class \u2192 section \u2192 day",
+   "page": "admin",
+   "is_interactive": true,
+   "expand": "fill"
+  },
+  "APickup.dc.html": {
+   "x": 3040,
+   "y": 1280,
+   "w": 1440,
+   "h": 900,
+   "title": "Safe pickup at the gate",
+   "page": "admin",
+   "is_interactive": true,
+   "expand": "fill"
+  },
+  "AResults.dc.html": {
+   "x": 4560,
+   "y": 1280,
+   "w": 1440,
+   "h": 1000,
+   "title": "Results \u00b7 enter marks and release",
+   "page": "admin",
+   "is_interactive": true,
+   "expand": "fill"
+  },
+  "ACalendar.dc.html": {
+   "x": 0,
+   "y": 2920,
+   "w": 1440,
+   "h": 900,
+   "title": "Routine and calendar",
+   "page": "admin",
+   "is_interactive": true,
+   "expand": "fill"
+  },
+  "AEvents.dc.html": {
+   "x": 1520,
+   "y": 2920,
+   "w": 1440,
+   "h": 900,
+   "title": "Events and consent",
+   "page": "admin",
+   "is_interactive": true,
+   "expand": "fill"
+  },
+  "AFamilies.dc.html": {
+   "x": 3040,
+   "y": 2920,
+   "w": 1440,
+   "h": 900,
+   "title": "Students and families",
+   "page": "admin",
+   "is_interactive": true,
+   "expand": "fill"
+  },
+  "AMeals.dc.html": {
+   "x": 4560,
+   "y": 2920,
+   "w": 1440,
+   "h": 900,
+   "title": "Meal planner",
+   "page": "admin",
+   "is_interactive": true,
+   "expand": "fill"
+  },
+  "AdminFees.dc.html": {
+   "x": 0,
+   "y": 4200,
+   "w": 1440,
+   "h": 1000,
+   "title": "Fee collection dashboard",
+   "page": "admin",
+   "is_interactive": true,
+   "expand": "fill"
+  },
+  "AFeeSetup.dc.html": {
+   "x": 1520,
+   "y": 4200,
+   "w": 1440,
+   "h": 900,
+   "title": "Fee setup",
+   "page": "admin",
+   "is_interactive": true,
+   "expand": "fill"
+  },
+  "ATransport.dc.html": {
+   "x": 3040,
+   "y": 4200,
+   "w": 1440,
+   "h": 900,
+   "title": "Transport",
+   "page": "admin",
+   "is_interactive": true,
+   "expand": "fill"
+  },
+  "AFeedback.dc.html": {
+   "x": 4560,
+   "y": 4200,
+   "w": 1440,
+   "h": 900,
+   "title": "Feedback inbox",
+   "page": "admin",
+   "is_interactive": true,
+   "expand": "fill"
+  },
+  "TLogin.dc.html": {
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "Sign in",
+   "page": "teacher",
+   "is_interactive": true
+  },
+  "TeacherToday.dc.html": {
+   "x": 470,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "Today",
+   "page": "teacher",
+   "is_interactive": true
+  },
+  "TeacherAttendance.dc.html": {
+   "x": 940,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "Attendance",
+   "page": "teacher",
+   "is_interactive": true
+  },
+  "TMessages.dc.html": {
+   "x": 1410,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "Messages",
+   "page": "teacher",
+   "is_interactive": true
+  },
+  "TeacherHomework.dc.html": {
+   "x": 1880,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "Homework",
+   "page": "teacher",
+   "is_interactive": true
+  },
+  "TMarks.dc.html": {
+   "x": 2350,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "Marks entry",
+   "page": "teacher",
+   "is_interactive": true
+  },
+  "TLeave.dc.html": {
+   "x": 2820,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "Leave approvals",
+   "page": "teacher",
+   "is_interactive": true
+  },
+  "TMoments.dc.html": {
+   "x": 3290,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "Class moments and diary",
+   "page": "teacher",
+   "is_interactive": true
+  },
+  "TSlots.dc.html": {
+   "x": 3760,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "Meeting slots",
+   "page": "teacher",
+   "is_interactive": true
+  },
+  "XLogin.dc.html": {
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "Sign in",
+   "page": "parent",
+   "is_interactive": true
+  },
+  "XHome.dc.html": {
+   "x": 470,
+   "y": 0,
+   "w": 390,
+   "h": 2540,
+   "title": "Home (full scroll)",
+   "page": "parent",
+   "is_interactive": true
+  },
+  "XMessages.dc.html": {
+   "x": 940,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "Messages",
+   "page": "parent",
+   "is_interactive": true
+  },
+  "XChat.dc.html": {
+   "x": 1410,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "Chat with teacher",
+   "page": "parent",
+   "is_interactive": true
+  },
+  "XEvents.dc.html": {
+   "x": 1880,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "Calendar and consent",
+   "page": "parent",
+   "is_interactive": true
+  },
+  "XPay.dc.html": {
+   "x": 2350,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "Pay fees",
+   "page": "parent",
+   "is_interactive": true
+  },
+  "XServices.dc.html": {
+   "x": 2820,
+   "y": 0,
+   "w": 390,
+   "h": 1180,
+   "title": "All services",
+   "page": "parent",
+   "is_interactive": true
+  },
+  "ParentAttendance.dc.html": {
+   "x": 0,
+   "y": 2920,
+   "w": 390,
+   "h": 900,
+   "title": "Attendance",
+   "page": "parent",
+   "is_interactive": true
+  },
+  "XHomework.dc.html": {
+   "x": 470,
+   "y": 2920,
+   "w": 390,
+   "h": 920,
+   "title": "Homework",
+   "page": "parent",
+   "is_interactive": true
+  },
+  "XResults.dc.html": {
+   "x": 940,
+   "y": 2920,
+   "w": 390,
+   "h": 844,
+   "title": "Results",
+   "page": "parent",
+   "is_interactive": true
+  },
+  "ParentRoutine.dc.html": {
+   "x": 1410,
+   "y": 2920,
+   "w": 390,
+   "h": 844,
+   "title": "Routine",
+   "page": "parent",
+   "is_interactive": true
+  },
+  "XMeals.dc.html": {
+   "x": 1880,
+   "y": 2920,
+   "w": 390,
+   "h": 1120,
+   "title": "Meal planner",
+   "page": "parent",
+   "is_interactive": true
+  },
+  "ParentNotices.dc.html": {
+   "x": 2350,
+   "y": 2920,
+   "w": 390,
+   "h": 844,
+   "title": "Notices",
+   "page": "parent",
+   "is_interactive": true
+  },
+  "XLeave.dc.html": {
+   "x": 0,
+   "y": 4420,
+   "w": 390,
+   "h": 844,
+   "title": "Leave request",
+   "page": "parent",
+   "is_interactive": true
+  },
+  "XFeedback.dc.html": {
+   "x": 470,
+   "y": 4420,
+   "w": 390,
+   "h": 1200,
+   "title": "Feedback",
+   "page": "parent",
+   "is_interactive": true
+  },
+  "ParentFees.dc.html": {
+   "x": 940,
+   "y": 4420,
+   "w": 390,
+   "h": 844,
+   "title": "Fees",
+   "page": "parent",
+   "is_interactive": true
+  },
+  "ParentPayment.dc.html": {
+   "x": 1410,
+   "y": 4420,
+   "w": 390,
+   "h": 844,
+   "title": "Payment status",
+   "page": "parent",
+   "is_interactive": true
+  },
+  "XBus.dc.html": {
+   "x": 1880,
+   "y": 4420,
+   "w": 390,
+   "h": 844,
+   "title": "Bus tracking",
+   "page": "parent",
+   "is_interactive": true
+  },
+  "XMeetings.dc.html": {
+   "x": 2350,
+   "y": 4420,
+   "w": 390,
+   "h": 844,
+   "title": "Book a meeting",
+   "page": "parent",
+   "is_interactive": true
+  },
+  "XSettings.dc.html": {
+   "x": 2820,
+   "y": 4420,
+   "w": 390,
+   "h": 1040,
+   "title": "Language and alerts",
+   "page": "parent",
+   "is_interactive": true
+  },
+  "XPickup.dc.html": {
+   "x": 0,
+   "y": 6000,
+   "w": 390,
+   "h": 1380,
+   "title": "Safe pickup",
+   "page": "parent",
+   "is_interactive": true
+  },
+  "XAlert.dc.html": {
+   "x": 470,
+   "y": 6000,
+   "w": 390,
+   "h": 844,
+   "title": "Emergency alert",
+   "page": "parent",
+   "is_interactive": true
+  }
+ },
+ "order": [
+  "Main.dc.html",
+  "FlowMap.dc.html",
+  "XGuide.dc.html",
+  "ALogin.dc.html",
+  "AdminDashboard.dc.html",
+  "AEmergency.dc.html",
+  "XAdminComms.dc.html",
+  "AdminNotices.dc.html",
+  "AdminAttendance.dc.html",
+  "APickup.dc.html",
+  "AResults.dc.html",
+  "ACalendar.dc.html",
+  "AEvents.dc.html",
+  "AFamilies.dc.html",
+  "AMeals.dc.html",
+  "AdminFees.dc.html",
+  "AFeeSetup.dc.html",
+  "ATransport.dc.html",
+  "AFeedback.dc.html",
+  "TLogin.dc.html",
+  "TeacherToday.dc.html",
+  "TeacherAttendance.dc.html",
+  "TMessages.dc.html",
+  "TeacherHomework.dc.html",
+  "TMarks.dc.html",
+  "TLeave.dc.html",
+  "TMoments.dc.html",
+  "TSlots.dc.html",
+  "XLogin.dc.html",
+  "XHome.dc.html",
+  "XMessages.dc.html",
+  "XChat.dc.html",
+  "XEvents.dc.html",
+  "XPay.dc.html",
+  "XServices.dc.html",
+  "ParentAttendance.dc.html",
+  "XHomework.dc.html",
+  "XResults.dc.html",
+  "ParentRoutine.dc.html",
+  "XMeals.dc.html",
+  "ParentNotices.dc.html",
+  "XLeave.dc.html",
+  "XFeedback.dc.html",
+  "ParentFees.dc.html",
+  "ParentPayment.dc.html",
+  "XBus.dc.html",
+  "XMeetings.dc.html",
+  "XSettings.dc.html",
+  "XPickup.dc.html",
+  "XAlert.dc.html"
+ ],
+ "notes": {
+  "overview0": {
+   "x": 0,
+   "y": -260,
+   "text": "Overview: the system, how it connects, design rules",
+   "kind": "title1",
+   "maxW": 4480,
+   "page": "overview",
+   "w": 240
+  },
+  "admin0": {
+   "x": 0,
+   "y": -260,
+   "text": "Admin panel \u00b7 Sign in, daily work and alerts",
+   "kind": "title1",
+   "maxW": 4480,
+   "page": "admin",
+   "w": 240
+  },
+  "admin1": {
+   "x": 0,
+   "y": 1020,
+   "text": "Admin panel \u00b7 Attendance, pickup and results",
+   "kind": "title1",
+   "maxW": 4480,
+   "page": "admin",
+   "w": 240
+  },
+  "admin2": {
+   "x": 0,
+   "y": 2660,
+   "text": "Admin panel \u00b7 Calendar, events, families and meals",
+   "kind": "title1",
+   "maxW": 4480,
+   "page": "admin",
+   "w": 240
+  },
+  "admin3": {
+   "x": 0,
+   "y": 3940,
+   "text": "Admin panel \u00b7 Fees, transport and feedback",
+   "kind": "title1",
+   "maxW": 4480,
+   "page": "admin",
+   "w": 240
+  },
+  "teacher0": {
+   "x": 0,
+   "y": -260,
+   "text": "Teacher app \u00b7 Sign in and every school day",
+   "kind": "title1",
+   "maxW": 4480,
+   "page": "teacher",
+   "w": 240
+  },
+  "parent0": {
+   "x": 0,
+   "y": -260,
+   "text": "Parent app \u00b7 Sign in, home, messages, calendar, fees, services",
+   "kind": "title1",
+   "maxW": 4480,
+   "page": "parent",
+   "w": 240
+  },
+  "parent1": {
+   "x": 0,
+   "y": 2660,
+   "text": "Parent app \u00b7 My child's school day",
+   "kind": "title1",
+   "maxW": 4480,
+   "page": "parent",
+   "w": 240
+  },
+  "parent2": {
+   "x": 0,
+   "y": 4160,
+   "text": "Parent app \u00b7 Requests, payments, bus and meetings",
+   "kind": "title1",
+   "maxW": 4480,
+   "page": "parent",
+   "w": 240
+  },
+  "parent3": {
+   "x": 0,
+   "y": 5740,
+   "text": "Parent app \u00b7 Safety: pickup and emergency alerts",
+   "kind": "title1",
+   "maxW": 4480,
+   "page": "parent",
+   "w": 240
+  }
+ },
+ "designSystems": [],
+ "attachments": {},
+ "noteOrder": [
+  "overview0",
+  "admin0",
+  "admin1",
+  "admin2",
+  "admin3",
+  "teacher0",
+  "parent0",
+  "parent1",
+  "parent2",
+  "parent3"
+ ]
+}

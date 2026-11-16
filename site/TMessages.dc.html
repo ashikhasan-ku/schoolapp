@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390">
+<title>Teacher app: Messages</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.scroll>*{flex-shrink:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 100vh; height: 100dvh; box-sizing: border-box; display: flex; flex-direction: column; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', 'Hind Siliguri', system-ui, sans-serif">
+  <sc-if value="{{isList}}" hint-placeholder-val="{{ true }}">
+    <div class="scroll" style="flex: 1; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 22px 18px; display: flex; flex-direction: column; gap: 12px">
+      <p style="margin: 0; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
+      <h1 style="margin: 0; font-size: 26px; font-weight: 800">Parent messages</h1>
+      <div style="display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; background: #E2F4EE; border-radius: 14px">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16705A" stroke-width="1.8" stroke-linecap="round"><path d="M12 7v5l3 3M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"></path></svg>
+        <p style="margin: 0; font-size: 13px; line-height: 1.45; color: #12503F">Quiet hours start at 4 pm. Messages after that wait until morning, and parents are told when you will reply.</p>
+      </div>
+      <sc-for list="{{threads}}" as="m" hint-placeholder-count="4">
+        <button onClick="{{m.open}}" style="display: flex; gap: 12px; align-items: center; padding: 14px; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 18px; font: inherit; text-align: left; cursor: pointer">
+          <span aria-hidden="true" style="flex-shrink: 0; width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; background: {{m.bg}}; color: {{m.fg}}; border-radius: 50%; font-size: 16px; font-weight: 800">{{m.initial}}</span>
+          <span style="flex: 1; min-width: 0">
+            <span style="display: flex; justify-content: space-between; gap: 8px"><span style="font-size: 15px; font-weight: 800; color: #172042">{{m.name}}</span><span style="font-size: 12px; color: #5A6482">{{m.time}}</span></span>
+            <span style="display: block; font-size: 12px; font-weight: 600; color: {{m.fg}}">{{m.role}}</span>
+            <span style="display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 14px; color: #5A6482">{{m.preview}}</span>
+          </span>
+          <sc-if value="{{m.unread}}" hint-placeholder-val="{{ false }}"><span style="flex-shrink: 0; width: 10px; height: 10px; background: #2F45A0; border-radius: 50%"></span></sc-if>
+        </button>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isThread}}" hint-placeholder-val="{{ false }}">
+    <header style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: #FFFFFF; border-bottom: 1px solid #E3E7F2">
+      <button onClick="{{back}}" aria-label="Back to messages" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: transparent; border: 0; color: #172042; cursor: pointer">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>
+      </button>
+      <div style="flex: 1">
+        <p style="margin: 0; font-size: 16px; font-weight: 800">Nadia Rahman</p>
+        <p style="margin: 1px 0 0; font-size: 12px; color: #5A6482">Mother of Aanya · IV-B</p>
+      </div>
+    </header>
+    <div class="scroll" style="flex: 1; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 14px; display: flex; flex-direction: column; gap: 10px">
+      <div style="align-self: flex-end; max-width: 82%; padding: 12px 14px; background: #2F45A0; color: #FFFFFF; border-radius: 18px 18px 6px 18px">
+        <p style="margin: 0; font-size: 15px; line-height: 1.5">Aanya did very well in today’s maths quiz. Please help her practise fractions at home this week.</p>
+        <p style="margin: 6px 0 0; font-size: 11px; color: #DDE3F8; text-align: right">5:12 pm · Seen</p>
+      </div>
+      <div style="align-self: flex-start; max-width: 82%; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; padding: 10px 14px; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 18px 18px 18px 6px">
+        <div style="display: flex; align-items: center; gap: 10px">
+          <span aria-hidden="true" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #2F45A0; color: #FFFFFF; border-radius: 50%"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"></path></svg></span>
+          <span aria-hidden="true" style="display: flex; align-items: center; gap: 3px">
+            <sc-for list="{{wave}}" as="h" hint-placeholder-count="12"><span style="width: 3px; height: {{h}}px; background: #9AA6CE; border-radius: 2px"></span></sc-for>
+          </span>
+          <span style="font-size: 12px; font-weight: 600; color: #5A6482">0:18</span>
+        </div>
+        <p style="margin: 0; padding-top: 8px; border-top: 1px solid #EEF1F8; font-size: 13px; line-height: 1.45; color: #3E4766"><b>Voice to text:</b> Thank you, madam. Can you send some practice sheets?</p>
+      </div>
+      <sc-for list="{{sent}}" as="s" hint-placeholder-count="0">
+        <div style="align-self: flex-end; max-width: 82%; padding: 12px 14px; background: #2F45A0; color: #FFFFFF; border-radius: 18px 18px 6px 18px">
+          <p style="margin: 0; font-size: 15px; line-height: 1.5">{{s.text}}</p>
+          <p style="margin: 6px 0 0; font-size: 11px; color: #DDE3F8; text-align: right">Sent · just now</p>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 10px; padding: 10px 12px 12px; background: #FFFFFF; border-top: 1px solid #E3E7F2">
+      <div style="display: flex; gap: 8px; overflow-x: auto">
+        <sc-for list="{{quick}}" as="q" hint-placeholder-count="3">
+          <button onClick="{{q.send}}" style="flex-shrink: 0; min-height: 40px; padding: 0 14px; background: #FFFFFF; color: #2F45A0; border: 1px solid #C9D3F3; border-radius: 20px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer">{{q.text}}</button>
+        </sc-for>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px">
+        <label style="flex: 1; display: flex">
+          <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Reply</span>
+          <input placeholder="Type a reply" style="flex: 1; min-width: 0; min-height: 46px; box-sizing: border-box; padding: 0 14px; background: #F5F7FC; border: 1px solid #E3E7F2; border-radius: 14px; font: inherit; font-size: 15px">
+        </label>
+        <button aria-label="Record a voice reply" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: #2F45A0; color: #FFFFFF; border: 0; border-radius: 50%; cursor: pointer">
+          <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3zM5 11a7 7 0 0 0 14 0M12 18v3"></path></svg>
+        </button>
+      </div>
+    </div>
+  </sc-if>
+
+  <nav aria-label="Main" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 8px 6px 12px; background: #FFFFFF; border-top: 1px solid #E3E7F2">
+    <sc-for list="{{tabs}}" as="tab" hint-placeholder-count="4">
+      <a href="{{tab.href}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; color: {{tab.color}}; font-size: 11px; font-weight: 600; text-decoration: none">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{tab.d}}"></path></svg>
+        {{tab.label}}
+      </a>
+    </sc-for>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  state = { open: false, sent: [] };
+  renderVals() {
+    const active = 'Messages';
+    const tabs = [
+      { label: 'Today', href: 'TeacherToday.dc.html', d: 'M3 11l9-8 9 8M5 10v10h14V10' },
+      { label: 'Attendance', href: 'TeacherAttendance.dc.html', d: 'M4 5h16v14H4zM8 12l3 3 5-6' },
+      { label: 'Messages', href: 'TMessages.dc.html', d: 'M4 5h16v11H9l-5 4z' },
+      { label: 'Homework', href: 'TeacherHomework.dc.html', d: 'M6 3h9l4 4v14H6zM9 12h7M9 16h7' }
+    ].map((t) => ({ ...t, color: t.label === active ? '#2F45A0' : '#5A6482' }));
+    const open = () => this.setState({ open: true });
+    const threads = [
+      { name: 'Nadia Rahman', role: 'Mother of Aanya · IV-B', initial: 'N', bg: '#E9EDFB', fg: '#2F45A0', preview: 'Voice message · 0:18', time: '6:05 pm', unread: true, open },
+      { name: 'Karim Hossain', role: 'Father of Arif · IV-A', initial: 'K', bg: '#E2F4EE', fg: '#16705A', preview: 'Can Arif sit in the front row?', time: '4:40 pm', unread: true, open },
+      { name: 'School office', role: 'Admin', initial: 'O', bg: '#FDF0DA', fg: '#8A5205', preview: 'Please submit Science marks by Friday', time: 'Mon', unread: false, open },
+      { name: 'Farhana Islam', role: 'Mother of Samira · IV-B', initial: 'F', bg: '#FCE7E1', fg: '#A8432B', preview: 'Thank you for the update', time: 'Sun', unread: false, open }
+    ];
+    const quickText = ['I will send them tomorrow', 'Thank you for letting me know', 'Can we talk by phone?'];
+    return {
+      tabs,
+      threads,
+      isList: !this.state.open,
+      isThread: this.state.open,
+      back: () => this.setState({ open: false }),
+      wave: [8, 14, 20, 12, 18, 24, 10, 16, 22, 14, 8, 6],
+      sent: this.state.sent.map((text) => ({ text })),
+      quick: quickText.map((text) => ({ text, send: () => this.setState({ sent: [...this.state.sent, text] }) }))
+    };
+  }
+}
+</script>
+</body>
+</html>

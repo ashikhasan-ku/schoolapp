@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin: Fee collection</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.panel{display:flex;flex-direction:column;gap:14px;padding:22px;background:#FFFFFF;border:1px solid #E3E7F2;border-radius:20px}
+.kpi{padding:18px;background:#FFFFFF;border:1px solid #E3E7F2;border-radius:18px}
+.kpi p{margin:0}
+.th{padding:10px 14px;font-size:12px;font-weight:800;color:#5A6482}
+.td{padding:10px 14px;font-size:14px}
+</style>
+</helmet>
+<div style="min-height: 900px; display: flex; flex-wrap: wrap; align-items: stretch; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', system-ui, sans-serif">
+  <nav aria-label="Admin menu" style="flex: 1 1 240px; box-sizing: border-box; padding: 28px 18px; display: flex; flex-direction: column; gap: 2px; background: #FFFFFF; border-right: 1px solid #E3E7F2">
+    <p style="margin: 0; padding: 0 12px; font-size: 19px; font-weight: 800">School admin</p>
+    <p style="margin: 2px 0 16px; padding: 0 12px; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
+    <sc-for list="{{menu}}" as="m" hint-placeholder-count="15">
+      <a href="{{m.href}}" style="display: flex; align-items: center; min-height: 38px; padding: 0 12px; background: {{m.bg}}; color: {{m.fg}}; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none">{{m.label}}</a>
+    </sc-for>
+  </nav>
+
+  <main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 36px); display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px">
+      <div>
+        <h1 style="margin: 0; font-size: 30px; font-weight: 800">Fee collection</h1>
+        <p style="margin: 4px 0 0; font-size: 15px; color: #5A6482">November 2026 · due 30 Nov · 1,240 families</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px">
+        <a href="AFeeSetup.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 16px; background: #FFFFFF; color: #2F45A0; border: 1px solid #C9D3F3; border-radius: 12px; font-size: 14px; font-weight: 700; text-decoration: none">Fee setup</a>
+        <button onClick="{{exportIt}}" style="min-height: 44px; padding: 0 16px; background: {{exBg}}; color: #FFFFFF; border: 0; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer">{{exLabel}}</button>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 14px">
+      <div class="kpi" style="flex: 2 1 400px; min-width: 0">
+        <p style="font-size: 13px; font-weight: 700; color: #5A6482">Collected so far</p>
+        <p style="margin-top: 4px; font-size: 28px; font-weight: 800">BDT 65.8 lakh <span style="font-size: 15px; font-weight: 600; color: #5A6482">of 96.7 lakh</span></p>
+        <div style="display: flex; height: 12px; margin-top: 12px; border-radius: 6px; overflow: hidden; background: #EEF1F8"><div style="width: 68%; background: #16705A"></div><div style="width: 2%; background: #B86A06"></div></div>
+        <p style="margin-top: 8px; font-size: 13px; color: #5A6482"><b style="color: #16705A">68% paid</b> · 2% being checked · 14 days left · last year at this point: 51%</p>
+      </div>
+      <div class="kpi" style="flex: 1 1 180px; background: #FCE7E1; border-color: #F4CFC4"><p style="font-size: 13px; font-weight: 700; color: #7E3220">Late from October</p><p style="margin-top: 4px; font-size: 28px; font-weight: 800; color: #6A2A1A">23</p><p style="margin-top: 4px; font-size: 12px; color: #7E3220">families · BDT 1.8 lakh</p></div>
+      <div class="kpi" style="flex: 1 1 180px; background: #FDF0DA; border-color: #F1DDB8"><p style="font-size: 13px; font-weight: 700; color: #6B4004">Payments to check</p><p style="margin-top: 4px; font-size: 28px; font-weight: 800; color: #5C3703">{{reviewCount}}</p><p style="margin-top: 4px; font-size: 12px; color: #6B4004">interrupted at the bank</p></div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start">
+      <section class="panel" style="flex: 1 1 340px">
+        <h2 style="margin: 0; font-size: 18px; font-weight: 800">Paid by class</h2>
+        <sc-for list="{{byClass}}" as="c" hint-placeholder-count="6">
+          <div style="display: grid; grid-template-columns: 52px 1fr 44px; align-items: center; gap: 10px; font-size: 14px">
+            <span style="font-weight: 800">{{c.cls}}</span>
+            <span style="height: 10px; background: #EEF1F8; border-radius: 5px; overflow: hidden"><span style="display: block; width: {{c.p}}%; height: 100%; background: {{c.col}}"></span></span>
+            <span style="font-weight: 700; text-align: right">{{c.p}}%</span>
+          </div>
+        </sc-for>
+        <p style="margin: 0; font-size: 12px; color: #5A6482">Class VII is behind. Its parents get an extra reminder on Sunday.</p>
+      </section>
+
+      <section class="panel" style="flex: 1 1 340px">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px">
+          <h2 style="margin: 0; font-size: 18px; font-weight: 800">Automatic reminders</h2>
+          <span style="padding: 5px 10px; background: #E2F4EE; color: #16705A; border-radius: 20px; font-size: 12px; font-weight: 800">On</span>
+        </div>
+        <sc-for list="{{seq}}" as="s" hint-placeholder-count="6">
+          <div style="display: flex; gap: 12px; align-items: flex-start">
+            <span style="flex-shrink: 0; width: 14px; height: 14px; margin-top: 3px; background: {{s.dot}}; border: 2px solid {{s.line}}; border-radius: 50%"></span>
+            <span><span style="display: block; font-size: 14px; font-weight: 800">{{s.when}}</span><span style="display: block; font-size: 13px; color: #5A6482">{{s.what}}</span></span>
+          </div>
+        </sc-for>
+      </section>
+    </div>
+
+    <section class="panel" style="padding: 0; gap: 0; overflow: hidden">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 16px 18px">
+        <div style="display: flex; flex-wrap: wrap; gap: 6px">
+          <sc-for list="{{filters}}" as="f" hint-placeholder-count="4">
+            <button onClick="{{f.pick}}" style="min-height: 38px; padding: 0 14px; background: {{f.bg}}; color: {{f.fg}}; border: 1px solid #D5DBEE; border-radius: 20px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer">{{f.label}}</button>
+          </sc-for>
+        </div>
+        <button onClick="{{remindAll}}" style="min-height: 40px; padding: 0 14px; background: {{raBg}}; color: #FFFFFF; border: 0; border-radius: 10px; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer">{{raLabel}}</button>
+      </div>
+      <div style="overflow-x: auto">
+        <div role="table" style="min-width: 760px">
+          <div role="row" style="display: grid; grid-template-columns: 1.4fr 0.6fr 0.9fr 1.4fr 1.3fr; background: #F5F7FC; border-top: 1px solid #EEF1F8"><div role="columnheader" class="th">Student</div><div role="columnheader" class="th">Class</div><div role="columnheader" class="th">Amount</div><div role="columnheader" class="th">Status</div><div role="columnheader" class="th">Action</div></div>
+          <sc-for list="{{rows}}" as="r" hint-placeholder-count="6">
+            <div role="row" style="display: grid; grid-template-columns: 1.4fr 0.6fr 0.9fr 1.4fr 1.3fr; align-items: center; border-top: 1px solid #EEF1F8">
+              <div role="cell" class="td" style="font-weight: 700">{{r.name}}</div>
+              <div role="cell" class="td">{{r.cls}}</div>
+              <div role="cell" class="td">BDT {{r.amount}}</div>
+              <div role="cell" class="td"><span style="display: inline-block; padding: 5px 10px; background: {{r.bg}}; color: {{r.fg}}; border-radius: 8px; font-size: 12px; font-weight: 800">{{r.status}}</span><span style="display: block; margin-top: 3px; font-size: 12px; color: #5A6482">{{r.note}}</span></div>
+              <div role="cell" class="td"><sc-if value="{{r.hasAct}}" hint-placeholder-val="{{ true }}"><button onClick="{{r.act}}" style="min-height: 36px; padding: 0 12px; background: {{r.aBg}}; color: {{r.aFg}}; border: 1px solid #C9D3F3; border-radius: 9px; font: inherit; font-size: 12px; font-weight: 800; cursor: pointer">{{r.aLabel}}</button></sc-if></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  state = { filter: 'Needs action', done: [], remindedAll: false, exported: false };
+  renderVals() {
+    const active = 'Fees';
+    const menu = [
+      ['Dashboard', 'AdminDashboard'], ['Emergency alert', 'AEmergency'], ['Communication', 'XAdminComms'], ['Notices', 'AdminNotices'], ['Students and families', 'AFamilies'],
+      ['Attendance', 'AdminAttendance'], ['Safe pickup', 'APickup'], ['Results', 'AResults'], ['Routine and calendar', 'ACalendar'], ['Events', 'AEvents'],
+      ['Meals', 'AMeals'], ['Fees', 'AdminFees'], ['Fee setup', 'AFeeSetup'], ['Transport', 'ATransport'], ['Feedback', 'AFeedback']
+    ].map(([label, f]) => ({ label, href: f + '.dc.html', bg: label === active ? '#E9EDFB' : 'transparent', fg: label === active ? '#2F45A0' : '#3E4766' }));
+    const st = this.state;
+    const data = [
+      { name: 'Arif Karim', cls: 'IV-A', amount: '7,800', kind: 'check', note: 'Card · bank ref 88213 · 12 Nov' },
+      { name: 'Labiba Sultana', cls: 'V-C', amount: '8,100', kind: 'check', note: 'Internet banking · 13 Nov' },
+      { name: 'Nafis Ahmed', cls: 'VII-B', amount: '8,600', kind: 'late', note: 'October not paid · 2 reminders sent' },
+      { name: 'Riya Das', cls: 'III-A', amount: '7,200', kind: 'late', note: 'October not paid · opened reminder' },
+      { name: 'Tasnim Ara', cls: 'VIII-A', amount: '8,900', kind: 'due', note: 'Reminder seen 9 Nov' },
+      { name: 'Aanya Rahman', cls: 'IV-B', amount: '7,800', kind: 'paid', note: 'Card · 12 Nov · receipt sent' }
+    ];
+    const look = {
+      check: ['Bank says paid · check', '#FDF0DA', '#6B4004', 'Confirm paid'],
+      late: ['Late', '#FCE7E1', '#7E3220', 'Remind now'],
+      due: ['Not paid yet', '#EEF1F8', '#3E4766', 'Remind'],
+      paid: ['Paid', '#E2F4EE', '#12503F', '']
+    };
+    const fmap = { 'Needs action': ['check', 'late'], 'Late': ['late'], 'To check': ['check'], 'Everyone': ['check', 'late', 'due', 'paid'] };
+    const rows = data.filter((d) => fmap[st.filter].includes(d.kind)).map((d) => {
+      const done = st.done.includes(d.name);
+      const k = done && d.kind === 'check' ? 'paid' : d.kind;
+      const [status, bg, fg, a] = look[k];
+      return {
+        ...d, status, bg, fg, note: done && d.kind === 'check' ? 'Confirmed · receipt sent to parent' : d.note,
+        hasAct: !!a || done, aLabel: done ? (d.kind === 'check' ? 'Done' : 'Reminder sent') : a,
+        aBg: done ? '#E2F4EE' : '#FFFFFF', aFg: done ? '#12503F' : '#2F45A0',
+        act: () => { if (!done) this.setState({ done: [...st.done, d.name] }); }
+      };
+    });
+    const pcts = [['III', 74], ['IV', 71], ['V', 69], ['VI', 66], ['VII', 54], ['VIII', 70]];
+    const reviewLeft = data.filter((d) => d.kind === 'check' && !st.done.includes(d.name)).length + 4;
+    return {
+      menu, rows,
+      reviewCount: reviewLeft,
+      filters: Object.keys(fmap).map((label) => ({ label, bg: label === st.filter ? '#172042' : '#FFFFFF', fg: label === st.filter ? '#FFFFFF' : '#172042', pick: () => this.setState({ filter: label }) })),
+      byClass: pcts.map(([cls, p]) => ({ cls, p, col: p < 60 ? '#B86A06' : '#16705A' })),
+      seq: [
+        { when: '16 Nov · 14 days before', what: 'App alert to all who have not paid · sent to 412 today', dot: '#16705A', line: '#16705A' },
+        { when: '23 Nov · 7 days before', what: 'App alert to families still unpaid', dot: '#FFFFFF', line: '#2F45A0' },
+        { when: '29 Nov · 1 day before', what: 'App alert plus SMS', dot: '#FFFFFF', line: '#2F45A0' },
+        { when: '30 Nov · due date', what: 'App alert with a Pay button', dot: '#FFFFFF', line: '#2F45A0' },
+        { when: '3 Dec · 3 days late', what: 'SMS, plus a call list for the accounts team', dot: '#FFFFFF', line: '#B86A06' },
+        { when: 'Any time', what: 'Paid families stop getting reminders straight away', dot: '#FFFFFF', line: '#C5CBDC' }
+      ],
+      raLabel: st.remindedAll ? 'Sent to 23 late families' : 'Remind all late families',
+      raBg: st.remindedAll ? '#16705A' : '#2F45A0',
+      remindAll: () => this.setState({ remindedAll: true }),
+      exLabel: st.exported ? 'November report downloaded' : 'Export for accountant',
+      exBg: st.exported ? '#16705A' : '#2F45A0',
+      exportIt: () => this.setState({ exported: true })
+    };
+  }
+}
+</script>
+<a href="index.html" id="allscreens" style="position:fixed;right:18px;bottom:18px;z-index:99;display:flex;align-items:center;min-height:42px;padding:0 16px;background:#172042;color:#fff;border-radius:21px;font:700 13px 'Plus Jakarta Sans',system-ui,sans-serif;text-decoration:none;box-shadow:0 8px 20px rgba(23,32,66,.25)">← All screens</a>
+</body>
+</html>

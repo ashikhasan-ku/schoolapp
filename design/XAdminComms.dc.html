@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin: Communication centre</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.panel{display:flex;flex-direction:column;gap:14px;padding:24px;background:#FFFFFF;border:1px solid #E3E7F2;border-radius:20px}
+.lbl{margin:0;font-size:14px;font-weight:800}
+th{text-align:left;padding:10px 12px;font-size:12px;font-weight:700;color:#5A6482;border-bottom:1px solid #E3E7F2}
+td{padding:12px;font-size:14px;border-bottom:1px solid #EEF1F8}
+.rule{display:flex;justify-content:space-between;gap:12px;align-items:center;min-height:48px;border-top:1px solid #EEF1F8;font-size:14px}
+</style>
+</helmet>
+<div style="min-height: 900px; display: flex; flex-wrap: wrap; align-items: stretch; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', 'Hind Siliguri', system-ui, sans-serif">
+  <nav aria-label="Admin menu" style="flex: 1 1 240px; box-sizing: border-box; padding: 28px 18px; display: flex; flex-direction: column; gap: 6px; background: #FFFFFF; border-right: 1px solid #E3E7F2">
+    <p style="margin: 0; padding: 0 12px; font-size: 19px; font-weight: 800">School admin</p>
+    <p style="margin: 2px 0 18px; padding: 0 12px; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
+    <sc-for list="{{menu}}" as="m" hint-placeholder-count="15">
+      <a href="{{m.href}}" style="display: flex; align-items: center; min-height: 38px; padding: 0 12px; background: {{m.bg}}; color: {{m.fg}}; border-radius: 10px; font-size: 15px; font-weight: 600; text-decoration: none">{{m.label}}</a>
+    </sc-for>
+  </nav>
+
+  <main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 36px); display: flex; flex-direction: column; gap: 20px">
+    <div>
+      <h1 style="margin: 0; font-size: 30px; font-weight: 800">Communication centre</h1>
+      <p style="margin: 4px 0 0; font-size: 15px; color: #5A6482">One place for notices, class updates and parent messages</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 18px; align-items: start">
+      <section class="panel">
+        <h2 style="margin: 0; font-size: 18px; font-weight: 800">Send an update</h2>
+        <p class="lbl">Who should get it?</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: -6px">
+          <sc-for list="{{audiences}}" as="a" hint-placeholder-count="4">
+            <button onClick="{{a.pick}}" style="min-height: 42px; padding: 0 14px; background: {{a.bg}}; color: {{a.fg}}; border: 1px solid #D5DBEE; border-radius: 21px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">{{a.label}}</button>
+          </sc-for>
+        </div>
+        <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 800">Message
+          <textarea rows="4" style="box-sizing: border-box; padding: 12px; border: 1px solid #D5DBEE; border-radius: 12px; font: inherit; font-size: 15px; font-weight: 400; line-height: 1.5">School will close at 12 pm on Thursday for a staff meeting. Buses will leave at 12:15 pm.</textarea>
+        </label>
+        <button onClick="{{toggleSms}}" style="display: flex; align-items: center; gap: 12px; min-height: 60px; padding: 0 14px; background: #F5F7FC; border: 1px solid #E3E7F2; border-radius: 14px; font: inherit; text-align: left; cursor: pointer">
+          <span style="flex: 1"><span style="display: block; font-size: 14px; font-weight: 800; color: #172042">SMS backup</span><span style="display: block; font-size: 12px; color: #5A6482">Only to families who have not opened it within 2 hours</span></span>
+          <span aria-hidden="true" style="width: 48px; height: 28px; display: flex; align-items: center; padding: 3px; box-sizing: border-box; justify-content: {{knob}}; background: {{track}}; border-radius: 14px"><span style="width: 22px; height: 22px; background: #FFFFFF; border-radius: 50%"></span></span>
+        </button>
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+          <p style="margin: 0; font-size: 14px; color: #5A6482">{{reach}}</p>
+          <button onClick="{{send}}" style="min-height: 46px; padding: 0 22px; background: #2F45A0; color: #FFFFFF; border: 0; border-radius: 12px; font: inherit; font-size: 15px; font-weight: 800; cursor: pointer">{{sendLabel}}</button>
+        </div>
+      </section>
+
+      <div style="display: flex; flex-direction: column; gap: 18px">
+        <section class="panel">
+          <h2 style="margin: 0; font-size: 18px; font-weight: 800">Did parents see it?</h2>
+          <div style="overflow-x: auto">
+            <table style="width: 100%; min-width: 420px; border-collapse: collapse">
+              <thead><tr><th>Update</th><th>Sent to</th><th>Opened</th><th>SMS backup</th></tr></thead>
+              <tbody>
+                <tr><td style="font-weight: 700">Half-yearly exam routine</td><td>Class IV</td><td style="font-weight: 800; color: #16705A">94%</td><td>8 SMS</td></tr>
+                <tr><td style="font-weight: 700">Science fair consent</td><td>Class IV-B</td><td style="font-weight: 800; color: #16705A">88%</td><td>4 SMS</td></tr>
+                <tr><td style="font-weight: 700">Sports day fee</td><td>Whole school</td><td style="font-weight: 800; color: #8A5205">71%</td><td>Sending</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel" style="gap: 0">
+          <h2 style="margin: 0 0 10px; font-size: 18px; font-weight: 800">Messaging rules</h2>
+          <div class="rule"><span>Teachers reply between</span><b>8 am – 4 pm</b></div>
+          <div class="rule"><span>Parents can message</span><b>Class teacher and office</b></div>
+          <div class="rule"><span>Class groups</span><b>Announcements only</b></div>
+          <div class="rule"><span>Bangla translation</span><b style="color: #16705A">On</b></div>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  state = { audience: 'Whole school', sms: true, sent: false };
+  renderVals() {
+    const active = 'Communication';
+    const menu = [
+      ['Dashboard', 'AdminDashboard'], ['Emergency alert', 'AEmergency'], ['Communication', 'XAdminComms'], ['Notices', 'AdminNotices'], ['Students and families', 'AFamilies'],
+      ['Attendance', 'AdminAttendance'], ['Safe pickup', 'APickup'], ['Results', 'AResults'], ['Routine and calendar', 'ACalendar'], ['Events', 'AEvents'],
+      ['Meals', 'AMeals'], ['Fees', 'AdminFees'], ['Fee setup', 'AFeeSetup'], ['Transport', 'ATransport'], ['Feedback', 'AFeedback']
+    ].map(([label, f]) => ({ label, href: f + '.dc.html', bg: label === active ? '#E9EDFB' : 'transparent', fg: label === active ? '#2F45A0' : '#3E4766' }));
+    const counts = { 'Whole school': 1240, 'Class IV': 126, 'Class IV-B': 42, 'One family': 1 };
+    const audiences = Object.keys(counts).map((label) => ({
+      label,
+      bg: label === this.state.audience ? '#172042' : '#FFFFFF',
+      fg: label === this.state.audience ? '#FFFFFF' : '#172042',
+      pick: () => this.setState({ audience: label, sent: false })
+    }));
+    const n = counts[this.state.audience];
+    return {
+      menu,
+      audiences,
+      reach: 'Reaches ' + n.toLocaleString('en-US') + (n === 1 ? ' family' : ' families') + (this.state.sms ? ' · SMS backup on' : ' · App only'),
+      track: this.state.sms ? '#16705A' : '#C5CBDC',
+      knob: this.state.sms ? 'flex-end' : 'flex-start',
+      toggleSms: () => this.setState({ sms: !this.state.sms, sent: false }),
+      sendLabel: this.state.sent ? 'Sent' : 'Send update',
+      send: () => this.setState({ sent: true })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>App: Homework</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.scroll>*{flex-shrink:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 920px; box-sizing: border-box; display: flex; flex-direction: column; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', 'Hind Siliguri', system-ui, sans-serif">
+  <div class="scroll" style="flex: 1; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 18px 18px 24px; display: flex; flex-direction: column; gap: 14px">
+    <p style="margin: 0; font-size: 12px; font-weight: 600; color: #5A6482">Concept · Sample data</p>
+    <div style="display: flex; align-items: center; gap: 8px">
+      <a href="XHome.dc.html" aria-label="Back to home" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-left: -10px; color: #172042">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>
+      </a>
+      <h1 style="margin: 0; font-size: 26px; font-weight: 800">Homework</h1>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 12px; padding: 16px; background: #E2F4EE; border-radius: 20px">
+      <div style="flex: 1">
+        <p style="margin: 0; font-size: 13px; font-weight: 700; color: #12503F">This week</p>
+        <p style="margin: 3px 0 0; font-size: 20px; font-weight: 800; color: #0E4436">{{doneCount}} of 3 done</p>
+      </div>
+      <div aria-hidden="true" style="display: flex; gap: 4px">
+        <sc-for list="{{dots}}" as="d" hint-placeholder-count="3">
+          <span style="width: 28px; height: 8px; background: {{d}}; border-radius: 4px"></span>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="padding: 14px 16px; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 18px">
+      <p style="margin: 0; font-size: 12px; font-weight: 700; color: #5940AE">Teacher’s diary · Today</p>
+      <p style="margin: 4px 0 0; font-size: 14px; line-height: 1.5; color: #3E4766">We started fractions in maths. Please bring an empty bottle for science on Thursday.</p>
+    </div>
+
+    <sc-for list="{{items}}" as="h" hint-placeholder-count="3">
+      <article style="display: flex; flex-direction: column; gap: 10px; padding: 16px; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 18px">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+          <span style="padding: 4px 10px; background: {{h.bg}}; color: {{h.fg}}; border-radius: 10px; font-size: 12px; font-weight: 800">{{h.subject}}</span>
+          <span style="font-size: 13px; font-weight: 600; color: {{h.dueColor}}">{{h.due}}</span>
+        </div>
+        <h2 style="margin: 0; font-size: 16px; line-height: 1.4; font-weight: 700">{{h.task}}</h2>
+        <sc-if value="{{h.file}}" hint-placeholder-val="{{ false }}">
+          <a href="#" style="display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 12px; background: #F5F7FC; color: #2F45A0; border-radius: 12px; font-size: 14px; font-weight: 700; text-decoration: none">
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6zM9 12h7M9 16h7"></path></svg>
+            Worksheet.pdf · 240 KB
+          </a>
+        </sc-if>
+        <button onClick="{{h.toggle}}" style="display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; background: {{h.btnBg}}; color: {{h.btnFg}}; border: 1px solid {{h.btnLine}}; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">{{h.btnLabel}}</button>
+      </article>
+    </sc-for>
+  </div>
+
+  <nav aria-label="Main" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 8px 4px 14px; background: #FFFFFF; border-top: 1px solid #E3E7F2">
+    <sc-for list="{{tabs}}" as="tab" hint-placeholder-count="5">
+      <a href="{{tab.href}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 54px; color: {{tab.color}}; font-size: 11px; font-weight: 700; text-decoration: none">
+        <span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; background: {{tab.pill}}; border-radius: 15px"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{tab.d}}"></path></svg></span>
+        {{tab.label}}
+      </a>
+    </sc-for>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":920}}'>
+class Component extends DCLogic {
+  state = { done: ['Bangla'] };
+  renderVals() {
+    const active = 'Services';
+    const tabs = [
+      { label: 'Home', href: 'XHome.dc.html', d: 'M3 11l9-8 9 8M5 10v10h14V10' },
+      { label: 'Messages', href: 'XMessages.dc.html', d: 'M4 5h16v11H9l-5 4z' },
+      { label: 'Calendar', href: 'XEvents.dc.html', d: 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4' },
+      { label: 'Fees', href: 'XPay.dc.html', d: 'M3 7h18v12H3zM3 11h18M7 15h3' },
+      { label: 'Services', href: 'XServices.dc.html', d: 'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z' }
+    ].map((t) => ({ ...t, color: t.label === active ? '#2F45A0' : '#5A6482', pill: t.label === active ? '#E9EDFB' : 'transparent' }));
+    const done = this.state.done;
+    const items = [
+      { subject: 'Mathematics', bg: '#E9EDFB', fg: '#2F45A0', due: 'Due tomorrow', dueColor: '#A8432B', task: 'Fractions worksheet, questions 1 to 10', file: true },
+      { subject: 'Science', bg: '#E2F4EE', fg: '#16705A', due: 'Due Thursday', dueColor: '#5A6482', task: 'Draw and label the water cycle', file: false },
+      { subject: 'Bangla', bg: '#FDF0DA', fg: '#8A5205', due: 'Due today', dueColor: '#5A6482', task: 'Read pages 24 to 26 aloud', file: false }
+    ].map((h) => {
+      const isDone = done.includes(h.subject);
+      return {
+        ...h,
+        btnLabel: isDone ? 'Done ✓' : 'Mark as done',
+        btnBg: isDone ? '#16705A' : '#FFFFFF',
+        btnFg: isDone ? '#FFFFFF' : '#16705A',
+        btnLine: isDone ? '#16705A' : '#B7DFD2',
+        toggle: () => this.setState({ done: isDone ? done.filter((s) => s !== h.subject) : [...done, h.subject] })
+      };
+    });
+    return {
+      tabs,
+      items,
+      doneCount: done.length,
+      dots: [0, 1, 2].map((i) => (i < done.length ? '#16705A' : '#B7DFD2'))
+    };
+  }
+}
+</script>
+</body>
+</html>

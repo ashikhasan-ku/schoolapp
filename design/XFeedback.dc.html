@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Parent app: Feedback</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.scroll>*{flex-shrink:0}
+.card{background:#FFFFFF;border:1px solid #E3E7F2;border-radius:20px}
+.lbl{margin:0;font-size:14px;font-weight:800}
+select,textarea{box-sizing:border-box;border:1px solid #D5DBEE;border-radius:12px;background:#FFFFFF;font:inherit;font-size:15px;color:#172042}
+</style>
+</helmet>
+<div style="width: 390px; height: 1200px; box-sizing: border-box; display: flex; flex-direction: column; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', 'Hind Siliguri', system-ui, sans-serif">
+  <div class="scroll" style="flex: 1; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 18px 18px 24px; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; align-items: center; gap: 8px">
+      <a href="XServices.dc.html" aria-label="Back to services" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-left: -10px; color: #172042">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>
+      </a>
+      <div>
+        <h1 style="margin: 0; font-size: 26px; font-weight: 800">Feedback</h1>
+        <p style="margin: 0; font-size: 12px; font-weight: 600; color: #8A93AE">Concept · Sample data</p>
+      </div>
+    </div>
+
+    <sc-if value="{{notSent}}" hint-placeholder-val="{{ true }}">
+      <section class="card" style="display: flex; flex-direction: column; gap: 14px; padding: 18px">
+        <label style="display: flex; flex-direction: column; gap: 8px">
+          <span class="lbl">What is it about?</span>
+          <select onChange="{{setCat}}" style="min-height: 50px; padding: 0 12px">
+            <sc-for list="{{cats}}" as="c" hint-placeholder-count="7"><option value="{{c.v}}" selected="{{c.sel}}">{{c.v}}</option></sc-for>
+          </select>
+        </label>
+        <label style="display: flex; flex-direction: column; gap: 8px">
+          <span class="lbl">Which child?</span>
+          <select style="min-height: 50px; padding: 0 12px"><option>Aanya Rahman · IV-B</option><option>Rayan Rahman · VII-A</option><option>Both children</option></select>
+        </label>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <span class="lbl">Quick choices</span>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px">
+            <sc-for list="{{quick}}" as="q" hint-placeholder-count="3">
+              <button onClick="{{q.pick}}" style="min-height: 40px; padding: 0 12px; background: {{q.bg}}; color: {{q.fg}}; border: 1px solid #D5DBEE; border-radius: 20px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer">{{q.t}}</button>
+            </sc-for>
+          </div>
+        </div>
+        <label style="display: flex; flex-direction: column; gap: 8px">
+          <span class="lbl">Tell us more <span style="font-weight: 500; color: #5A6482">(optional)</span></span>
+          <textarea rows="3" placeholder="Write in English or বাংলা" style="padding: 12px; line-height: 1.5"></textarea>
+        </label>
+        <button onClick="{{send}}" style="min-height: 52px; background: #2F45A0; color: #FFFFFF; border: 0; border-radius: 14px; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Send to the school</button>
+        <p style="margin: 0; font-size: 12px; color: #5A6482; text-align: center">The right team sees it. You will get a reply here.</p>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{sent}}" hint-placeholder-val="{{ false }}">
+      <section class="card" style="display: flex; flex-direction: column; gap: 10px; padding: 20px 18px">
+        <div style="width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; background: #E2F4EE; color: #16705A; border-radius: 50%">
+          <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4 10-11"></path></svg>
+        </div>
+        <h2 style="margin: 0; font-size: 20px; font-weight: 800">Sent to the {{team}}</h2>
+        <p style="margin: 0; font-size: 14px; color: #5A6482">Usual reply time: within 1 school day. Reference FB-2041.</p>
+        <button onClick="{{reset}}" style="min-height: 44px; background: #E9EDFB; color: #2F45A0; border: 0; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Send another</button>
+      </section>
+    </sc-if>
+
+    <h2 style="margin: 6px 0 0; font-size: 16px; font-weight: 800">Your feedback</h2>
+    <sc-for list="{{history}}" as="h" hint-placeholder-count="3">
+      <article class="card" style="display: flex; flex-direction: column; gap: 8px; padding: 14px 16px">
+        <div style="display: flex; justify-content: space-between; gap: 8px; align-items: center">
+          <span style="font-size: 12px; font-weight: 700; color: #5A6482">{{h.cat}} · {{h.date}}</span>
+          <span style="padding: 4px 9px; background: {{h.bg}}; color: {{h.fg}}; border-radius: 9px; font-size: 12px; font-weight: 800">{{h.status}}</span>
+        </div>
+        <p style="margin: 0; font-size: 15px; font-weight: 700">{{h.text}}</p>
+        <sc-if value="{{h.hasReply}}" hint-placeholder-val="{{ false }}">
+          <p style="margin: 0; padding: 10px 12px; background: #F5F7FC; border-radius: 12px; font-size: 13px; line-height: 1.45; color: #3E4766"><b>{{h.who}}:</b> {{h.reply}}</p>
+        </sc-if>
+      </article>
+    </sc-for>
+  </div>
+
+  <nav aria-label="Main" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 8px 4px 14px; background: #FFFFFF; border-top: 1px solid #E3E7F2">
+    <sc-for list="{{tabs}}" as="tab" hint-placeholder-count="5">
+      <a href="{{tab.href}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 54px; color: {{tab.color}}; font-size: 11px; font-weight: 700; text-decoration: none">
+        <span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; background: {{tab.pill}}; border-radius: 15px"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{tab.d}}"></path></svg></span>
+        {{tab.label}}
+      </a>
+    </sc-for>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1200}}'>
+class Component extends DCLogic {
+  state = { cat: 'Meals and canteen', q: null, sent: false };
+  renderVals() {
+    const active = 'Services';
+    const tabs = [
+      { label: 'Home', href: 'XHome.dc.html', d: 'M3 11l9-8 9 8M5 10v10h14V10' },
+      { label: 'Messages', href: 'XMessages.dc.html', d: 'M4 5h16v11H9l-5 4z' },
+      { label: 'Calendar', href: 'XEvents.dc.html', d: 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4' },
+      { label: 'Fees', href: 'XPay.dc.html', d: 'M3 7h18v12H3zM3 11h18M7 15h3' },
+      { label: 'Services', href: 'XServices.dc.html', d: 'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z' }
+    ].map((t) => ({ ...t, color: t.label === active ? '#2F45A0' : '#5A6482', pill: t.label === active ? '#E9EDFB' : 'transparent' }));
+    const map = {
+      'Meals and canteen': { team: 'kitchen team', q: ['Food was cold', 'Portion too small', 'Allergy or food need', 'Loved the menu'] },
+      'Transport': { team: 'transport desk', q: ['Bus was late', 'Driving safety', 'Change pickup stop'] },
+      'Teaching and classes': { team: 'academic office', q: ['Too much homework', 'Need extra help', 'Great teacher'] },
+      'Fees and payments': { team: 'accounts office', q: ['Payment problem', 'Need a receipt', 'Fee question'] },
+      'Safety and health': { team: 'school office', q: ['Safety concern', 'Health concern', 'Cleanliness'] },
+      'This app': { team: 'app support team', q: ['Something does not work', 'Idea for the app', 'Hard to use'] },
+      'Something else': { team: 'school office', q: ['General question', 'Compliment'] }
+    };
+    const cat = this.state.cat;
+    const look = {
+      Resolved: { bg: '#E2F4EE', fg: '#0E4436' },
+      'In progress': { bg: '#FDF0DA', fg: '#5C3703' },
+      Received: { bg: '#E9EDFB', fg: '#22347F' }
+    };
+    const history = [
+      { cat: 'Meals and canteen', date: '10 Nov', status: 'Resolved', text: 'Lunch was cold on Monday', hasReply: true, who: 'Kitchen team', reply: 'Sorry about that. We now serve Class IV first, at 12:30 pm sharp.' },
+      { cat: 'Transport', date: '6 Nov', status: 'In progress', text: 'Bus 3 often arrives late in the morning', hasReply: true, who: 'Transport desk', reply: 'We are testing a new route from next week.' },
+      { cat: 'This app', date: '2 Nov', status: 'Received', text: 'Please add a dark mode', hasReply: false }
+    ].map((h) => ({ ...h, ...look[h.status] }));
+    return {
+      tabs, history,
+      cats: Object.keys(map).map((v) => ({ v, sel: v === cat })),
+      setCat: (e) => this.setState({ cat: e.target.value, q: null }),
+      quick: map[cat].q.map((t) => ({ t, bg: t === this.state.q ? '#172042' : '#FFFFFF', fg: t === this.state.q ? '#FFFFFF' : '#172042', pick: () => this.setState({ q: t }) })),
+      team: map[cat].team,
+      notSent: !this.state.sent, sent: this.state.sent,
+      send: () => this.setState({ sent: true }),
+      reset: () => this.setState({ sent: false, q: null })
+    };
+  }
+}
+</script>
+</body>
+</html>

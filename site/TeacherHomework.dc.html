@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390">
+<title>Teacher app: Homework</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 100vh; height: 100dvh; box-sizing: border-box; display: flex; flex-direction: column; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', system-ui, sans-serif">
+  <div style="flex: 1; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 22px 20px; display: flex; flex-direction: column; gap: 14px">
+    <p style="margin: 0; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
+    <h1 style="margin: 0; font-size: 26px; font-weight: 700">Post homework</h1>
+
+    <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600">Class
+      <select style="min-height: 46px; padding: 0 10px; background: #FFFFFF; border: 1px solid #C9D2EE; border-radius: 10px; font: inherit; font-size: 15px; font-weight: 400">
+        <option>Class IV, Section B</option>
+        <option>Class IV, Section A</option>
+        <option>Class V, Section A</option>
+      </select>
+    </label>
+
+    <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600">Homework
+      <textarea rows="4" style="box-sizing: border-box; padding: 12px; background: #FFFFFF; border: 1px solid #C9D2EE; border-radius: 10px; font: inherit; font-size: 15px; font-weight: 400; line-height: 1.5">Complete fractions worksheet, questions 1 to 10.</textarea>
+    </label>
+
+    <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600">Due date
+      <input value="Thursday, 19 November" style="min-height: 46px; box-sizing: border-box; padding: 0 12px; background: #FFFFFF; border: 1px solid #C9D2EE; border-radius: 10px; font: inherit; font-size: 15px; font-weight: 400">
+    </label>
+
+    <button style="min-height: 46px; background: #E8ECF9; color: #2F45A0; border: 0; border-radius: 12px; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer">Attach worksheet</button>
+    <button onClick="{{post}}" style="min-height: 50px; background: #2F45A0; color: #FFFFFF; border: 0; border-radius: 12px; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer">{{postLabel}}</button>
+    <p style="margin: 0; font-size: 13px; text-align: center; color: #5A6482">Parents of 42 students will see this in the parent app</p>
+  </div>
+
+  <nav aria-label="Main" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 8px 6px 12px; background: #FFFFFF; border-top: 1px solid #E3E7F2">
+    <sc-for list="{{tabs}}" as="tab" hint-placeholder-count="4">
+      <a href="{{tab.href}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; color: {{tab.color}}; font-size: 11px; font-weight: 600; text-decoration: none">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{tab.d}}"></path></svg>
+        {{tab.label}}
+      </a>
+    </sc-for>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  state = { posted: false };
+  renderVals() {
+    const active = 'Homework';
+    const tabs = [
+      { label: 'Today', href: 'TeacherToday.dc.html', d: 'M3 11l9-8 9 8M5 10v10h14V10' },
+      { label: 'Attendance', href: 'TeacherAttendance.dc.html', d: 'M4 5h16v14H4zM8 12l3 3 5-6' },
+      { label: 'Messages', href: 'TMessages.dc.html', d: 'M4 5h16v11H9l-5 4z' },
+      { label: 'Homework', href: 'TeacherHomework.dc.html', d: 'M6 3h9l4 4v14H6zM9 12h7M9 16h7' }
+    ].map((t) => ({ ...t, color: t.label === active ? '#2F45A0' : '#5A6482' }));
+    return {
+      tabs,
+      postLabel: this.state.posted ? 'Posted to parents' : 'Post homework',
+      post: () => this.setState({ posted: true })
+    };
+  }
+}
+</script>
+</body>
+</html>

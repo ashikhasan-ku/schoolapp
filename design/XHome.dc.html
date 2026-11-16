@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Parent app: Home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#2F45A0}
+.scroll>*{flex-shrink:0}
+.card{background:#FFFFFF;border:1px solid #E3E7F2;border-radius:20px}
+.tile{display:flex;flex-direction:column;align-items:center;gap:7px;min-height:84px;color:#172042;font-size:12px;font-weight:600;text-decoration:none;text-align:center}
+.ic{width:52px;height:52px;display:flex;align-items:center;justify-content:center;border-radius:16px}
+.stat{padding:12px 10px;background:#FFFFFF;color:#172042;border-radius:16px}
+.stat p{margin:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 2540px; box-sizing: border-box; display: flex; flex-direction: column; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', 'Hind Siliguri', system-ui, sans-serif">
+  <div class="scroll" style="flex: 1; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 18px 18px 24px; display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <div style="flex: 1">
+        <p style="margin: 0; font-size: 13px; font-weight: 700; color: #2F45A0">{{dateLabel}}</p>
+        <p style="margin: 2px 0 0; font-size: 21px; font-weight: 800">{{greeting}}, Nadia</p>
+      </div>
+      <a href="XSettings.dc.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 12px; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 14px; font-family: 'Hind Siliguri', sans-serif; font-size: 15px; font-weight: 600; text-decoration: none">বাংলা</a>
+      <a href="ParentNotices.dc.html" aria-label="Notifications, 3 new" style="position: relative; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 14px; color: #172042">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"></path></svg>
+        <span style="position: absolute; top: 6px; right: 7px; width: 9px; height: 9px; background: #D2452F; border: 2px solid #FFFFFF; border-radius: 50%"></span>
+      </a>
+    </div>
+
+    <a href="XAlert.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #A8432B; color: #FFFFFF; border-radius: 18px; text-decoration: none">
+      <span aria-hidden="true" style="flex-shrink: 0; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #FFFFFF; color: #A8432B; border-radius: 50%"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v5M12 16v.5M10.3 3.9 2 18a2 2 0 0 0 1.7 3h16.6A2 2 0 0 0 22 18L13.7 3.9a2 2 0 0 0-3.4 0z"></path></svg></span>
+      <span style="flex: 1; min-width: 0"><span style="display: block; font-size: 12px; font-weight: 800; color: #FCE7E1">EMERGENCY ALERT · 4:10 PM</span><span style="display: block; margin-top: 2px; font-size: 15px; font-weight: 800">School closed tomorrow, 17 Nov</span></span>
+      <span style="font-size: 13px; font-weight: 800">Read</span>
+    </a>
+
+    <section aria-label="Your child" class="card" style="display: flex; align-items: center; gap: 14px; padding: 14px">
+      <sc-if value="{{child.girl}}" hint-placeholder-val="{{ true }}">
+        <svg role="img" aria-label="Photo of Aanya" width="58" height="58" viewBox="0 0 64 64" style="flex-shrink: 0; border-radius: 50%"><circle cx="32" cy="32" r="32" fill="#FCE3D3"></circle><path d="M12 64c0-12 9-18 20-18s20 6 20 18z" fill="#FFFFFF"></path><path d="M29.5 46h5l-1 12h-3z" fill="#2F45A0"></path><path d="M18 31c-1 7 0 13 4 16l3-15zM46 31c1 7 0 13-4 16l-3-15z" fill="#2B2230"></path><circle cx="32" cy="31" r="12" fill="#E9B88F"></circle><path d="M19 31c0-10 6-16 13-16s13 6 13 16c-2-5-7-8-13-8s-11 3-13 8z" fill="#2B2230"></path><circle cx="27.5" cy="32" r="1.4" fill="#2B2230"></circle><circle cx="36.5" cy="32" r="1.4" fill="#2B2230"></circle><path d="M28.5 37c2 1.8 5 1.8 7 0" stroke="#9A4B3A" stroke-width="1.5" fill="none" stroke-linecap="round"></path></svg>
+      </sc-if>
+      <sc-if value="{{child.boy}}" hint-placeholder-val="{{ false }}">
+        <svg role="img" aria-label="Photo of Rayan" width="58" height="58" viewBox="0 0 64 64" style="flex-shrink: 0; border-radius: 50%"><circle cx="32" cy="32" r="32" fill="#DCEBFA"></circle><path d="M12 64c0-12 9-18 20-18s20 6 20 18z" fill="#FFFFFF"></path><path d="M29.5 46h5l-1 12h-3z" fill="#2F45A0"></path><circle cx="32" cy="31" r="12" fill="#D9A47C"></circle><path d="M20 29c0-9 5-14 12-14s12 5 12 14c-3-4-7-6-12-6s-9 2-12 6z" fill="#2B2230"></path><circle cx="27.5" cy="32" r="1.4" fill="#2B2230"></circle><circle cx="36.5" cy="32" r="1.4" fill="#2B2230"></circle><path d="M28.5 37c2 1.8 5 1.8 7 0" stroke="#8A4A34" stroke-width="1.5" fill="none" stroke-linecap="round"></path></svg>
+      </sc-if>
+      <div style="flex: 1; min-width: 0">
+        <p style="margin: 0; font-size: 18px; font-weight: 800">{{child.name}}</p>
+        <p style="margin: 2px 0 0; font-size: 13px; color: #5A6482">{{child.cls}} · Roll {{child.roll}}</p>
+      </div>
+      <button onClick="{{switchChild}}" aria-label="Switch to {{other}}" style="flex-shrink: 0; display: flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 12px; background: #E9EDFB; color: #2F45A0; border: 0; border-radius: 12px; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h12l-3-3M17 17H5l3 3"></path></svg>{{otherFirst}}</button>
+    </section>
+
+    <section aria-label="Today" style="position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 14px; padding: 20px; background: #2F45A0; color: #FFFFFF; border-radius: 24px">
+      <div aria-hidden="true" style="position: absolute; right: -40px; top: -50px; width: 170px; height: 170px; background: #3D55B8; border-radius: 50%"></div>
+      <div aria-hidden="true" style="position: absolute; right: 40px; top: 60px; width: 70px; height: 70px; background: #4A62C4; border-radius: 50%"></div>
+      <div style="position: relative">
+        <p style="margin: 0; font-size: 13px; font-weight: 600; color: #DDE3F8">Today at school</p>
+        <p style="margin: 4px 0 0; font-size: 22px; font-weight: 800">{{child.headline}}</p>
+      </div>
+      <div style="position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+        <a href="ParentAttendance.dc.html" class="stat" style="text-decoration: none"><p style="font-size: 11px; font-weight: 600; color: #5A6482">Arrived</p><p style="margin-top: 3px; font-size: 15px; font-weight: 800; color: #16705A">{{child.att}}</p></a>
+        <a href="XHomework.dc.html" class="stat" style="text-decoration: none"><p style="font-size: 11px; font-weight: 600; color: #5A6482">Homework</p><p style="margin-top: 3px; font-size: 15px; font-weight: 800; color: #172042">{{child.hw}}</p></a>
+        <a href="XBus.dc.html" class="stat" style="text-decoration: none"><p style="font-size: 11px; font-weight: 600; color: #5A6482">Bus home</p><p style="margin-top: 3px; font-size: 15px; font-weight: 800; color: #172042">{{child.bus}}</p></a>
+      </div>
+    </section>
+
+    <a href="XMeals.dc.html" class="card" style="display: flex; align-items: center; gap: 14px; padding: 16px; color: inherit; text-decoration: none">
+      <span aria-hidden="true" style="flex-shrink: 0; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; background: #E2F4EE; color: #16705A; border-radius: 16px">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11h16a8 8 0 0 1-16 0zM8 7c0-1 1-1.5 1-3M12 7c0-1 1-1.5 1-3M16 7c0-1 1-1.5 1-3"></path></svg>
+      </span>
+      <span style="flex: 1; min-width: 0">
+        <span style="display: block; font-size: 12px; font-weight: 700; color: #16705A">{{mealLabel}}</span>
+        <span style="display: block; margin-top: 2px; font-size: 16px; font-weight: 800">{{meal.lunch}}</span>
+        <span style="display: block; margin-top: 2px; font-size: 13px; color: #5A6482">Snack: {{meal.snack}}</span>
+      </span>
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A93AE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+    </a>
+
+    <div style="display: flex; align-items: center; gap: 12px; padding: 16px; background: #FDF0DA; border-radius: 20px">
+      <div style="flex: 1">
+        <p style="margin: 0; font-size: 13px; font-weight: 700; color: #7A4904">November fee · due 30 Nov</p>
+        <p style="margin: 3px 0 0; font-size: 20px; font-weight: 800; color: #5C3703">BDT {{child.fee}}</p>
+      </div>
+      <a href="XPay.dc.html" style="display: flex; align-items: center; min-height: 46px; padding: 0 18px; background: #172042; color: #FFFFFF; border-radius: 14px; font-size: 15px; font-weight: 700; text-decoration: none">Pay now</a>
+    </div>
+
+    <section aria-label="Services" class="card" style="padding: 18px 12px 10px">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 6px 12px">
+        <h2 style="margin: 0; font-size: 17px; font-weight: 800">Services</h2>
+        <a href="XServices.dc.html" style="display: flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 700; text-decoration: none">See all</a>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px 4px">
+        <sc-for list="{{tiles}}" as="t" hint-placeholder-count="8">
+          <a href="{{t.href}}" class="tile">
+            <span class="ic" style="background: {{t.bg}}; color: {{t.fg}}"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{t.d}}"></path></svg></span>
+            {{t.label}}
+          </a>
+        </sc-for>
+      </div>
+    </section>
+
+    <section aria-label="Updates" style="display: flex; flex-direction: column; gap: 12px">
+      <h2 style="margin: 0; font-size: 17px; font-weight: 800">Updates</h2>
+      <div style="display: flex; gap: 8px">
+        <sc-for list="{{filters}}" as="f" hint-placeholder-count="3">
+          <button onClick="{{f.pick}}" style="min-height: 40px; padding: 0 14px; background: {{f.bg}}; color: {{f.fg}}; border: 1px solid #D5DBEE; border-radius: 20px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer">{{f.label}}</button>
+        </sc-for>
+      </div>
+      <sc-for list="{{feed}}" as="u" hint-placeholder-count="6">
+        <article class="card" style="display: flex; flex-direction: column; gap: 10px; padding: 16px">
+          <div style="display: flex; align-items: center; gap: 10px">
+            <span class="ic" style="width: 40px; height: 40px; border-radius: 12px; background: {{u.bg}}; color: {{u.fg}}"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{u.d}}"></path></svg></span>
+            <div style="flex: 1">
+              <p style="margin: 0; font-size: 13px; font-weight: 700; color: {{u.fg}}">{{u.kind}}</p>
+              <p style="margin: 1px 0 0; font-size: 12px; color: #5A6482">{{u.from}} · {{u.time}}</p>
+            </div>
+          </div>
+          <h3 style="margin: 0; font-size: 16px; line-height: 1.35; font-weight: 700">{{u.title}}</h3>
+          <sc-if value="{{u.photos}}" hint-placeholder-val="{{ false }}">
+            <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
+              <div aria-hidden="true" style="height: 84px; background: #CFE6F5; border-radius: 12px; display: flex; align-items: flex-end; overflow: hidden"><svg width="100%" height="60" viewBox="0 0 100 60" preserveAspectRatio="none"><circle cx="75" cy="18" r="9" fill="#FBD38D"></circle><path d="M0 60L30 25L55 50L75 35L100 55V60Z" fill="#7FB89A"></path></svg></div>
+              <div aria-hidden="true" style="height: 84px; background: #F5DCCF; border-radius: 12px; display: flex; align-items: flex-end; overflow: hidden"><svg width="100%" height="60" viewBox="0 0 100 60" preserveAspectRatio="none"><circle cx="30" cy="20" r="10" fill="#F6AD8C"></circle><path d="M0 60L25 38L50 52L80 22L100 45V60Z" fill="#C98B6F"></path></svg></div>
+              <div aria-hidden="true" style="height: 84px; background: #E0DBF7; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; color: #5940AE">+9</div>
+            </div>
+          </sc-if>
+          <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #5A6482">{{u.body}}</p>
+          <sc-if value="{{u.hasAction}}" hint-placeholder-val="{{ false }}">
+            <a href="{{u.href}}" style="display: flex; align-items: center; justify-content: center; min-height: 44px; background: #E9EDFB; border-radius: 12px; font-size: 14px; font-weight: 700; text-decoration: none">{{u.action}}</a>
+          </sc-if>
+        </article>
+      </sc-for>
+    </section>
+    <p style="margin: 0; font-size: 12px; font-weight: 600; color: #8A93AE; text-align: center">Concept · Sample data</p>
+  </div>
+
+  <nav aria-label="Main" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 8px 4px 14px; background: #FFFFFF; border-top: 1px solid #E3E7F2">
+    <sc-for list="{{tabs}}" as="tab" hint-placeholder-count="5">
+      <a href="{{tab.href}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 54px; color: {{tab.color}}; font-size: 11px; font-weight: 700; text-decoration: none">
+        <span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; background: {{tab.pill}}; border-radius: 15px"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{tab.d}}"></path></svg></span>
+        {{tab.label}}
+      </a>
+    </sc-for>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":2540}}'>
+class Component extends DCLogic {
+  state = { child: 0, filter: 'All' };
+  renderVals() {
+    const active = 'Home';
+    const tabs = [
+      { label: 'Home', href: 'XHome.dc.html', d: 'M3 11l9-8 9 8M5 10v10h14V10' },
+      { label: 'Messages', href: 'XMessages.dc.html', d: 'M4 5h16v11H9l-5 4z' },
+      { label: 'Calendar', href: 'XEvents.dc.html', d: 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4' },
+      { label: 'Fees', href: 'XPay.dc.html', d: 'M3 7h18v12H3zM3 11h18M7 15h3' },
+      { label: 'Services', href: 'XServices.dc.html', d: 'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z' }
+    ].map((t) => ({ ...t, color: t.label === active ? '#2F45A0' : '#5A6482', pill: t.label === active ? '#E9EDFB' : 'transparent' }));
+    const now = new Date();
+    const h = now.getHours();
+    const kids = [
+      { name: 'Aanya Rahman', girl: true, boy: false, cls: 'Class IV-B', roll: '07', headline: 'A good day so far', att: '8:42 am', hw: '2 due', bus: '3:12 pm', fee: '7,800' },
+      { name: 'Rayan Rahman', girl: false, boy: true, cls: 'Class VII-A', roll: '15', headline: 'Science test tomorrow', att: '8:39 am', hw: '1 due', bus: '3:40 pm', fee: '8,600' }
+    ];
+    const child = kids[this.state.child];
+    const menu = [
+      { lunch: 'Chicken khichuri', snack: 'Banana and milk' },
+      { lunch: 'Rice, dal and fish curry', snack: 'Fruit cup' },
+      { lunch: 'Vegetable noodles with egg', snack: 'Yoghurt' },
+      { lunch: 'Rice, chicken curry and salad', snack: 'Seasonal fruit' },
+      { lunch: 'Vegetable pulao with egg', snack: 'Milk and biscuits' }
+    ];
+    const day = now.getDay();
+    const school = day <= 4;
+    const meal = school ? menu[day] : menu[0];
+    const tiles = [
+      { label: 'Attendance', href: 'ParentAttendance.dc.html', bg: '#E2EFFB', fg: '#1D5E9C', d: 'M4 5h16v14H4zM8 12l3 3 5-6' },
+      { label: 'Homework', href: 'XHomework.dc.html', bg: '#E2F4EE', fg: '#16705A', d: 'M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3zM5 17a3 3 0 0 1 3-3h11' },
+      { label: 'Results', href: 'XResults.dc.html', bg: '#EEEAFB', fg: '#5940AE', d: 'M4 20V10M10 20V4M16 20v-7M2 20h20' },
+      { label: 'Routine', href: 'ParentRoutine.dc.html', bg: '#FDF0DA', fg: '#8A5205', d: 'M12 7v5l3 3M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0' },
+      { label: 'Pickup', href: 'XPickup.dc.html', bg: '#E2F4EE', fg: '#16705A', d: 'M12 3l8 3v6c0 5-3.5 8-8 9c-4.5-1-8-4-8-9V6zM9 12l2 2 4-4' },
+      { label: 'Leave', href: 'XLeave.dc.html', bg: '#FCE7E1', fg: '#A8432B', d: 'M4 6h16v14H4zM4 10h16M10 13l4 4M14 13l-4 4' },
+      { label: 'Bus', href: 'XBus.dc.html', bg: '#E2EFFB', fg: '#1D5E9C', d: 'M5 4h14v12H5zM5 10h14M8 19v-3M16 19v-3' },
+      { label: 'Feedback', href: 'XFeedback.dc.html', bg: '#EEEAFB', fg: '#5940AE', d: 'M4 5h16v11H9l-5 4zM9 10h6' }
+    ];
+    const all = [
+      { cat: 'School', kind: 'Safe pickup', from: 'Main gate', time: '3:15 pm', bg: '#E2F4EE', fg: '#16705A', d: 'M12 3l8 3v6c0 5-3.5 8-8 9c-4.5-1-8-4-8-9V6zM9 12l2 2 4-4', title: 'Aanya was picked up by Rafiq Hasan', body: 'Uncle · scanned at the main gate with today’s pass.', hasAction: true, action: 'See pickup details', href: 'XPickup.dc.html', photos: false },
+      { cat: 'Class', kind: 'Message from class teacher', from: 'Ms. Farzana Ahmed', time: '5:12 pm', bg: '#E9EDFB', fg: '#2F45A0', d: 'M4 5h16v11H9l-5 4z', title: 'Aanya did very well in today’s maths quiz', body: 'Please help her practise fractions at home this week.', hasAction: true, action: 'Reply', href: 'XChat.dc.html', photos: false },
+      { cat: 'Class', kind: 'Class moments', from: 'Class IV-B', time: '2:30 pm', bg: '#EEEAFB', fg: '#5940AE', d: 'M4 5h16v14H4zM4 16l5-5 4 4 3-3 4 4', title: 'Our science fair practice', body: '12 new photos from today’s class.', hasAction: false, photos: true },
+      { cat: 'School', kind: 'Your answer needed', from: 'School office', time: '11:00 am', bg: '#FDF0DA', fg: '#8A5205', d: 'M12 8v5M12 17h.01M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0', title: 'Can Aanya join the science fair trip on 18 November?', body: 'Please reply by 17 November.', hasAction: true, action: 'Answer yes or no', href: 'XEvents.dc.html', photos: false },
+      { cat: 'Class', kind: 'Homework', from: 'Mr. Imran Hossain', time: '10:15 am', bg: '#E2F4EE', fg: '#16705A', d: 'M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z', title: 'Science: draw the water cycle', body: 'Due Thursday.', hasAction: true, action: 'View homework', href: 'XHomework.dc.html', photos: false },
+      { cat: 'School', kind: 'Notice', from: 'School office', time: 'Yesterday', bg: '#E2EFFB', fg: '#1D5E9C', d: 'M6 16v-5a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0', title: 'Half-yearly exams begin on 22 November', body: 'The full exam routine is in Notices.', hasAction: true, action: 'Read notice', href: 'ParentNotices.dc.html', photos: false }
+    ];
+    const filters = ['All', 'Class', 'School'].map((label) => ({
+      label, bg: label === this.state.filter ? '#172042' : '#FFFFFF', fg: label === this.state.filter ? '#FFFFFF' : '#172042',
+      pick: () => this.setState({ filter: label })
+    }));
+    return {
+      tabs, child, tiles, filters, meal,
+      other: kids[1 - this.state.child].name.split(' ')[0],
+      otherFirst: kids[1 - this.state.child].name.split(' ')[0],
+      switchChild: () => this.setState({ child: 1 - this.state.child }),
+      dateLabel: now.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }),
+      greeting: h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening',
+      mealLabel: school ? 'Today’s lunch' : 'Sunday’s lunch',
+      feed: this.state.filter === 'All' ? all : all.filter((u) => u.cat === this.state.filter)
+    };
+  }
+}
+</script>
+</body>
+</html>

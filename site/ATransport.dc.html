@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin: Transport</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.panel{display:flex;flex-direction:column;gap:14px;padding:22px;background:#FFFFFF;border:1px solid #E3E7F2;border-radius:20px}
+.chip{display:inline-block;padding:4px 9px;border-radius:9px;font-size:12px;font-weight:800}
+.kid{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:46px;border-top:1px solid #EEF1F8;font-size:14px}
+</style>
+</helmet>
+<div style="min-height: 900px; display: flex; flex-wrap: wrap; align-items: stretch; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', system-ui, sans-serif">
+  <nav aria-label="Admin menu" style="flex: 1 1 240px; box-sizing: border-box; padding: 28px 18px; display: flex; flex-direction: column; gap: 2px; background: #FFFFFF; border-right: 1px solid #E3E7F2">
+    <p style="margin: 0; padding: 0 12px; font-size: 19px; font-weight: 800">School admin</p>
+    <p style="margin: 2px 0 16px; padding: 0 12px; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
+    <sc-for list="{{menu}}" as="m" hint-placeholder-count="15">
+      <a href="{{m.href}}" style="display: flex; align-items: center; min-height: 38px; padding: 0 12px; background: {{m.bg}}; color: {{m.fg}}; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none">{{m.label}}</a>
+    </sc-for>
+  </nav>
+
+  <main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 36px); display: flex; flex-direction: column; gap: 20px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+      <div>
+        <h1 style="margin: 0; font-size: 30px; font-weight: 800">Transport</h1>
+        <p style="margin: 4px 0 0; font-size: 15px; color: #5A6482">Afternoon trips · Live from GPS devices on each bus</p>
+      </div>
+      <button style="min-height: 44px; padding: 0 18px; background: #FFFFFF; color: #2F45A0; border: 1px solid #C9D3F3; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Edit routes and stops</button>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start">
+      <section class="panel" style="flex: 1 1 340px; gap: 8px">
+        <sc-for list="{{buses}}" as="b" hint-placeholder-count="4">
+          <button onClick="{{b.pick}}" style="display: flex; align-items: center; gap: 12px; min-height: 68px; padding: 10px 14px; background: {{b.bg}}; border: 2px solid {{b.line}}; border-radius: 14px; font: inherit; text-align: left; cursor: pointer">
+            <span aria-hidden="true" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: #E2F4EE; color: #16705A; border-radius: 12px; font-size: 15px; font-weight: 800">{{b.no}}</span>
+            <span style="flex: 1">
+              <span style="display: block; font-size: 15px; font-weight: 800; color: #172042">{{b.route}}</span>
+              <span style="display: block; font-size: 12px; color: #5A6482">{{b.kids}} students · {{b.att}}</span>
+            </span>
+            <span class="chip" style="background: {{b.cbg}}; color: {{b.cfg}}">{{b.status}}</span>
+          </button>
+        </sc-for>
+      </section>
+
+      <section class="panel" style="flex: 1 1 380px; gap: 0">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; padding-bottom: 12px">
+          <div>
+            <h2 style="margin: 0; font-size: 18px; font-weight: 800">Bus {{bus.no}} · Who is on board</h2>
+            <p style="margin: 3px 0 0; font-size: 13px; color: #5A6482">Marked by the bus attendant · {{bus.onboard}}</p>
+          </div>
+        </div>
+        <sc-for list="{{bus.list}}" as="k" hint-placeholder-count="5">
+          <div class="kid"><span style="font-weight: 600">{{k.name}}</span><span class="chip" style="background: {{k.cbg}}; color: {{k.cfg}}">{{k.state}}</span></div>
+        </sc-for>
+        <div style="display: flex; gap: 10px; margin-top: 12px; padding: 12px 14px; background: #FDF0DA; border-radius: 12px">
+          <p style="margin: 0; font-size: 13px; line-height: 1.45; color: #5C3703">{{bus.alert}}</p>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  state = { sel: 2 };
+  renderVals() {
+    const active = 'Transport';
+    const menu = [
+      ['Dashboard', 'AdminDashboard'], ['Emergency alert', 'AEmergency'], ['Communication', 'XAdminComms'], ['Notices', 'AdminNotices'], ['Students and families', 'AFamilies'],
+      ['Attendance', 'AdminAttendance'], ['Safe pickup', 'APickup'], ['Results', 'AResults'], ['Routine and calendar', 'ACalendar'], ['Events', 'AEvents'],
+      ['Meals', 'AMeals'], ['Fees', 'AdminFees'], ['Fee setup', 'AFeeSetup'], ['Transport', 'ATransport'], ['Feedback', 'AFeedback']
+    ].map(([label, f]) => ({ label, href: f + '.dc.html', bg: label === active ? '#E9EDFB' : 'transparent', fg: label === active ? '#2F45A0' : '#3E4766' }));
+    const ok = { cbg: '#E2F4EE', cfg: '#12503F' };
+    const late = { cbg: '#FDF0DA', cfg: '#6B4004' };
+    const miss = { cbg: '#FCE7E1', cfg: '#7E3220' };
+    const data = [
+      { no: '1', route: 'North route', kids: 34, att: 'Ms. Rokeya', status: 'On time', ...ok, onboard: '34 of 34 on board', list: [{ name: 'Arif Karim', state: 'On board', ...ok }, { name: 'Nusrat Jahan', state: 'On board', ...ok }], alert: 'All students on board. Next stop in 4 minutes.' },
+      { no: '2', route: 'East route', kids: 29, att: 'Mr. Selim', status: '10 min late', ...late, onboard: '29 of 29 on board', list: [{ name: 'Zayan Ahmed', state: 'On board', ...ok }, { name: 'Tahmid Hasan', state: 'On board', ...ok }], alert: 'Traffic delay. Parents on this route were told automatically.' },
+      { no: '3', route: 'Park Lane route', kids: 38, att: 'Mr. Habib', status: 'On time', ...ok, onboard: '37 of 38 on board', list: [
+        { name: 'Aanya Rahman', state: 'On board 2:56', ...ok }, { name: 'Mahir Chowdhury', state: 'On board 2:55', ...ok },
+        { name: 'Samira Islam', state: 'On board 2:57', ...ok }, { name: 'Labiba Sultana', state: 'Not on board', ...miss },
+        { name: 'Rayan Rahman', state: 'On board 2:58', ...ok }
+      ], alert: 'Labiba Sultana is not on board. Her parents were asked if she is being picked up.' },
+      { no: '4', route: 'West route', kids: 31, att: 'Ms. Shirin', status: 'GPS offline', ...miss, onboard: '31 of 31 on board', list: [{ name: 'Samira Akter', state: 'On board', ...ok }], alert: 'GPS signal lost 3 minutes ago. Parents see the last known location.' }
+    ];
+    const bus = data[this.state.sel];
+    return {
+      menu,
+      bus,
+      buses: data.map((b, i) => ({ ...b, bg: i === this.state.sel ? '#F6F8FE' : '#FFFFFF', line: i === this.state.sel ? '#2F45A0' : '#E3E7F2', pick: () => this.setState({ sel: i }) }))
+    };
+  }
+}
+</script>
+<a href="index.html" id="allscreens" style="position:fixed;right:18px;bottom:18px;z-index:99;display:flex;align-items:center;min-height:42px;padding:0 16px;background:#172042;color:#fff;border-radius:21px;font:700 13px 'Plus Jakarta Sans',system-ui,sans-serif;text-decoration:none;box-shadow:0 8px 20px rgba(23,32,66,.25)">← All screens</a>
+</body>
+</html>

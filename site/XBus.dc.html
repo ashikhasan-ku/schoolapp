@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390">
+<title>App: Bus tracking</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.scroll>*{flex-shrink:0}
+.stop{display:flex;align-items:center;gap:12px;font-size:14px}
+.stop i{width:14px;height:14px;border-radius:50%;flex-shrink:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 100vh; height: 100dvh; box-sizing: border-box; display: flex; flex-direction: column; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', 'Hind Siliguri', system-ui, sans-serif">
+  <div class="scroll" style="flex: 1; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 18px 18px 24px; display: flex; flex-direction: column; gap: 12px">
+    <p style="margin: 0; font-size: 12px; font-weight: 600; color: #5A6482">Concept · Sample data</p>
+    <h1 style="margin: 0; font-size: 26px; font-weight: 800">Bus 3 · Going home</h1>
+
+    <div style="position: relative; height: 250px; overflow: hidden; background: #E9EFEA; border-radius: 22px">
+      <svg role="img" aria-label="Map showing Bus 3 two stops away from your stop" width="100%" height="250" viewBox="0 0 354 250" preserveAspectRatio="xMidYMid slice">
+        <path d="M0 60H354M0 150H354M0 215H354M70 0V250M180 0V250M290 0V250" stroke="#FFFFFF" stroke-width="12"></path>
+        <rect x="88" y="78" width="74" height="54" rx="8" fill="#D5E6D8"></rect>
+        <rect x="198" y="168" width="74" height="30" rx="8" fill="#D5E6D8"></rect>
+        <path d="M70 230V150H180V60H290V20" fill="none" stroke="#2F45A0" stroke-width="5" stroke-dasharray="2 9" stroke-linecap="round"></path>
+        <path d="M70 230V150H150" fill="none" stroke="#2F45A0" stroke-width="5" stroke-linecap="round"></path>
+        <circle cx="70" cy="230" r="8" fill="#FFFFFF" stroke="#2F45A0" stroke-width="3"></circle>
+        <circle cx="180" cy="150" r="7" fill="#FFFFFF" stroke="#2F45A0" stroke-width="3"></circle>
+        <circle cx="180" cy="60" r="7" fill="#FFFFFF" stroke="#2F45A0" stroke-width="3"></circle>
+        <rect x="134" y="134" width="34" height="32" rx="9" fill="#2F45A0"></rect>
+        <path d="M141 142h20v11h-20zM141 148h20" stroke="#FFFFFF" stroke-width="2" fill="none"></path>
+        <path d="M290 34c-10 0-16-8-16-16a16 16 0 0 1 32 0c0 8-6 16-16 16z" fill="#A8432B"></path>
+        <circle cx="290" cy="18" r="6" fill="#FFFFFF"></circle>
+      </svg>
+      <span style="position: absolute; right: 12px; top: 40px; padding: 4px 8px; background: #FFFFFF; border-radius: 8px; font-size: 11px; font-weight: 800; color: #A8432B">Your stop</span>
+    </div>
+
+    <section style="display: flex; flex-direction: column; gap: 12px; padding: 18px; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 20px">
+      <div style="display: flex; align-items: center; gap: 12px">
+        <div style="flex: 1">
+          <p style="margin: 0; font-size: 13px; font-weight: 700; color: #16705A">Aanya boarded at 2:56 pm</p>
+          <p style="margin: 3px 0 0; font-size: 24px; font-weight: 800">Arrives in 12 min</p>
+        </div>
+        <span style="padding: 6px 10px; background: #E2F4EE; color: #12503F; border-radius: 10px; font-size: 12px; font-weight: 800">On time</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px; padding-top: 4px">
+        <div class="stop"><i style="background: #2F45A0"></i><span style="flex: 1">School</span><span style="color: #5A6482">Left 2:58</span></div>
+        <div class="stop"><i style="background: #FFFFFF; border: 3px solid #2F45A0; box-sizing: border-box"></i><span style="flex: 1">Lake Road</span><span style="color: #5A6482">3:05</span></div>
+        <div class="stop"><i style="background: #FFFFFF; border: 3px solid #2F45A0; box-sizing: border-box"></i><span style="flex: 1">Green Avenue</span><span style="color: #5A6482">3:09</span></div>
+        <div class="stop" style="font-weight: 800"><i style="background: #A8432B"></i><span style="flex: 1">Your stop · Park Lane</span><span>3:12</span></div>
+      </div>
+    </section>
+
+    <button onClick="{{toggle}}" style="display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 0 16px; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 16px; font: inherit; text-align: left; cursor: pointer">
+      <span style="flex: 1; font-size: 14px; font-weight: 700; color: #172042">Alert me 10 minutes before</span>
+      <span aria-hidden="true" style="width: 48px; height: 28px; display: flex; align-items: center; padding: 3px; box-sizing: border-box; justify-content: {{knob}}; background: {{track}}; border-radius: 14px"><span style="width: 22px; height: 22px; background: #FFFFFF; border-radius: 50%"></span></span>
+    </button>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+      <button style="min-height: 48px; background: #2F45A0; color: #FFFFFF; border: 0; border-radius: 14px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Call bus attendant</button>
+      <button style="min-height: 48px; background: #FFFFFF; color: #2F45A0; border: 1px solid #C9D3F3; border-radius: 14px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Transport desk</button>
+    </div>
+  </div>
+
+  <nav aria-label="Main" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 8px 4px 14px; background: #FFFFFF; border-top: 1px solid #E3E7F2">
+    <sc-for list="{{tabs}}" as="tab" hint-placeholder-count="5">
+      <a href="{{tab.href}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 54px; color: {{tab.color}}; font-size: 11px; font-weight: 700; text-decoration: none">
+        <span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; background: {{tab.pill}}; border-radius: 15px"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{tab.d}}"></path></svg></span>
+        {{tab.label}}
+      </a>
+    </sc-for>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  state = { alert: true };
+  renderVals() {
+    const active = 'Services';
+    const tabs = [
+      { label: 'Home', href: 'XHome.dc.html', d: 'M3 11l9-8 9 8M5 10v10h14V10' },
+      { label: 'Messages', href: 'XMessages.dc.html', d: 'M4 5h16v11H9l-5 4z' },
+      { label: 'Calendar', href: 'XEvents.dc.html', d: 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4' },
+      { label: 'Fees', href: 'XPay.dc.html', d: 'M3 7h18v12H3zM3 11h18M7 15h3' },
+      { label: 'Services', href: 'XServices.dc.html', d: 'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z' }
+    ].map((t) => ({ ...t, color: t.label === active ? '#2F45A0' : '#5A6482', pill: t.label === active ? '#E9EDFB' : 'transparent' }));
+    return {
+      tabs,
+      track: this.state.alert ? '#16705A' : '#C5CBDC',
+      knob: this.state.alert ? 'flex-end' : 'flex-start',
+      toggle: () => this.setState({ alert: !this.state.alert })
+    };
+  }
+}
+</script>
+</body>
+</html>

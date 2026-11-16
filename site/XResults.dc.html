@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390">
+<title>App: Results</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.scroll>*{flex-shrink:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 100vh; height: 100dvh; box-sizing: border-box; display: flex; flex-direction: column; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', 'Hind Siliguri', system-ui, sans-serif">
+  <div class="scroll" style="flex: 1; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 18px 18px 24px; display: flex; flex-direction: column; gap: 14px">
+    <p style="margin: 0; font-size: 12px; font-weight: 600; color: #5A6482">Concept · Sample data</p>
+    <div style="display: flex; align-items: center; gap: 8px">
+      <a href="XHome.dc.html" aria-label="Back to home" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-left: -10px; color: #172042">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>
+      </a>
+      <h1 style="margin: 0; font-size: 26px; font-weight: 800">Results</h1>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 4px; background: #E7EBF6; border-radius: 16px">
+      <sc-for list="{{terms}}" as="t" hint-placeholder-count="2">
+        <button onClick="{{t.pick}}" style="min-height: 42px; background: {{t.bg}}; color: #172042; border: 0; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">{{t.label}}</button>
+      </sc-for>
+    </div>
+
+    <section style="position: relative; overflow: hidden; display: flex; align-items: center; gap: 16px; padding: 20px; background: #5940AE; color: #FFFFFF; border-radius: 22px">
+      <div aria-hidden="true" style="position: absolute; right: -30px; bottom: -40px; width: 130px; height: 130px; background: #6A52BD; border-radius: 50%"></div>
+      <div style="position: relative; width: 72px; height: 72px; display: flex; align-items: center; justify-content: center; background: #FFFFFF; color: #5940AE; border-radius: 22px; font-size: 30px; font-weight: 800">{{t.grade}}</div>
+      <div style="position: relative">
+        <p style="margin: 0; font-size: 13px; font-weight: 600; color: #E4DEFA">{{t.name}} · Aanya</p>
+        <p style="margin: 3px 0 0; font-size: 22px; font-weight: 800">{{t.total}}</p>
+        <p style="margin: 3px 0 0; font-size: 13px; color: #E4DEFA">{{t.note}}</p>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 14px; padding: 18px; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 20px">
+      <h2 style="margin: 0; font-size: 16px; font-weight: 800">Subjects</h2>
+      <sc-for list="{{subjects}}" as="s" hint-placeholder-count="5">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <div style="display: flex; justify-content: space-between; font-size: 14px">
+            <span style="font-weight: 600">{{s.name}}</span>
+            <span style="font-weight: 800">{{s.mark}} / 100</span>
+          </div>
+          <div style="height: 10px; background: #EEF1F8; border-radius: 5px; overflow: hidden">
+            <div style="width: {{s.mark}}%; height: 10px; background: {{s.color}}; border-radius: 5px"></div>
+          </div>
+        </div>
+      </sc-for>
+    </section>
+
+    <div style="padding: 14px 16px; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 18px">
+      <p style="margin: 0; font-size: 12px; font-weight: 700; color: #5940AE">Class teacher’s comment</p>
+      <p style="margin: 4px 0 0; font-size: 14px; line-height: 1.5; color: #3E4766">{{t.comment}}</p>
+    </div>
+
+    <button style="min-height: 50px; background: #172042; color: #FFFFFF; border: 0; border-radius: 14px; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer">Download report card</button>
+  </div>
+
+  <nav aria-label="Main" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 8px 4px 14px; background: #FFFFFF; border-top: 1px solid #E3E7F2">
+    <sc-for list="{{tabs}}" as="tab" hint-placeholder-count="5">
+      <a href="{{tab.href}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 54px; color: {{tab.color}}; font-size: 11px; font-weight: 700; text-decoration: none">
+        <span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; background: {{tab.pill}}; border-radius: 15px"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{tab.d}}"></path></svg></span>
+        {{tab.label}}
+      </a>
+    </sc-for>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  state = { term: 0 };
+  renderVals() {
+    const active = 'Services';
+    const tabs = [
+      { label: 'Home', href: 'XHome.dc.html', d: 'M3 11l9-8 9 8M5 10v10h14V10' },
+      { label: 'Messages', href: 'XMessages.dc.html', d: 'M4 5h16v11H9l-5 4z' },
+      { label: 'Calendar', href: 'XEvents.dc.html', d: 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4' },
+      { label: 'Fees', href: 'XPay.dc.html', d: 'M3 7h18v12H3zM3 11h18M7 15h3' },
+      { label: 'Services', href: 'XServices.dc.html', d: 'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z' }
+    ].map((t) => ({ ...t, color: t.label === active ? '#2F45A0' : '#5A6482', pill: t.label === active ? '#E9EDFB' : 'transparent' }));
+    const data = [
+      { name: 'Class test 2', grade: 'A-', total: '412 of 500', note: 'Published 2 October', comment: 'Aanya is improving steadily. More reading practice will help in English.', marks: [78, 84, 81, 86, 83] },
+      { name: 'Final 2025', grade: 'A', total: '431 of 500', note: 'Class III · Published December 2025', comment: 'A very good year. Aanya is confident in maths and shares ideas well in class.', marks: [82, 91, 85, 88, 85] }
+    ];
+    const names = ['English', 'Mathematics', 'Science', 'Bangla', 'Social studies'];
+    const colors = ['#2F45A0', '#5940AE', '#16705A', '#B86A06', '#A8432B'];
+    const t = data[this.state.term];
+    const terms = data.map((d, i) => ({ label: d.name, bg: i === this.state.term ? '#FFFFFF' : 'transparent', pick: () => this.setState({ term: i }) }));
+    return { tabs, terms, t, subjects: names.map((name, i) => ({ name, mark: t.marks[i], color: colors[i] })) };
+  }
+}
+</script>
+</body>
+</html>

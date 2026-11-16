@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>UX guide for Bangladeshi parents</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.pc{display:flex;flex-direction:column;gap:10px;padding:24px;background:#FFFFFF;border:1px solid #E3E7F2;border-radius:20px}
+.pc h3{margin:0;font-size:20px;font-weight:700}
+.pc p{margin:0;font-size:15px;line-height:1.55;color:#5A6482}
+.num{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:12px;font-size:15px;font-weight:800}
+</style>
+</helmet>
+<div style="width: 1440px; height: 980px; box-sizing: border-box; padding: 56px 64px; display: flex; flex-direction: column; gap: 28px; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', 'Hind Siliguri', system-ui, sans-serif">
+  <div style="display: flex; flex-direction: column; gap: 8px">
+    <p style="margin: 0; font-size: 15px; font-weight: 700; color: #2F45A0">Design rules for the extended version</p>
+    <h1 style="margin: 0; font-size: 44px; line-height: 1.15; font-weight: 800; letter-spacing: -0.02em">Simple enough for every parent, complete enough to replace five other channels</h1>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px">
+    <div class="pc"><div class="num" style="background: #E9EDFB; color: #2F45A0">1</div><h3>Words with every icon</h3><p>No icon stands alone. Every button has a label, and parents can switch the whole app to বাংলা.</p></div>
+    <div class="pc"><div class="num" style="background: #E2F4EE; color: #16705A">2</div><h3>Today comes first</h3><p>Home shows what changed today for this child. Everything else is one tap away in All services.</p></div>
+    <div class="pc"><div class="num" style="background: #FDF0DA; color: #8A5205">3</div><h3>One clear action</h3><p>Large buttons, one main action per card, and plain words such as “Pay now” and “Say yes”.</p></div>
+    <div class="pc"><div class="num" style="background: #FCE7E1; color: #A8432B">4</div><h3>Pay the familiar way</h3><p>Bank card or internet banking in two taps, with a clear status so no one pays twice.</p></div>
+    <div class="pc"><div class="num" style="background: #EEEAFB; color: #5940AE">5</div><h3>Voice is welcome</h3><p>Parents can send a short voice message, just as they do on WhatsApp. Typing is optional.</p></div>
+    <div class="pc"><div class="num" style="background: #E2EFFB; color: #1D5E9C">6</div><h3>Light on data, SMS as backup</h3><p>Screens load fast on slow mobile data. Urgent alerts also go by SMS to parents who have not opened the app.</p></div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px">
+    <div class="pc" style="background: #2F45A0; border-color: #2F45A0">
+      <h3 style="color: #FFFFFF">Ideas borrowed from global school apps</h3>
+      <p style="color: #E9EDFB">Class photo stories, as in ClassDojo · One inbox with SMS backup, as in ParentSquare · Message translation, as in Remind</p>
+    </div>
+    <div class="pc">
+      <h3>Left out on purpose</h3>
+      <p>Parent-to-parent group chats, likes and comments, complex charts, and AI chatbots in the first release. These add noise and support load for the school.</p>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":980}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

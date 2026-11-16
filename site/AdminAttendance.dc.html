@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin: Attendance</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.panel{display:flex;flex-direction:column;gap:14px;padding:22px;background:#FFFFFF;border:1px solid #E3E7F2;border-radius:20px}
+.step{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.num{width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:#172042;color:#FFFFFF;border-radius:50%;font-size:13px;font-weight:800}
+.sl{width:80px;font-size:14px;font-weight:800}
+.tile{position:relative;display:flex;align-items:center;gap:10px;min-height:60px;padding:8px 10px;border-radius:14px;font:inherit;text-align:left;cursor:pointer}
+.av{flex-shrink:0;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:13px;font-weight:800}
+</style>
+</helmet>
+<div style="min-height: 900px; display: flex; flex-wrap: wrap; align-items: stretch; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', system-ui, sans-serif">
+  <nav aria-label="Admin menu" style="flex: 1 1 240px; box-sizing: border-box; padding: 28px 18px; display: flex; flex-direction: column; gap: 2px; background: #FFFFFF; border-right: 1px solid #E3E7F2">
+    <p style="margin: 0; padding: 0 12px; font-size: 19px; font-weight: 800">School admin</p>
+    <p style="margin: 2px 0 16px; padding: 0 12px; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
+    <sc-for list="{{menu}}" as="m" hint-placeholder-count="15">
+      <a href="{{m.href}}" style="display: flex; align-items: center; min-height: 38px; padding: 0 12px; background: {{m.bg}}; color: {{m.fg}}; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none">{{m.label}}</a>
+    </sc-for>
+  </nav>
+
+  <main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 36px); display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px">
+      <div>
+        <h1 style="margin: 0; font-size: 30px; font-weight: 800">Attendance</h1>
+        <p style="margin: 4px 0 0; font-size: 15px; color: #5A6482">Choose class, section and day. Then tap only the students who are absent.</p>
+      </div>
+      <div role="tablist" style="display: flex; padding: 4px; background: #E9ECF5; border-radius: 14px">
+        <sc-for list="{{modes}}" as="t" hint-placeholder-count="2">
+          <button role="tab" aria-selected="{{t.on}}" onClick="{{t.pick}}" style="min-height: 40px; padding: 0 16px; background: {{t.bg}}; color: {{t.fg}}; border: 0; border-radius: 10px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer">{{t.label}}</button>
+        </sc-for>
+      </div>
+    </div>
+
+    <section class="panel" style="gap: 12px">
+      <div class="step"><span class="num">1</span><span class="sl">Class</span>
+        <sc-for list="{{classes}}" as="c" hint-placeholder-count="6"><button onClick="{{c.pick}}" style="min-width: 56px; min-height: 42px; padding: 0 14px; background: {{c.bg}}; color: {{c.fg}}; border: 1px solid #D5DBEE; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer">{{c.label}}</button></sc-for>
+      </div>
+      <div class="step"><span class="num">2</span><span class="sl">Section</span>
+        <sc-for list="{{sections}}" as="c" hint-placeholder-count="3"><button onClick="{{c.pick}}" style="min-width: 56px; min-height: 42px; padding: 0 14px; background: {{c.bg}}; color: {{c.fg}}; border: 1px solid #D5DBEE; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer">{{c.label}}</button></sc-for>
+      </div>
+      <div class="step"><span class="num">3</span><span class="sl">Day</span>
+        <sc-for list="{{days}}" as="c" hint-placeholder-count="3"><button onClick="{{c.pick}}" style="min-height: 42px; padding: 0 14px; background: {{c.bg}}; color: {{c.fg}}; border: 1px solid #D5DBEE; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">{{c.label}}</button></sc-for>
+      </div>
+    </section>
+
+    <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: {{sync.bg}}; border-radius: 14px">
+      <span aria-hidden="true" style="flex-shrink: 0; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; background: #FFFFFF; border-radius: 50%; color: {{sync.fg}}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{sync.icon}}"></path></svg>
+      </span>
+      <p style="margin: 0; font-size: 14px; line-height: 1.45; color: {{sync.fg}}"><b>{{sync.title}}</b> {{sync.text}}</p>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start">
+      <sc-if value="{{isMark}}" hint-placeholder-val="{{ true }}">
+        <section class="panel" style="flex: 2 1 520px; min-width: 0">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px">
+            <div>
+              <p style="margin: 0; font-size: 18px; font-weight: 800">Class {{cls}}-{{sec}} · {{dayLabel}}</p>
+              <p style="margin: 2px 0 0; font-size: 13px; color: #5A6482">Tap a student to mark absent. Tap “Late” for late arrivals. Everyone else is present.</p>
+            </div>
+            <button onClick="{{allPresent}}" style="min-height: 40px; padding: 0 14px; background: #E2F4EE; color: #0E4436; border: 0; border-radius: 10px; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer">Everyone is present</button>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 8px">
+            <sc-for list="{{students}}" as="s" hint-placeholder-count="16">
+              <div class="tile" style="background: {{s.bg}}; border: 2px solid {{s.line}}">
+                <button onClick="{{s.toggle}}" aria-pressed="{{s.isAbs}}" style="flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; padding: 0; background: transparent; border: 0; font: inherit; text-align: left; cursor: pointer; color: #172042">
+                  <span class="av" style="background: {{s.avBg}}; color: {{s.avFg}}">{{s.ini}}</span>
+                  <span style="min-width: 0">
+                    <span style="display: block; font-size: 14px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{s.name}}</span>
+                    <span style="display: block; font-size: 12px; font-weight: 700; color: {{s.stFg}}">Roll {{s.roll}} · {{s.status}}</span>
+                  </span>
+                </button>
+                <button onClick="{{s.late}}" style="flex-shrink: 0; min-height: 30px; padding: 0 8px; background: {{s.lateBg}}; color: {{s.lateFg}}; border: 1px solid #E3D3B5; border-radius: 8px; font: inherit; font-size: 11px; font-weight: 800; cursor: pointer">Late</button>
+              </div>
+            </sc-for>
+          </div>
+          <p style="margin: 0; font-size: 13px; color: #5A6482">Showing 16 of 42 students. The other 26 are present.</p>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{isUpload}}" hint-placeholder-val="{{ false }}">
+        <section class="panel" style="flex: 2 1 520px; min-width: 0">
+          <sc-if value="{{upIdle}}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 36px 20px; border: 2px dashed #C9D3F3; border-radius: 18px; background: #F8F9FE; text-align: center">
+              <span aria-hidden="true" style="width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; background: #E9EDFB; color: #2F45A0; border-radius: 50%">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"></path></svg>
+              </span>
+              <p style="margin: 0; font-size: 18px; font-weight: 800">Upload the class register</p>
+              <p style="margin: 0; max-width: 420px; font-size: 14px; line-height: 1.5; color: #5A6482">An Excel sheet, or a clear photo of the paper register. We read it and fill in the attendance for Class {{cls}}-{{sec}}. You check it before saving.</p>
+              <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px">
+                <button onClick="{{upPhoto}}" style="min-height: 46px; padding: 0 18px; background: #2F45A0; color: #FFFFFF; border: 0; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer">Upload a photo</button>
+                <button onClick="{{upExcel}}" style="min-height: 46px; padding: 0 18px; background: #FFFFFF; color: #2F45A0; border: 1px solid #C9D3F3; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer">Upload Excel</button>
+              </div>
+              <a href="#" style="font-size: 13px; font-weight: 700; color: #2F45A0">Download the Excel template</a>
+            </div>
+          </sc-if>
+          <sc-if value="{{upDone}}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: #F5F7FC; border-radius: 14px">
+              <span aria-hidden="true" style="flex-shrink: 0; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 10px; font-size: 11px; font-weight: 800; color: #2F45A0">{{fileKind}}</span>
+              <div style="flex: 1; min-width: 0"><p style="margin: 0; font-size: 14px; font-weight: 800">{{fileName}}</p><p style="margin: 2px 0 0; font-size: 12px; color: #5A6482">Read 42 students · Class {{cls}}-{{sec}}</p></div>
+              <button onClick="{{upReset}}" style="min-height: 36px; padding: 0 12px; background: transparent; color: #2F45A0; border: 1px solid #C9D3F3; border-radius: 10px; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer">Replace</button>
+            </div>
+            <p style="margin: 0; font-size: 16px; font-weight: 800">What we found</p>
+            <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+              <div style="padding: 12px; background: #E2F4EE; border-radius: 12px"><p style="margin: 0; font-size: 12px; font-weight: 700; color: #12503F">Present</p><p style="margin: 2px 0 0; font-size: 22px; font-weight: 800; color: #0E4436">38</p></div>
+              <div style="padding: 12px; background: #FCE7E1; border-radius: 12px"><p style="margin: 0; font-size: 12px; font-weight: 700; color: #7E3220">Absent</p><p style="margin: 2px 0 0; font-size: 22px; font-weight: 800; color: #6A2A1A">3</p></div>
+              <div style="padding: 12px; background: #FDF0DA; border-radius: 12px"><p style="margin: 0; font-size: 12px; font-weight: 700; color: #6B4004">Please check</p><p style="margin: 2px 0 0; font-size: 22px; font-weight: 800; color: #5C3703">1</p></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <div style="display: flex; justify-content: space-between; gap: 10px; padding: 10px 12px; border: 1px solid #EEF1F8; border-radius: 12px; font-size: 14px"><span><b>Mahir Chowdhury</b> · Roll 21</span><span style="font-weight: 800; color: #A8432B">Absent</span></div>
+              <div style="display: flex; justify-content: space-between; gap: 10px; padding: 10px 12px; border: 1px solid #EEF1F8; border-radius: 12px; font-size: 14px"><span><b>Nusrat Jahan</b> · Roll 24</span><span style="font-weight: 800; color: #A8432B">Absent</span></div>
+              <div style="display: flex; justify-content: space-between; gap: 10px; padding: 10px 12px; border: 1px solid #EEF1F8; border-radius: 12px; font-size: 14px"><span><b>Rafsan Kabir</b> · Roll 31</span><span style="font-weight: 800; color: #A8432B">Absent</span></div>
+              <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 12px; background: #FFF8EC; border: 1px solid #F1DDB8; border-radius: 12px; font-size: 14px">
+                <span><b>Samira Islam</b> · Roll 29 · mark not clear</span>
+                <span style="display: flex; gap: 6px">
+                  <sc-for list="{{unclear}}" as="u" hint-placeholder-count="2"><button onClick="{{u.pick}}" style="min-height: 34px; padding: 0 12px; background: {{u.bg}}; color: {{u.fg}}; border: 1px solid #E3D3B5; border-radius: 9px; font: inherit; font-size: 12px; font-weight: 800; cursor: pointer">{{u.label}}</button></sc-for>
+                </span>
+              </div>
+            </div>
+            <button onClick="{{applyUpload}}" style="align-self: flex-start; min-height: 46px; padding: 0 18px; background: {{applyBg}}; color: #FFFFFF; border: 0; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer">Use this and review</button>
+          </sc-if>
+        </section>
+      </sc-if>
+
+      <section class="panel" style="flex: 1 1 280px">
+        <h2 style="margin: 0; font-size: 18px; font-weight: 800">Summary</h2>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+          <div style="padding: 12px; background: #E2F4EE; border-radius: 12px"><p style="margin: 0; font-size: 12px; font-weight: 700; color: #12503F">Present</p><p style="margin: 2px 0 0; font-size: 24px; font-weight: 800; color: #0E4436">{{nP}}</p></div>
+          <div style="padding: 12px; background: #FCE7E1; border-radius: 12px"><p style="margin: 0; font-size: 12px; font-weight: 700; color: #7E3220">Absent</p><p style="margin: 2px 0 0; font-size: 24px; font-weight: 800; color: #6A2A1A">{{nA}}</p></div>
+          <div style="padding: 12px; background: #FDF0DA; border-radius: 12px"><p style="margin: 0; font-size: 12px; font-weight: 700; color: #6B4004">Late</p><p style="margin: 2px 0 0; font-size: 24px; font-weight: 800; color: #5C3703">{{nL}}</p></div>
+        </div>
+        <sc-if value="{{absentNames}}" hint-placeholder-val="{{ true }}">
+          <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #3E4766"><b>Absent:</b> {{absentNames}}</p>
+        </sc-if>
+        <sc-if value="{{notSaved}}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{save}}" style="min-height: 50px; background: #2F45A0; color: #FFFFFF; border: 0; border-radius: 14px; font: inherit; font-size: 15px; font-weight: 800; cursor: pointer">Save and notify parents</button>
+        </sc-if>
+        <sc-if value="{{saved}}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; flex-direction: column; gap: 6px; padding: 14px; background: #E2F4EE; border-radius: 14px">
+            <p style="margin: 0; font-size: 15px; font-weight: 800; color: #0E4436">Saved at {{time}}</p>
+            <p style="margin: 0; font-size: 13px; line-height: 1.45; color: #12503F">{{resultText}}</p>
+          </div>
+          <button onClick="{{edit}}" style="min-height: 42px; background: #FFFFFF; color: #2F45A0; border: 1px solid #C9D3F3; border-radius: 12px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Make a change</button>
+        </sc-if>
+        <div style="display: flex; flex-direction: column; gap: 6px; padding-top: 12px; border-top: 1px solid #EEF1F8; font-size: 12px; line-height: 1.45; color: #5A6482">
+          <p style="margin: 0"><b style="color: #172042">Where this goes</b></p>
+          <p style="margin: 0">Teacher app: the same register, kept in step both ways.</p>
+          <p style="margin: 0">Parent app: arrival time on Home, or an absence note asking for a reason.</p>
+          <p style="margin: 0">Approved leave shows as “Leave”, not absent.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1260}}'>
+class Component extends DCLogic {
+  state = { cls: 'IV', sec: 'B', day: 'Today', mode: 'mark', marks: { 'Mahir Chowdhury': 'Absent', 'Tahmid Hasan': 'Late' }, saved: false, up: '', unclear: '' };
+  renderVals() {
+    const active = 'Attendance';
+    const menu = [
+      ['Dashboard', 'AdminDashboard'], ['Emergency alert', 'AEmergency'], ['Communication', 'XAdminComms'], ['Notices', 'AdminNotices'], ['Students and families', 'AFamilies'],
+      ['Attendance', 'AdminAttendance'], ['Safe pickup', 'APickup'], ['Results', 'AResults'], ['Routine and calendar', 'ACalendar'], ['Events', 'AEvents'],
+      ['Meals', 'AMeals'], ['Fees', 'AdminFees'], ['Fee setup', 'AFeeSetup'], ['Transport', 'ATransport'], ['Feedback', 'AFeedback']
+    ].map(([label, f]) => ({ label, href: f + '.dc.html', bg: label === active ? '#E9EDFB' : 'transparent', fg: label === active ? '#2F45A0' : '#3E4766' }));
+    const st = this.state;
+    const chip = (list, key) => list.map((label) => ({ label, bg: label === st[key] ? '#172042' : '#FFFFFF', fg: label === st[key] ? '#FFFFFF' : '#172042', pick: () => this.setState({ [key]: label, saved: false }) }));
+    const names = ['Aanya Rahman', 'Arif Karim', 'Fahim Uddin', 'Ishrat Jahan', 'Labiba Sultana', 'Mahir Chowdhury', 'Maliha Akter', 'Nafis Ahmed', 'Nusrat Jahan', 'Rafsan Kabir', 'Riya Das', 'Samira Islam', 'Sadman Sakib', 'Tahmid Hasan', 'Tasnim Ara', 'Zayan Ahmed'];
+    const rolls = ['07', '02', '09', '13', '18', '21', '22', '23', '24', '31', '26', '29', '27', '11', '33', '35'];
+    const m = st.marks;
+    const students = names.map((name, i) => {
+      const cur = m[name] || 'Present';
+      const abs = cur === 'Absent', late = cur === 'Late';
+      const set = (v) => { const n = { ...m }; if (n[name] === v) delete n[name]; else n[name] = v; this.setState({ marks: n, saved: false }); };
+      return {
+        name, roll: rolls[i], ini: name.split(' ').map((w) => w[0]).join(''), status: cur, isAbs: abs ? 'true' : 'false',
+        bg: abs ? '#FCE7E1' : late ? '#FFF8EC' : '#FFFFFF', line: abs ? '#A8432B' : late ? '#E3B868' : '#EEF1F8',
+        avBg: abs ? '#A8432B' : late ? '#B86A06' : '#E2F4EE', avFg: abs || late ? '#FFFFFF' : '#16705A',
+        stFg: abs ? '#A8432B' : late ? '#8A5205' : '#16705A',
+        lateBg: late ? '#B86A06' : '#FFFFFF', lateFg: late ? '#FFFFFF' : '#8A5205',
+        toggle: () => set('Absent'), late: () => set('Late')
+      };
+    });
+    const vals = Object.values(m);
+    const nA = vals.filter((v) => v === 'Absent').length;
+    const nL = vals.filter((v) => v === 'Late').length;
+    const now = new Date();
+    const dayLabel = st.day === 'Today' ? now.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'short' }) : st.day;
+    const teacherDid = st.cls === 'IV' && st.sec === 'B' && st.day === 'Today';
+    const sync = teacherDid
+      ? { bg: '#E2EFFB', fg: '#1D5E9C', icon: 'M4 12a8 8 0 0 1 14-5l2-2v6h-6l2-2a5 5 0 1 0 1 6', title: 'Marked in the teacher app.', text: 'Ms. Farzana Ahmed took this register at 8:52 am. Any change you make here goes back to her app.' }
+      : { bg: '#FDF0DA', fg: '#8A5205', icon: 'M12 8v5M12 16v.5M10.3 3.9 2 18a2 2 0 0 0 1.7 3h16.6A2 2 0 0 0 22 18L13.7 3.9a2 2 0 0 0-3.4 0z', title: 'Not marked yet.', text: 'The class teacher was reminded at 9:15 am. You can mark it here or upload the register.' };
+    const mode = (k, label) => ({ label, on: st.mode === k ? 'true' : 'false', bg: st.mode === k ? '#FFFFFF' : 'transparent', fg: st.mode === k ? '#172042' : '#5A6482', pick: () => this.setState({ mode: k }) });
+    const absentNames = names.filter((n) => m[n] === 'Absent').join(', ');
+    return {
+      menu, students, sync,
+      modes: [mode('mark', 'Mark on screen'), mode('upload', 'Upload register')],
+      isMark: st.mode === 'mark', isUpload: st.mode === 'upload',
+      upIdle: !st.up, upDone: !!st.up,
+      fileName: st.up === 'photo' ? 'Register IV-B, ' + now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) + '.jpg' : 'Attendance IV-B.xlsx',
+      fileKind: st.up === 'photo' ? 'JPG' : 'XLSX',
+      upPhoto: () => this.setState({ up: 'photo', unclear: '' }), upExcel: () => this.setState({ up: 'excel', unclear: '' }), upReset: () => this.setState({ up: '', unclear: '' }),
+      unclear: ['Present', 'Absent'].map((label) => ({ label, bg: st.unclear === label ? '#172042' : '#FFFFFF', fg: st.unclear === label ? '#FFFFFF' : '#172042', pick: () => this.setState({ unclear: label }) })),
+      applyBg: st.unclear ? '#2F45A0' : '#9AA6CF',
+      applyUpload: () => {
+        if (!st.unclear) return;
+        const n = { 'Mahir Chowdhury': 'Absent', 'Nusrat Jahan': 'Absent', 'Rafsan Kabir': 'Absent' };
+        if (st.unclear === 'Absent') n['Samira Islam'] = 'Absent';
+        this.setState({ marks: n, mode: 'mark', saved: false });
+      },
+      classes: chip(['III', 'IV', 'V', 'VI', 'VII', 'VIII'], 'cls'),
+      sections: chip(['A', 'B', 'C'], 'sec'),
+      days: chip(['Today', 'Yesterday', 'Pick a date'], 'day'),
+      cls: st.cls, sec: st.sec, dayLabel,
+      nP: 42 - nA - nL, nA, nL, absentNames,
+      saved: st.saved, notSaved: !st.saved,
+      time: now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }),
+      resultText: (nA ? nA + (nA === 1 ? ' parent was' : ' parents were') + ' told their child is absent and asked for a reason. ' : 'No absences. ') + (nL ? nL + ' late arrival recorded. ' : '') + 'The class teacher’s app now shows the same register.',
+      allPresent: () => this.setState({ marks: {}, saved: false }),
+      save: () => this.setState({ saved: true }),
+      edit: () => this.setState({ saved: false })
+    };
+  }
+}
+</script>
+<a href="index.html" id="allscreens" style="position:fixed;right:18px;bottom:18px;z-index:99;display:flex;align-items:center;min-height:42px;padding:0 16px;background:#172042;color:#fff;border-radius:21px;font:700 13px 'Plus Jakarta Sans',system-ui,sans-serif;text-decoration:none;box-shadow:0 8px 20px rgba(23,32,66,.25)">← All screens</a>
+</body>
+</html>

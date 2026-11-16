@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390">
+<title>App: Language and alerts</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.scroll>*{flex-shrink:0}
+.lbl{margin:0;font-size:14px;font-weight:800}
+</style>
+</helmet>
+<div style="width: 390px; height: 100vh; height: 100dvh; box-sizing: border-box; display: flex; flex-direction: column; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', 'Hind Siliguri', system-ui, sans-serif">
+  <div class="scroll" style="flex: 1; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 18px 18px 24px; display: flex; flex-direction: column; gap: 14px">
+    <p style="margin: 0; font-size: 12px; font-weight: 600; color: #5A6482">Concept · Sample data</p>
+    <div style="display: flex; align-items: center; gap: 8px">
+      <a href="XHome.dc.html" aria-label="Back to home" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-left: -10px; color: #172042">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>
+      </a>
+      <h1 style="margin: 0; font-size: 26px; font-weight: 800">Language and alerts</h1>
+    </div>
+
+    <section style="display: flex; flex-direction: column; gap: 12px; padding: 18px; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 20px">
+      <p class="lbl">Language · ভাষা</p>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 4px; background: #E7EBF6; border-radius: 14px">
+        <sc-for list="{{langs}}" as="l" hint-placeholder-count="2">
+          <button onClick="{{l.pick}}" style="min-height: 44px; background: {{l.bg}}; color: #172042; border: 0; border-radius: 11px; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer">{{l.label}}</button>
+        </sc-for>
+      </div>
+      <p class="lbl">Text size</p>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 4px; background: #E7EBF6; border-radius: 14px">
+        <sc-for list="{{sizes}}" as="s" hint-placeholder-count="2">
+          <button onClick="{{s.pick}}" style="min-height: 44px; background: {{s.bg}}; color: #172042; border: 0; border-radius: 11px; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer">{{s.label}}</button>
+        </sc-for>
+      </div>
+      <div style="padding: 14px; background: #E2F4EE; border-radius: 14px">
+        <p style="margin: 0; font-size: 12px; font-weight: 700; color: #12503F">Preview</p>
+        <p style="margin: 4px 0 0; font-size: {{titleSize}}px; font-weight: 700; color: #0E4436">{{previewTitle}}</p>
+        <p style="margin: 2px 0 0; font-size: {{bodySize}}px; color: #12503F">{{previewBody}}</p>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 4px; padding: 14px 18px; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 20px">
+      <p class="lbl" style="padding: 4px 0 6px">Tell me about</p>
+      <sc-for list="{{alerts}}" as="a" hint-placeholder-count="5">
+        <button onClick="{{a.toggle}}" style="display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 0; background: transparent; border: 0; border-top: 1px solid #EEF1F8; font: inherit; text-align: left; cursor: pointer">
+          <span style="flex: 1"><span style="display: block; font-size: 15px; font-weight: 700; color: #172042">{{a.label}}</span><span style="display: block; font-size: 12px; color: #5A6482">{{a.sub}}</span></span>
+          <span aria-hidden="true" style="width: 48px; height: 28px; display: flex; align-items: center; padding: 3px; box-sizing: border-box; justify-content: {{a.knob}}; background: {{a.track}}; border-radius: 14px"><span style="width: 22px; height: 22px; background: #FFFFFF; border-radius: 50%"></span></span>
+        </button>
+      </sc-for>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 10px; padding: 18px; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 20px">
+      <p class="lbl">Family on this account</p>
+      <p style="margin: 0; font-size: 14px; color: #3E4766">Nadia Rahman (mother) · Karim Rahman (father)</p>
+      <button style="min-height: 46px; background: #E9EDFB; color: #2F45A0; border: 0; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Add a guardian</button>
+    </section>
+  </div>
+
+  <nav aria-label="Main" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 8px 4px 14px; background: #FFFFFF; border-top: 1px solid #E3E7F2">
+    <sc-for list="{{tabs}}" as="tab" hint-placeholder-count="5">
+      <a href="{{tab.href}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 54px; color: {{tab.color}}; font-size: 11px; font-weight: 700; text-decoration: none">
+        <span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; background: {{tab.pill}}; border-radius: 15px"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{tab.d}}"></path></svg></span>
+        {{tab.label}}
+      </a>
+    </sc-for>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1040}}'>
+class Component extends DCLogic {
+  state = { lang: 'bn', large: false, off: [] };
+  renderVals() {
+    const active = 'Home';
+    const tabs = [
+      { label: 'Home', href: 'XHome.dc.html', d: 'M3 11l9-8 9 8M5 10v10h14V10' },
+      { label: 'Messages', href: 'XMessages.dc.html', d: 'M4 5h16v11H9l-5 4z' },
+      { label: 'Calendar', href: 'XEvents.dc.html', d: 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4' },
+      { label: 'Fees', href: 'XPay.dc.html', d: 'M3 7h18v12H3zM3 11h18M7 15h3' },
+      { label: 'Services', href: 'XServices.dc.html', d: 'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z' }
+    ].map((t) => ({ ...t, color: t.label === active ? '#2F45A0' : '#5A6482', pill: t.label === active ? '#E9EDFB' : 'transparent' }));
+    const langs = [{ key: 'en', label: 'English' }, { key: 'bn', label: 'বাংলা' }].map((l) => ({
+      ...l, bg: l.key === this.state.lang ? '#FFFFFF' : 'transparent', pick: () => this.setState({ lang: l.key })
+    }));
+    const sizes = [{ key: false, label: 'Normal' }, { key: true, label: 'Large' }].map((s) => ({
+      ...s, bg: s.key === this.state.large ? '#FFFFFF' : 'transparent', pick: () => this.setState({ large: s.key })
+    }));
+    const off = this.state.off;
+    const alerts = [
+      { label: 'Attendance', sub: 'When your child arrives or is absent' },
+      { label: 'Fees', sub: 'Dues, payments and receipts' },
+      { label: 'Messages', sub: 'From teachers and the office' },
+      { label: 'Bus', sub: 'When the bus is 10 minutes away' },
+      { label: 'SMS backup', sub: 'Urgent alerts by SMS too' }
+    ].map((a) => {
+      const on = !off.includes(a.label);
+      return { ...a, track: on ? '#16705A' : '#C5CBDC', knob: on ? 'flex-end' : 'flex-start', toggle: () => this.setState({ off: on ? [...off, a.label] : off.filter((x) => x !== a.label) }) };
+    });
+    const bn = this.state.lang === 'bn';
+    return {
+      tabs,
+      langs,
+      sizes,
+      alerts,
+      previewTitle: bn ? 'আজকের আপডেট' : 'Today’s update',
+      previewBody: bn ? 'আনিয়া আজ স্কুলে উপস্থিত।' : 'Aanya is present at school today.',
+      titleSize: this.state.large ? 21 : 17,
+      bodySize: this.state.large ? 18 : 14
+    };
+  }
+}
+</script>
+</body>
+</html>

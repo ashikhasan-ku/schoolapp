@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin: Results</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.panel{display:flex;flex-direction:column;gap:14px;padding:22px;background:#FFFFFF;border:1px solid #E3E7F2;border-radius:20px}
+.step{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.num{width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:#172042;color:#FFFFFF;border-radius:50%;font-size:13px;font-weight:800}
+.sl{width:80px;font-size:14px;font-weight:800}
+.th{padding:10px 14px;font-size:12px;font-weight:700;color:#5A6482}
+.td{padding:12px 14px;font-size:14px}
+.chip{display:inline-block;padding:4px 9px;border-radius:9px;font-size:12px;font-weight:800}
+</style>
+</helmet>
+<div style="min-height: 1000px; display: flex; flex-wrap: wrap; align-items: stretch; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', system-ui, sans-serif">
+  <nav aria-label="Admin menu" style="flex: 1 1 240px; box-sizing: border-box; padding: 28px 18px; display: flex; flex-direction: column; gap: 2px; background: #FFFFFF; border-right: 1px solid #E3E7F2">
+    <p style="margin: 0; padding: 0 12px; font-size: 19px; font-weight: 800">School admin</p>
+    <p style="margin: 2px 0 16px; padding: 0 12px; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
+    <sc-for list="{{menu}}" as="m" hint-placeholder-count="15">
+      <a href="{{m.href}}" style="display: flex; align-items: center; min-height: 38px; padding: 0 12px; background: {{m.bg}}; color: {{m.fg}}; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none">{{m.label}}</a>
+    </sc-for>
+  </nav>
+
+  <main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 36px); display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+      <div>
+        <h1 style="margin: 0; font-size: 30px; font-weight: 800">Results</h1>
+        <p style="margin: 4px 0 0; font-size: 15px; color: #5A6482">Enter marks, check them, then release. Parents see nothing until you release.</p>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 4px; background: #E7EBF6; border-radius: 14px">
+        <sc-for list="{{tabs}}" as="t" hint-placeholder-count="2">
+          <button onClick="{{t.pick}}" style="min-height: 42px; padding: 0 18px; background: {{t.bg}}; color: #172042; border: 0; border-radius: 11px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer">{{t.label}}</button>
+        </sc-for>
+      </div>
+    </div>
+
+    <sc-if value="{{isEnter}}" hint-placeholder-val="{{ true }}">
+      <section class="panel" style="gap: 12px">
+        <div class="step"><span class="num">1</span><span class="sl">Exam</span>
+          <sc-for list="{{exams}}" as="c" hint-placeholder-count="3"><button onClick="{{c.pick}}" style="min-height: 42px; padding: 0 14px; background: {{c.bg}}; color: {{c.fg}}; border: 1px solid #D5DBEE; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">{{c.label}}</button></sc-for>
+        </div>
+        <div class="step"><span class="num">2</span><span class="sl">Class</span>
+          <sc-for list="{{classes}}" as="c" hint-placeholder-count="6"><button onClick="{{c.pick}}" style="min-width: 56px; min-height: 42px; padding: 0 14px; background: {{c.bg}}; color: {{c.fg}}; border: 1px solid #D5DBEE; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer">{{c.label}}</button></sc-for>
+        </div>
+        <div class="step"><span class="num">3</span><span class="sl">Section</span>
+          <sc-for list="{{sections}}" as="c" hint-placeholder-count="3"><button onClick="{{c.pick}}" style="min-width: 56px; min-height: 42px; padding: 0 14px; background: {{c.bg}}; color: {{c.fg}}; border: 1px solid #D5DBEE; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer">{{c.label}}</button></sc-for>
+        </div>
+        <div class="step"><span class="num">4</span><span class="sl">Subject</span>
+          <sc-for list="{{subjects}}" as="c" hint-placeholder-count="5"><button onClick="{{c.pick}}" style="min-height: 42px; padding: 0 14px; background: {{c.bg}}; color: {{c.fg}}; border: 1px solid #D5DBEE; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">{{c.label}}</button></sc-for>
+        </div>
+      </section>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start">
+        <section class="panel" style="flex: 2 1 460px; min-width: 0; gap: 0; padding: 8px 0">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 22px">
+            <p style="margin: 0; font-size: 17px; font-weight: 800">{{exam}} · Class {{cls}}-{{sec}} · {{subject}}</p>
+            <span style="font-size: 13px; color: #5A6482">Out of 100</span>
+          </div>
+          <sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+            <label style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 22px; border-top: 1px solid #EEF1F8">
+              <span style="font-size: 15px; font-weight: 700"><span style="display: inline-block; width: 28px; color: #8A93AE; font-weight: 600">{{r.roll}}</span>{{r.name}}</span>
+              <span style="display: flex; align-items: center; gap: 10px">
+                <span style="width: 32px; font-size: 13px; font-weight: 800; color: #5940AE; text-align: right">{{r.grade}}</span>
+                <input value="{{r.val}}" onChange="{{r.set}}" inputmode="numeric" placeholder="—" style="width: 76px; min-height: 40px; box-sizing: border-box; text-align: center; border: 1px solid {{r.line}}; border-radius: 10px; background: {{r.bg}}; font: inherit; font-size: 16px; font-weight: 800; color: #172042">
+              </span>
+            </label>
+          </sc-for>
+        </section>
+        <section class="panel" style="flex: 1 1 260px">
+          <h2 style="margin: 0; font-size: 18px; font-weight: 800">Check before saving</h2>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+            <div style="padding: 12px; background: #F5F7FC; border-radius: 12px"><p style="margin: 0; font-size: 12px; font-weight: 700; color: #5A6482">Entered</p><p style="margin: 2px 0 0; font-size: 22px; font-weight: 800">{{count}} of 8</p></div>
+            <div style="padding: 12px; background: #F5F7FC; border-radius: 12px"><p style="margin: 0; font-size: 12px; font-weight: 700; color: #5A6482">Class average</p><p style="margin: 2px 0 0; font-size: 22px; font-weight: 800">{{avg}}</p></div>
+          </div>
+          <sc-if value="{{hasBad}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 10px 12px; background: #FCE7E1; border-radius: 10px; font-size: 13px; font-weight: 700; color: #6A2A1A">A mark is outside 0–100. Please fix it.</p></sc-if>
+          <button onClick="{{saveMarks}}" style="min-height: 50px; background: {{saveBg}}; color: #FFFFFF; border: 0; border-radius: 14px; font: inherit; font-size: 15px; font-weight: 800; cursor: pointer">{{saveLabel}}</button>
+          <p style="margin: 0; font-size: 12px; line-height: 1.45; color: #5A6482">Teachers can enter the same marks from the teacher app. Grades use the school’s grading scale.</p>
+        </section>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isRelease}}" hint-placeholder-val="{{ false }}">
+      <section class="panel">
+        <div role="table" style="display: flex; flex-direction: column; overflow-x: auto">
+          <div role="row" style="display: grid; grid-template-columns: 0.7fr 1.4fr 1.6fr 1.1fr 0.9fr; min-width: 640px; border-bottom: 1px solid #E3E7F2">
+            <div role="columnheader" class="th">Section</div><div role="columnheader" class="th">Marks entered</div><div role="columnheader" class="th">Missing</div><div role="columnheader" class="th">Status</div><div role="columnheader" class="th"></div>
+          </div>
+          <sc-for list="{{relRows}}" as="r" hint-placeholder-count="4">
+            <div role="row" style="display: grid; grid-template-columns: 0.7fr 1.4fr 1.6fr 1.1fr 0.9fr; min-width: 640px; align-items: center; border-bottom: 1px solid #EEF1F8">
+              <div role="cell" class="td" style="font-weight: 800">{{r.sec}}</div>
+              <div role="cell" class="td"><div style="display: flex; align-items: center; gap: 10px"><div style="width: 110px; height: 8px; background: #EEF1F8; border-radius: 4px; overflow: hidden"><div style="width: {{r.pct}}%; height: 8px; background: {{r.bar}}"></div></div><b>{{r.pct}}%</b></div></div>
+              <div role="cell" class="td" style="color: #5A6482">{{r.missing}}</div>
+              <div role="cell" class="td"><span class="chip" style="background: {{r.cbg}}; color: {{r.cfg}}">{{r.status}}</span></div>
+              <div role="cell" class="td" style="text-align: right">
+                <sc-if value="{{r.canRelease}}" hint-placeholder-val="{{ false }}"><button onClick="{{r.release}}" style="min-height: 38px; padding: 0 14px; background: #2F45A0; color: #FFFFFF; border: 0; border-radius: 10px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Release</button></sc-if>
+                <sc-if value="{{r.canRemind}}" hint-placeholder-val="{{ false }}"><button style="min-height: 38px; padding: 0 12px; background: #FDF0DA; color: #6B4004; border: 0; border-radius: 10px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Remind teacher</button></sc-if>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <p style="margin: 0; padding: 12px 14px; background: #F5F7FC; border-radius: 12px; font-size: 13px; color: #3E4766">When you release a section, its parents get an alert and the report card appears in their app. Parents can reply to the teacher or book a meeting from there.</p>
+      </section>
+    </sc-if>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  state = { tab: 'Enter marks', exam: 'Class test 3', cls: 'IV', sec: 'B', subject: 'Science', marks: { 'Aanya Rahman': '86', 'Arif Karim': '74', 'Labiba Sultana': '81', 'Mahir Chowdhury': '', 'Nusrat Jahan': '90', 'Samira Islam': '68', 'Tahmid Hasan': '', 'Zayan Ahmed': '77' }, savedMarks: false, released: ['IV-A'] };
+  renderVals() {
+    const active = 'Results';
+    const menu = [
+      ['Dashboard', 'AdminDashboard'], ['Emergency alert', 'AEmergency'], ['Communication', 'XAdminComms'], ['Notices', 'AdminNotices'], ['Students and families', 'AFamilies'],
+      ['Attendance', 'AdminAttendance'], ['Safe pickup', 'APickup'], ['Results', 'AResults'], ['Routine and calendar', 'ACalendar'], ['Events', 'AEvents'],
+      ['Meals', 'AMeals'], ['Fees', 'AdminFees'], ['Fee setup', 'AFeeSetup'], ['Transport', 'ATransport'], ['Feedback', 'AFeedback']
+    ].map(([label, f]) => ({ label, href: f + '.dc.html', bg: label === active ? '#E9EDFB' : 'transparent', fg: label === active ? '#2F45A0' : '#3E4766' }));
+    const chip = (list, key) => list.map((label) => ({ label, bg: label === this.state[key] ? '#172042' : '#FFFFFF', fg: label === this.state[key] ? '#FFFFFF' : '#172042', pick: () => this.setState({ [key]: label, savedMarks: false }) }));
+    const m = this.state.marks;
+    const rolls = ['07', '02', '18', '21', '24', '29', '11', '35'];
+    const grade = (n) => n >= 80 ? 'A+' : n >= 70 ? 'A' : n >= 60 ? 'A-' : n >= 50 ? 'B' : n >= 40 ? 'C' : n >= 33 ? 'D' : 'F';
+    let bad = false;
+    const rows = Object.keys(m).map((name, i) => {
+      const v = m[name]; const n = Number(v);
+      const isBad = v !== '' && (isNaN(n) || n < 0 || n > 100); if (isBad) bad = true;
+      return { name, roll: rolls[i], val: v, grade: v === '' || isBad ? '' : grade(n), line: isBad ? '#A8432B' : v === '' ? '#F2C98A' : '#D5DBEE', bg: v === '' ? '#FFFBF3' : '#FFFFFF', set: (e) => this.setState({ marks: { ...m, [name]: e.target.value }, savedMarks: false }) };
+    });
+    const nums = Object.values(m).filter((v) => v !== '' && !isNaN(Number(v))).map(Number);
+    const count = nums.length;
+    const ready = count === 8 && !bad;
+    const rel = this.state.released;
+    const relData = [
+      { sec: 'IV-A', pct: 100, missing: '—' },
+      { sec: 'IV-B', pct: this.state.savedMarks && ready ? 100 : 80, missing: this.state.savedMarks && ready ? '—' : 'Science · 2 students' },
+      { sec: 'IV-C', pct: 100, missing: '—' }
+    ];
+    const relRows = relData.map((r) => {
+      const done = r.pct === 100; const isRel = rel.includes(r.sec);
+      const look = isRel ? { status: 'Released', cbg: '#E2F4EE', cfg: '#12503F' } : done ? { status: 'Ready', cbg: '#E9EDFB', cfg: '#22347F' } : { status: 'Marks missing', cbg: '#FDF0DA', cfg: '#6B4004' };
+      return { ...r, ...look, bar: done ? '#16705A' : '#B86A06', canRelease: done && !isRel, canRemind: !done, release: () => this.setState({ released: [...rel, r.sec] }) };
+    });
+    return {
+      menu, rows, relRows, count, hasBad: bad,
+      tabs: ['Enter marks', 'Release'].map((label) => ({ label, bg: label === this.state.tab ? '#FFFFFF' : 'transparent', pick: () => this.setState({ tab: label }) })),
+      isEnter: this.state.tab === 'Enter marks', isRelease: this.state.tab === 'Release',
+      exams: chip(['Class test 2', 'Class test 3', 'Half-yearly 2026'], 'exam'),
+      classes: chip(['III', 'IV', 'V', 'VI', 'VII', 'VIII'], 'cls'),
+      sections: chip(['A', 'B', 'C'], 'sec'),
+      subjects: chip(['English', 'Mathematics', 'Science', 'Bangla', 'Social studies'], 'subject'),
+      exam: this.state.exam, cls: this.state.cls, sec: this.state.sec, subject: this.state.subject,
+      avg: count ? Math.round(nums.reduce((a, b) => a + b, 0) / count) : '—',
+      saveLabel: this.state.savedMarks ? 'Saved · ready to release' : ready ? 'Save marks' : 'Enter all 8 marks to save',
+      saveBg: this.state.savedMarks ? '#16705A' : ready ? '#2F45A0' : '#9AA0B8',
+      saveMarks: () => { if (ready) this.setState({ savedMarks: true }); }
+    };
+  }
+}
+</script>
+<a href="index.html" id="allscreens" style="position:fixed;right:18px;bottom:18px;z-index:99;display:flex;align-items:center;min-height:42px;padding:0 16px;background:#172042;color:#fff;border-radius:21px;font:700 13px 'Plus Jakarta Sans',system-ui,sans-serif;text-decoration:none;box-shadow:0 8px 20px rgba(23,32,66,.25)">← All screens</a>
+</body>
+</html>

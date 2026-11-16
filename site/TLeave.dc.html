@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390">
+<title>Teacher app: Leave approvals</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.scroll>*{flex-shrink:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 100vh; height: 100dvh; box-sizing: border-box; display: flex; flex-direction: column; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', system-ui, sans-serif">
+  <div class="scroll" style="flex: 1; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 22px 18px; display: flex; flex-direction: column; gap: 12px">
+    <p style="margin: 0; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
+    <div style="display: flex; align-items: center; gap: 8px">
+      <a href="TeacherToday.dc.html" aria-label="Back to today" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-left: -10px; color: #172042">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>
+      </a>
+      <h1 style="margin: 0; font-size: 26px; font-weight: 800">Leave requests</h1>
+    </div>
+    <p style="margin: -4px 0 4px; font-size: 14px; color: #5A6482">Class IV-B · {{waiting}} waiting</p>
+
+    <sc-for list="{{reqs}}" as="r" hint-placeholder-count="3">
+      <article style="display: flex; flex-direction: column; gap: 10px; padding: 16px; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 18px">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+          <h2 style="margin: 0; font-size: 16px; font-weight: 800">{{r.name}}</h2>
+          <span style="padding: 4px 9px; background: {{r.cbg}}; color: {{r.cfg}}; border-radius: 9px; font-size: 12px; font-weight: 800">{{r.status}}</span>
+        </div>
+        <p style="margin: 0; font-size: 14px; font-weight: 600; color: #3E4766">{{r.reason}} · {{r.when}}</p>
+        <p style="margin: 0; font-size: 14px; line-height: 1.45; color: #5A6482">“{{r.note}}” · from {{r.from}}</p>
+        <sc-if value="{{r.hasFile}}" hint-placeholder-val="{{ false }}">
+          <a href="#" style="display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 12px; background: #F5F7FC; color: #2F45A0; border-radius: 10px; font-size: 13px; font-weight: 700; text-decoration: none">Doctor’s note photo</a>
+        </sc-if>
+        <sc-if value="{{r.pending}}" hint-placeholder-val="{{ true }}">
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+            <button onClick="{{r.approve}}" style="min-height: 46px; background: #16705A; color: #FFFFFF; border: 0; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer">Approve</button>
+            <button onClick="{{r.decline}}" style="min-height: 46px; background: #FFFFFF; color: #A8432B; border: 1px solid #E9A894; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Decline</button>
+          </div>
+        </sc-if>
+      </article>
+    </sc-for>
+
+    <div style="padding: 12px 14px; background: #E9EDFB; border-radius: 14px">
+      <p style="margin: 0; font-size: 13px; line-height: 1.45; color: #22347F">Approved leave shows as “Leave”, not “Absent”, in attendance. The parent gets a message straight away.</p>
+    </div>
+  </div>
+
+  <nav aria-label="Main" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 8px 6px 12px; background: #FFFFFF; border-top: 1px solid #E3E7F2">
+    <sc-for list="{{tabs}}" as="tab" hint-placeholder-count="4">
+      <a href="{{tab.href}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; color: {{tab.color}}; font-size: 11px; font-weight: 600; text-decoration: none">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{tab.d}}"></path></svg>
+        {{tab.label}}
+      </a>
+    </sc-for>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  state = { st: { a: 'Waiting', t: 'Waiting', m: 'Approved' } };
+  renderVals() {
+    const active = 'Today';
+    const tabs = [
+      { label: 'Today', href: 'TeacherToday.dc.html', d: 'M3 11l9-8 9 8M5 10v10h14V10' },
+      { label: 'Attendance', href: 'TeacherAttendance.dc.html', d: 'M4 5h16v14H4zM8 12l3 3 5-6' },
+      { label: 'Messages', href: 'TMessages.dc.html', d: 'M4 5h16v11H9l-5 4z' },
+      { label: 'Homework', href: 'TeacherHomework.dc.html', d: 'M6 3h9l4 4v14H6zM9 12h7M9 16h7' }
+    ].map((t) => ({ ...t, color: t.label === active ? '#2F45A0' : '#5A6482' }));
+    const look = {
+      Waiting: { cbg: '#FDF0DA', cfg: '#6B4004' },
+      Approved: { cbg: '#E2F4EE', cfg: '#12503F' },
+      Declined: { cbg: '#FCE7E1', cfg: '#7E3220' }
+    };
+    const st = this.state.st;
+    const set = (k, v) => this.setState({ st: { ...st, [k]: v } });
+    const reqs = [
+      { k: 'a', name: 'Aanya Rahman', reason: 'Sick', when: 'Wed 18 Nov', note: 'She has a fever.', from: 'Nadia Rahman, mother', hasFile: true },
+      { k: 't', name: 'Tahmid Hasan', reason: 'Family event', when: '19–20 Nov', note: 'Cousin’s wedding in Sylhet.', from: 'Rumana Hasan, mother', hasFile: false },
+      { k: 'm', name: 'Mahir Chowdhury', reason: 'Sick', when: '12 Nov', note: 'Stomach ache.', from: 'Faisal Chowdhury, father', hasFile: false }
+    ].map((r) => ({ ...r, status: st[r.k], ...look[st[r.k]], pending: st[r.k] === 'Waiting', approve: () => set(r.k, 'Approved'), decline: () => set(r.k, 'Declined') }));
+    return { tabs, reqs, waiting: Object.values(st).filter((v) => v === 'Waiting').length };
+  }
+}
+</script>
+</body>
+</html>

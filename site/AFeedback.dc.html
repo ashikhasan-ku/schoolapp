@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin: Parent feedback</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.panel{display:flex;flex-direction:column;gap:14px;padding:22px;background:#FFFFFF;border:1px solid #E3E7F2;border-radius:20px}
+.chip{display:inline-block;padding:4px 9px;border-radius:9px;font-size:12px;font-weight:800}
+select{min-height:42px;padding:0 10px;border:1px solid #D5DBEE;border-radius:10px;background:#FFFFFF;font:inherit;font-size:14px;color:#172042}
+</style>
+</helmet>
+<div style="min-height: 900px; display: flex; flex-wrap: wrap; align-items: stretch; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', system-ui, sans-serif">
+  <nav aria-label="Admin menu" style="flex: 1 1 240px; box-sizing: border-box; padding: 28px 18px; display: flex; flex-direction: column; gap: 2px; background: #FFFFFF; border-right: 1px solid #E3E7F2">
+    <p style="margin: 0; padding: 0 12px; font-size: 19px; font-weight: 800">School admin</p>
+    <p style="margin: 2px 0 16px; padding: 0 12px; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
+    <sc-for list="{{menu}}" as="m" hint-placeholder-count="15">
+      <a href="{{m.href}}" style="display: flex; align-items: center; min-height: 38px; padding: 0 12px; background: {{m.bg}}; color: {{m.fg}}; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none">{{m.label}}</a>
+    </sc-for>
+  </nav>
+
+  <main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 36px); display: flex; flex-direction: column; gap: 18px">
+    <div>
+      <h1 style="margin: 0; font-size: 30px; font-weight: 800">Parent feedback</h1>
+      <p style="margin: 4px 0 0; font-size: 15px; color: #5A6482">Every message goes to the right team. Reply once and the parent sees it in their app.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px">
+      <div style="padding: 18px; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 16px"><p style="margin: 0; font-size: 13px; font-weight: 600; color: #5A6482">New this week</p><p style="margin: 6px 0 0; font-size: 26px; font-weight: 800">23</p></div>
+      <div style="padding: 18px; background: #FDF0DA; border-radius: 16px"><p style="margin: 0; font-size: 13px; font-weight: 700; color: #6B4004">Waiting for a reply</p><p style="margin: 6px 0 0; font-size: 26px; font-weight: 800; color: #5C3703">{{waiting}}</p></div>
+      <div style="padding: 18px; background: #E2F4EE; border-radius: 16px"><p style="margin: 0; font-size: 13px; font-weight: 700; color: #12503F">Average reply time</p><p style="margin: 6px 0 0; font-size: 26px; font-weight: 800; color: #0E4436">5 hours</p></div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start">
+      <section class="panel" style="flex: 1 1 360px; gap: 10px">
+        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 800">Topic
+            <select onChange="{{setCat}}"><sc-for list="{{cats}}" as="c" hint-placeholder-count="8"><option value="{{c.v}}" selected="{{c.sel}}">{{c.v}}</option></sc-for></select>
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 800">Status
+            <select onChange="{{setStatus}}"><sc-for list="{{statuses}}" as="c" hint-placeholder-count="4"><option value="{{c.v}}" selected="{{c.sel}}">{{c.v}}</option></sc-for></select>
+          </label>
+        </div>
+        <sc-for list="{{items}}" as="f" hint-placeholder-count="5">
+          <button onClick="{{f.pick}}" style="display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; background: {{f.bg}}; border: 2px solid {{f.line}}; border-radius: 14px; font: inherit; text-align: left; cursor: pointer">
+            <span style="display: flex; justify-content: space-between; gap: 8px; width: 100%"><span style="font-size: 12px; font-weight: 700; color: #5A6482">{{f.cat}} · {{f.date}}</span><span class="chip" style="background: {{f.sbg}}; color: {{f.sfg}}">{{f.status}}</span></span>
+            <span style="font-size: 14px; font-weight: 800; color: #172042">{{f.text}}</span>
+            <span style="font-size: 12px; color: #5A6482">{{f.who}}</span>
+          </button>
+        </sc-for>
+        <sc-if value="{{empty}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 16px; text-align: center; font-size: 14px; color: #5A6482">Nothing matches these filters.</p></sc-if>
+      </section>
+
+      <section class="panel" style="flex: 1.3 1 400px">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px">
+          <div>
+            <p style="margin: 0; font-size: 12px; font-weight: 700; color: #2F45A0">{{cur.cat}} · sent to {{cur.team}}</p>
+            <h2 style="margin: 4px 0 0; font-size: 20px; font-weight: 800">{{cur.text}}</h2>
+            <p style="margin: 4px 0 0; font-size: 13px; color: #5A6482">{{cur.who}} · {{cur.date}} · {{cur.ref}}</p>
+          </div>
+          <span class="chip" style="background: {{cur.sbg}}; color: {{cur.sfg}}">{{cur.status}}</span>
+        </div>
+        <p style="margin: 0; padding: 12px 14px; background: #F5F7FC; border-radius: 12px; font-size: 14px; line-height: 1.5; color: #3E4766">{{cur.detail}}</p>
+        <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 800">Reply to the parent
+          <textarea rows="3" style="box-sizing: border-box; padding: 12px; border: 1px solid #D5DBEE; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 400; line-height: 1.5" value="{{cur.draft}}" onChange="{{noop}}"></textarea>
+        </label>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <button onClick="{{markProgress}}" style="min-height: 44px; padding: 0 16px; background: #FFFFFF; color: #6B4004; border: 1px solid #F2C98A; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Reply · keep open</button>
+          <button onClick="{{resolve}}" style="min-height: 44px; padding: 0 16px; background: #16705A; color: #FFFFFF; border: 0; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer">Reply and resolve</button>
+        </div>
+        <p style="margin: 0; font-size: 12px; color: #5A6482">The parent gets a notification and sees your reply under “Your feedback”.</p>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  state = { cat: 'All topics', status: 'All', sel: 'FB-2041', st: {} };
+  renderVals() {
+    const active = 'Feedback';
+    const menu = [
+      ['Dashboard', 'AdminDashboard'], ['Emergency alert', 'AEmergency'], ['Communication', 'XAdminComms'], ['Notices', 'AdminNotices'], ['Students and families', 'AFamilies'],
+      ['Attendance', 'AdminAttendance'], ['Safe pickup', 'APickup'], ['Results', 'AResults'], ['Routine and calendar', 'ACalendar'], ['Events', 'AEvents'],
+      ['Meals', 'AMeals'], ['Fees', 'AdminFees'], ['Fee setup', 'AFeeSetup'], ['Transport', 'ATransport'], ['Feedback', 'AFeedback']
+    ].map(([label, f]) => ({ label, href: f + '.dc.html', bg: label === active ? '#E9EDFB' : 'transparent', fg: label === active ? '#2F45A0' : '#3E4766' }));
+    const teams = { 'Meals and canteen': 'kitchen team', 'Transport': 'transport desk', 'Teaching and classes': 'academic office', 'Fees and payments': 'accounts office', 'Safety and health': 'school office', 'This app': 'app support team', 'Something else': 'school office' };
+    const base = [
+      { ref: 'FB-2041', cat: 'Meals and canteen', date: 'Today', status: 'New', who: 'Nadia Rahman · mother of Aanya, IV-B', text: 'Allergy or food need', detail: 'Aanya is fine with eggs, but her brother Rayan in VII-A should not have peanuts. Please note this for both children.', draft: 'Thank you. We have added a no-peanut note for Rayan. The kitchen team will check it daily.' },
+      { ref: 'FB-2038', cat: 'Fees and payments', date: 'Yesterday', status: 'New', who: 'Karim Hossain · father of Arif, IV-A', text: 'Payment problem', detail: 'My card payment was interrupted. The app says it is being checked.', draft: 'We found your payment (SD-DEMO-1043). It is now confirmed and your receipt is in the app.' },
+      { ref: 'FB-2030', cat: 'Transport', date: '6 Nov', status: 'In progress', who: 'Farhana Islam · mother of Samira, IV-B', text: 'Bus 3 often arrives late in the morning', detail: 'The bus has been 10 to 15 minutes late three times this week.', draft: 'We are testing a new route from next week and will update you.' },
+      { ref: 'FB-2017', cat: 'Meals and canteen', date: '10 Nov', status: 'Resolved', who: 'Nadia Rahman · mother of Aanya, IV-B', text: 'Lunch was cold on Monday', detail: 'Lunch was cold when it reached the class.', draft: 'Sorry about that. We now serve Class IV first, at 12:30 pm sharp.' },
+      { ref: 'FB-2009', cat: 'This app', date: '2 Nov', status: 'New', who: 'Rumana Hasan · mother of Tahmid, IV-B', text: 'Please add a dark mode', detail: 'The app is bright at night.', draft: 'Thanks for the idea. We have shared it with the app team.' }
+    ];
+    const look = { New: { sbg: '#E9EDFB', sfg: '#22347F' }, 'In progress': { sbg: '#FDF0DA', sfg: '#5C3703' }, Resolved: { sbg: '#E2F4EE', sfg: '#0E4436' } };
+    const all = base.map((f) => { const status = this.state.st[f.ref] || f.status; return { ...f, status, team: teams[f.cat], ...look[status] }; });
+    const items = all.filter((f) => (this.state.cat === 'All topics' || f.cat === this.state.cat) && (this.state.status === 'All' || f.status === this.state.status))
+      .map((f) => ({ ...f, bg: f.ref === this.state.sel ? '#F6F8FE' : '#FFFFFF', line: f.ref === this.state.sel ? '#2F45A0' : '#E3E7F2', pick: () => this.setState({ sel: f.ref }) }));
+    const cur = all.find((f) => f.ref === this.state.sel) || all[0];
+    const setSt = (v) => this.setState({ st: { ...this.state.st, [cur.ref]: v } });
+    return {
+      noop: () => {},
+      menu, items, cur, empty: items.length === 0,
+      waiting: all.filter((f) => f.status !== 'Resolved').length,
+      cats: ['All topics', ...Object.keys(teams)].map((v) => ({ v, sel: v === this.state.cat })),
+      statuses: ['All', 'New', 'In progress', 'Resolved'].map((v) => ({ v, sel: v === this.state.status })),
+      setCat: (e) => this.setState({ cat: e.target.value }),
+      setStatus: (e) => this.setState({ status: e.target.value }),
+      markProgress: () => setSt('In progress'),
+      resolve: () => setSt('Resolved')
+    };
+  }
+}
+</script>
+<a href="index.html" id="allscreens" style="position:fixed;right:18px;bottom:18px;z-index:99;display:flex;align-items:center;min-height:42px;padding:0 16px;background:#172042;color:#fff;border-radius:21px;font:700 13px 'Plus Jakarta Sans',system-ui,sans-serif;text-decoration:none;box-shadow:0 8px 20px rgba(23,32,66,.25)">← All screens</a>
+</body>
+</html>

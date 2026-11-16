@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390">
+<title>Teacher app: Meeting slots</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.scroll>*{flex-shrink:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 100vh; height: 100dvh; box-sizing: border-box; display: flex; flex-direction: column; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', system-ui, sans-serif">
+  <div class="scroll" style="flex: 1; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 22px 18px; display: flex; flex-direction: column; gap: 12px">
+    <p style="margin: 0; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
+    <div style="display: flex; align-items: center; gap: 8px">
+      <a href="TeacherToday.dc.html" aria-label="Back to today" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-left: -10px; color: #172042">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>
+      </a>
+      <h1 style="margin: 0; font-size: 26px; font-weight: 800">Meeting slots</h1>
+    </div>
+    <div style="padding: 14px 16px; background: #EEEAFB; border-radius: 16px">
+      <p style="margin: 0; font-size: 13px; font-weight: 700; color: #45318C">Parent-teacher meeting · Sat 28 Nov</p>
+      <p style="margin: 3px 0 0; font-size: 18px; font-weight: 800; color: #2E2163">{{booked}} booked · {{open}} open</p>
+    </div>
+    <p style="margin: 0; font-size: 13px; color: #5A6482">Tap an open slot to block it, for example for a break.</p>
+
+    <sc-for list="{{slots}}" as="s" hint-placeholder-count="6">
+      <button onClick="{{s.toggle}}" disabled="{{s.isBooked}}" style="display: flex; align-items: center; gap: 12px; min-height: 60px; padding: 0 14px; background: {{s.bg}}; border: 1px solid {{s.line}}; border-radius: 14px; font: inherit; text-align: left; cursor: pointer">
+        <span style="width: 70px; font-size: 14px; font-weight: 800; color: #172042">{{s.time}}</span>
+        <span style="flex: 1">
+          <span style="display: block; font-size: 14px; font-weight: 700; color: {{s.fg}}">{{s.title}}</span>
+          <span style="display: block; font-size: 12px; color: #5A6482">{{s.sub}}</span>
+        </span>
+      </button>
+    </sc-for>
+
+    <button style="min-height: 48px; background: #FFFFFF; color: #5940AE; border: 1px solid #CFC6F2; border-radius: 14px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Add more slots</button>
+  </div>
+
+  <nav aria-label="Main" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 8px 6px 12px; background: #FFFFFF; border-top: 1px solid #E3E7F2">
+    <sc-for list="{{tabs}}" as="tab" hint-placeholder-count="4">
+      <a href="{{tab.href}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; color: {{tab.color}}; font-size: 11px; font-weight: 600; text-decoration: none">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{tab.d}}"></path></svg>
+        {{tab.label}}
+      </a>
+    </sc-for>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  state = { blocked: ['10:45 am'] };
+  renderVals() {
+    const active = 'Today';
+    const tabs = [
+      { label: 'Today', href: 'TeacherToday.dc.html', d: 'M3 11l9-8 9 8M5 10v10h14V10' },
+      { label: 'Attendance', href: 'TeacherAttendance.dc.html', d: 'M4 5h16v14H4zM8 12l3 3 5-6' },
+      { label: 'Messages', href: 'TMessages.dc.html', d: 'M4 5h16v11H9l-5 4z' },
+      { label: 'Homework', href: 'TeacherHomework.dc.html', d: 'M6 3h9l4 4v14H6zM9 12h7M9 16h7' }
+    ].map((t) => ({ ...t, color: t.label === active ? '#2F45A0' : '#5A6482' }));
+    const bookings = {
+      '10:00 am': 'Karim Hossain · Arif’s father · In person',
+      '10:30 am': 'Nadia Rahman · Aanya’s mother · In person',
+      '11:00 am': 'Farhana Islam · Samira’s mother · Phone call'
+    };
+    const bl = this.state.blocked;
+    const times = ['10:00 am', '10:15 am', '10:30 am', '10:45 am', '11:00 am', '11:15 am'];
+    const slots = times.map((time) => {
+      const b = bookings[time];
+      const isBlocked = bl.includes(time);
+      if (b) {
+        const [name, ...rest] = b.split(' · ');
+        return { time, isBooked: true, title: name, sub: rest.join(' · '), bg: '#F6F4FE', line: '#CFC6F2', fg: '#45318C', toggle: () => {} };
+      }
+      return {
+        time, isBooked: false,
+        title: isBlocked ? 'Blocked' : 'Open for booking',
+        sub: isBlocked ? 'Tap to open again' : 'Tap to block',
+        bg: isBlocked ? '#F0F2F8' : '#FFFFFF', line: '#E3E7F2', fg: isBlocked ? '#5A6482' : '#16705A',
+        toggle: () => this.setState({ blocked: isBlocked ? bl.filter((t) => t !== time) : [...bl, time] })
+      };
+    });
+    return {
+      tabs, slots,
+      booked: Object.keys(bookings).length,
+      open: times.length - Object.keys(bookings).length - bl.length
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin: Emergency alert</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Hind+Siliguri:wght@500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.panel{display:flex;flex-direction:column;gap:14px;padding:22px;background:#FFFFFF;border:1px solid #E3E7F2;border-radius:20px}
+.lbl{margin:0;font-size:14px;font-weight:800}
+
+</style>
+</helmet>
+<div style="min-height: 900px; display: flex; flex-wrap: wrap; align-items: stretch; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', system-ui, sans-serif">
+  <nav aria-label="Admin menu" style="flex: 1 1 240px; box-sizing: border-box; padding: 28px 18px; display: flex; flex-direction: column; gap: 2px; background: #FFFFFF; border-right: 1px solid #E3E7F2">
+    <p style="margin: 0; padding: 0 12px; font-size: 19px; font-weight: 800">School admin</p>
+    <p style="margin: 2px 0 16px; padding: 0 12px; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
+    <sc-for list="{{menu}}" as="m" hint-placeholder-count="15">
+      <a href="{{m.href}}" style="display: flex; align-items: center; min-height: 38px; padding: 0 12px; background: {{m.bg}}; color: {{m.fg}}; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none">{{m.label}}</a>
+    </sc-for>
+  </nav>
+  <main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 36px); display: flex; flex-direction: column; gap: 18px">
+    <div>
+      <h1 style="margin: 0; font-size: 30px; font-weight: 800">Emergency alert</h1>
+      <p style="margin: 4px 0 0; font-size: 15px; color: #5A6482">One message to every parent, in the app and by SMS. See who has read it.</p>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start">
+      <section class="panel" style="flex: 3 1 520px; min-width: 0">
+        <sc-if value="{{editing}}" hint-placeholder-val="{{ true }}">
+          <p class="lbl">1 · What happened?</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px">
+            <sc-for list="{{types}}" as="c" hint-placeholder-count="5"><button onClick="{{c.pick}}" style="min-height: 42px; padding: 0 14px; background: {{c.bg}}; color: {{c.fg}}; border: 1px solid #D5DBEE; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">{{c.label}}</button></sc-for>
+          </div>
+          <p class="lbl">2 · Who should get it?</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px">
+            <sc-for list="{{aud}}" as="c" hint-placeholder-count="4"><button onClick="{{c.pick}}" style="min-height: 42px; padding: 0 14px; background: {{c.bg}}; color: {{c.fg}}; border: 1px solid #D5DBEE; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">{{c.label}}</button></sc-for>
+          </div>
+          <p class="lbl">3 · Message <span style="font-weight: 600; color: #5A6482">· written for you in English and Bangla</span></p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 10px">
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 800; color: #5A6482">ENGLISH<textarea style="min-height: 130px; box-sizing: border-box; padding: 12px; border: 1px solid #D5DBEE; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 500; line-height: 1.5; color: #172042; resize: vertical" value="{{msg.en}}" onChange="{{noop}}"></textarea></label>
+            <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 800; color: #5A6482">বাংলা<textarea style="min-height: 130px; box-sizing: border-box; padding: 12px; border: 1px solid #D5DBEE; border-radius: 12px; font-family: 'Hind Siliguri', sans-serif; font-size: 15px; font-weight: 500; line-height: 1.6; color: #172042; resize: vertical" value="{{msg.bn}}" onChange="{{noop}}"></textarea></label>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 14px; padding: 12px 14px; background: #F5F7FC; border-radius: 14px; font-size: 13px; color: #3E4766">
+            <span><b style="color: #172042">App alert</b> · rings even on silent</span><span><b style="color: #172042">SMS</b> · to every number, always</span><span><b style="color: #172042">Teachers</b> · get a copy</span>
+          </div>
+          <sc-if value="{{notConfirm}}" hint-placeholder-val="{{ true }}">
+            <button onClick="{{ask}}" style="align-self: flex-start; min-height: 52px; padding: 0 22px; background: #A8432B; color: #FFFFFF; border: 0; border-radius: 14px; font: inherit; font-size: 15px; font-weight: 800; cursor: pointer">Send emergency alert</button>
+          </sc-if>
+          <sc-if value="{{confirm}}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px 16px; background: #FCE7E1; border-radius: 14px">
+              <p style="margin: 0; flex: 1; min-width: 220px; font-size: 14px; color: #6A2A1A"><b>Send to {{audCount}} now?</b> Alerts can’t be unsent. You can send a follow-up.</p>
+              <button onClick="{{cancel}}" style="min-height: 44px; padding: 0 16px; background: #FFFFFF; color: #172042; border: 1px solid #E3D3CE; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Cancel</button>
+              <button onClick="{{send}}" style="min-height: 44px; padding: 0 16px; background: #A8432B; color: #FFFFFF; border: 0; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer">Yes, send now</button>
+            </div>
+          </sc-if>
+        </sc-if>
+        <sc-if value="{{sent}}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px">
+            <div><p style="margin: 0; font-size: 13px; font-weight: 800; color: #A8432B">SENT AT 4:10 PM · {{typeLabel}}</p><h2 style="margin: 4px 0 0; font-size: 22px; font-weight: 800">{{msg.title}}</h2></div>
+            <button onClick="{{reset}}" style="min-height: 42px; padding: 0 14px; background: #FFFFFF; color: #2F45A0; border: 1px solid #C9D3F3; border-radius: 12px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer">New alert</button>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px">
+            <div style="padding: 14px; background: #E2F4EE; border-radius: 14px"><p style="margin: 0; font-size: 12px; font-weight: 700; color: #12503F">Reached</p><p style="margin: 4px 0 0; font-size: 26px; font-weight: 800; color: #0E4436">1,238</p><p style="margin: 2px 0 0; font-size: 12px; color: #12503F">of 1,240 families</p></div>
+            <div style="padding: 14px; background: #E9EDFB; border-radius: 14px"><p style="margin: 0; font-size: 12px; font-weight: 700; color: #22347F">Tapped “I have seen this”</p><p style="margin: 4px 0 0; font-size: 26px; font-weight: 800; color: #172042">1,012</p><p style="margin: 2px 0 0; font-size: 12px; color: #22347F">82% in 20 minutes</p></div>
+            <div style="padding: 14px; background: #FDF0DA; border-radius: 14px"><p style="margin: 0; font-size: 12px; font-weight: 700; color: #6B4004">Got it by SMS only</p><p style="margin: 4px 0 0; font-size: 26px; font-weight: 800; color: #5C3703">226</p><p style="margin: 2px 0 0; font-size: 12px; color: #6B4004">no internet or app</p></div>
+          </div>
+          <div style="display: flex; height: 12px; border-radius: 6px; overflow: hidden; background: #EEF1F8"><div style="width: 82%; background: #2F45A0"></div><div style="width: 18%; background: #E3B868"></div></div>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px 16px; background: #F5F7FC; border-radius: 14px">
+            <p style="margin: 0; flex: 1; min-width: 220px; font-size: 14px; color: #3E4766"><b style="color: #172042">2 families not reached.</b> Their numbers may be wrong. Class teachers have been asked to call them.</p>
+            <button onClick="{{callList}}" style="min-height: 42px; padding: 0 14px; background: {{clBg}}; color: #FFFFFF; border: 0; border-radius: 12px; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer">{{clLabel}}</button>
+          </div>
+        </sc-if>
+      </section>
+      <section class="panel" style="flex: 2 1 300px; min-width: 0; align-items: center; background: #EEF1F8; border: 0">
+        <p class="lbl" style="align-self: flex-start">What parents see</p>
+        <div style="width: 100%; max-width: 300px; overflow: hidden; background: #FFFFFF; border-radius: 22px; box-shadow: 0 10px 30px rgba(23,32,66,.12)">
+          <div style="padding: 16px; background: #A8432B; color: #FFFFFF">
+            <p style="margin: 0; font-size: 11px; font-weight: 800; color: #FCE7E1">EMERGENCY ALERT FROM THE SCHOOL</p>
+            <p style="margin: 6px 0 0; font-size: 18px; line-height: 1.25; font-weight: 800">{{msg.title}}</p>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px; padding: 14px">
+            <p style="margin: 0; font-size: 13px; line-height: 1.5">{{msg.en}}</p>
+            <span style="display: flex; align-items: center; justify-content: center; min-height: 42px; background: #172042; color: #FFFFFF; border-radius: 12px; font-size: 14px; font-weight: 800">I have seen this</span>
+          </div>
+        </div>
+        <a href="XAlert.dc.html" style="font-size: 13px; font-weight: 700; color: #2F45A0">Open the parent screen</a>
+      </section>
+    </div>
+    <section class="panel" style="gap: 6px">
+      <p class="lbl">Recent alerts</p>
+      <div style="display: flex; justify-content: space-between; gap: 10px; padding: 10px 0; border-top: 1px solid #EEF1F8; font-size: 14px"><span><b>Early dismissal at 11 am</b> · heat</span><span style="color: #5A6482">21 Oct · 94% seen</span></div>
+      <div style="display: flex; justify-content: space-between; gap: 10px; padding: 10px 0; border-top: 1px solid #EEF1F8; font-size: 14px"><span><b>Bus route 4 running 30 minutes late</b> · route 4 only</span><span style="color: #5A6482">2 Oct · 100% seen</span></div>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  state = { type: 'School closed', aud: 'Whole school', step: 'edit', called: false };
+  renderVals() {
+    const menu = [
+      ['Dashboard', 'AdminDashboard'], ['Emergency alert', 'AEmergency'], ['Communication', 'XAdminComms'], ['Notices', 'AdminNotices'], ['Students and families', 'AFamilies'],
+      ['Attendance', 'AdminAttendance'], ['Safe pickup', 'APickup'], ['Results', 'AResults'], ['Routine and calendar', 'ACalendar'], ['Events', 'AEvents'],
+      ['Meals', 'AMeals'], ['Fees', 'AdminFees'], ['Fee setup', 'AFeeSetup'], ['Transport', 'ATransport'], ['Feedback', 'AFeedback']
+    ].map(([label, f]) => ({ label, href: f + '.dc.html', bg: label === 'Emergency alert' ? '#E9EDFB' : 'transparent', fg: label === 'Emergency alert' ? '#2F45A0' : '#3E4766' }));
+    const st = this.state;
+    const msgs = {
+      'School closed': { title: 'School closed tomorrow, Tuesday 17 November', en: 'Because of heavy rain and waterlogging on roads near the school, classes are cancelled tomorrow. Homework will be posted in the app by 9 am.', bn: 'ভারী বৃষ্টি ও জলাবদ্ধতার কারণে আগামীকাল ক্লাস বন্ধ থাকবে। বাড়ির কাজ সকাল ৯টার মধ্যে অ্যাপে দেওয়া হবে।' },
+      'Early dismissal': { title: 'Early dismissal today at 11:00 am', en: 'Because of extreme heat, school closes at 11:00 am today. Please collect your child or check the bus time in the app.', bn: 'প্রচণ্ড গরমের কারণে আজ সকাল ১১টায় ছুটি হবে। সন্তানকে নিয়ে যান অথবা অ্যাপে বাসের সময় দেখুন।' },
+      'Road or traffic': { title: 'Roads blocked near the school this morning', en: 'Roads near the school are blocked. Gates stay open until 9:30 am and late arrivals will not be marked late.', bn: 'স্কুলের কাছের রাস্তা বন্ধ। সকাল ৯:৩০ পর্যন্ত গেট খোলা থাকবে, দেরিতে এলে দেরি ধরা হবে না।' },
+      'Health or safety': { title: 'Health notice for Class IV parents', en: 'A few cases of seasonal flu in Class IV. Please keep your child at home if they have a fever. No action needed otherwise.', bn: 'চতুর্থ শ্রেণিতে কয়েকজনের মৌসুমি জ্বর। জ্বর থাকলে সন্তানকে বাড়িতে রাখুন।' },
+      'Bus delay': { title: 'Bus route 4 running 30 minutes late', en: 'Bus route 4 is running about 30 minutes late because of traffic. Live location is in the app under Bus.', bn: 'যানজটের কারণে ৪ নম্বর রুটের বাস প্রায় ৩০ মিনিট দেরিতে চলছে। অ্যাপে বাসের অবস্থান দেখুন।' }
+    };
+    const counts = { 'Whole school': '1,240 families', 'One class': '126 families', 'One section': '42 families', 'One bus route': '58 families' };
+    const chip = (list, key) => list.map((label) => ({ label, bg: label === st[key] ? '#172042' : '#FFFFFF', fg: label === st[key] ? '#FFFFFF' : '#172042', pick: () => this.setState({ [key]: label, step: 'edit' }) }));
+    return {
+      menu,
+      types: chip(Object.keys(msgs), 'type'), aud: chip(Object.keys(counts), 'aud'),
+      msg: msgs[st.type], typeLabel: st.type.toUpperCase(), audCount: counts[st.aud],
+      editing: st.step !== 'sent', sent: st.step === 'sent', confirm: st.step === 'confirm', notConfirm: st.step === 'edit',
+      ask: () => this.setState({ step: 'confirm' }), cancel: () => this.setState({ step: 'edit' }), send: () => this.setState({ step: 'sent' }),
+      reset: () => this.setState({ step: 'edit', called: false }),
+      clLabel: st.called ? 'Teachers notified' : 'Send call list to teachers', clBg: st.called ? '#16705A' : '#2F45A0',
+      callList: () => this.setState({ called: true }),
+      noop: () => {}
+    };
+  }
+}
+</script>
+</body>
+</html>

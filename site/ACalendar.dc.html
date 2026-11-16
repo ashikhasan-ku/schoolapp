@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin: Routine and calendar</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.panel{display:flex;flex-direction:column;gap:14px;padding:22px;background:#FFFFFF;border:1px solid #E3E7F2;border-radius:20px}
+.hd{padding:8px;font-size:12px;font-weight:800;color:#5A6482;text-align:center}
+.step{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.num{width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:#172042;color:#FFFFFF;border-radius:50%;font-size:13px;font-weight:800}
+.sl{width:80px;font-size:14px;font-weight:800}
+.ev{display:flex;align-items:center;gap:12px;min-height:56px;border-top:1px solid #EEF1F8}
+.dt{flex-shrink:0;width:48px;height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:12px;font-size:16px;font-weight:800;line-height:1}
+.dt span{font-size:10px;margin-top:2px}
+</style>
+</helmet>
+<div style="min-height: 900px; display: flex; flex-wrap: wrap; align-items: stretch; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', system-ui, sans-serif">
+  <nav aria-label="Admin menu" style="flex: 1 1 240px; box-sizing: border-box; padding: 28px 18px; display: flex; flex-direction: column; gap: 2px; background: #FFFFFF; border-right: 1px solid #E3E7F2">
+    <p style="margin: 0; padding: 0 12px; font-size: 19px; font-weight: 800">School admin</p>
+    <p style="margin: 2px 0 16px; padding: 0 12px; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
+    <sc-for list="{{menu}}" as="m" hint-placeholder-count="15">
+      <a href="{{m.href}}" style="display: flex; align-items: center; min-height: 38px; padding: 0 12px; background: {{m.bg}}; color: {{m.fg}}; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none">{{m.label}}</a>
+    </sc-for>
+  </nav>
+
+  <main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 36px); display: flex; flex-direction: column; gap: 20px">
+    <div>
+      <h1 style="margin: 0; font-size: 30px; font-weight: 800">Routine and calendar</h1>
+      <p style="margin: 4px 0 0; font-size: 15px; color: #5A6482">Changes appear in the parent and teacher apps straight away.</p>
+    </div>
+
+    <section class="panel" style="gap: 12px">
+      <div class="step"><span class="num">1</span><span class="sl">Class</span>
+        <sc-for list="{{classes}}" as="c" hint-placeholder-count="6"><button onClick="{{c.pick}}" style="min-width: 56px; min-height: 42px; padding: 0 14px; background: {{c.bg}}; color: {{c.fg}}; border: 1px solid #D5DBEE; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer">{{c.label}}</button></sc-for>
+      </div>
+      <div class="step"><span class="num">2</span><span class="sl">Section</span>
+        <sc-for list="{{sections}}" as="c" hint-placeholder-count="3"><button onClick="{{c.pick}}" style="min-width: 56px; min-height: 42px; padding: 0 14px; background: {{c.bg}}; color: {{c.fg}}; border: 1px solid #D5DBEE; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer">{{c.label}}</button></sc-for>
+      </div>
+    </section>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start">
+      <section class="panel" style="flex: 2 1 560px; min-width: 0">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px">
+          <h2 style="margin: 0; font-size: 18px; font-weight: 800">Class {{cls}}-{{sec}} weekly routine</h2>
+          <span style="font-size: 13px; color: #5A6482">Click a period to change it</span>
+        </div>
+        <div style="overflow-x: auto">
+          <div style="display: grid; grid-template-columns: 80px repeat(5, minmax(96px, 1fr)); gap: 6px; min-width: 600px">
+            <div class="hd"></div>
+            <sc-for list="{{days}}" as="d" hint-placeholder-count="5"><div class="hd">{{d}}</div></sc-for>
+            <sc-for list="{{cells}}" as="c" hint-placeholder-count="30">
+              <sc-if value="{{c.isTime}}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; align-items: center; font-size: 12px; font-weight: 700; color: #5A6482">{{c.label}}</div>
+              </sc-if>
+              <sc-if value="{{c.isCell}}" hint-placeholder-val="{{ true }}">
+                <button onClick="{{c.pick}}" style="min-height: 58px; padding: 8px; background: {{c.bg}}; color: {{c.fg}}; border: 2px solid {{c.line}}; border-radius: 12px; font: inherit; text-align: left; cursor: pointer">
+                  <span style="display: block; font-size: 13px; font-weight: 800">{{c.subject}}</span>
+                  <span style="display: block; font-size: 11px; opacity: 0.85">{{c.teacher}}</span>
+                </button>
+              </sc-if>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px; background: #F5F7FC; border-radius: 14px">
+          <p style="margin: 0; font-size: 14px; font-weight: 800">{{selLabel}}</p>
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700">Subject
+            <select style="min-height: 40px; padding: 0 8px; border: 1px solid #D5DBEE; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px; font-weight: 400"><option>{{selSubject}}</option><option>English</option><option>Mathematics</option><option>Science</option></select>
+          </label>
+          <button style="min-height: 40px; padding: 0 14px; background: #2F45A0; color: #FFFFFF; border: 0; border-radius: 10px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Save change</button>
+        </div>
+      </section>
+
+      <section class="panel" style="flex: 1 1 300px; gap: 0">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px">
+          <h2 style="margin: 0; font-size: 18px; font-weight: 800">School calendar</h2>
+          <button style="min-height: 38px; padding: 0 12px; background: #E9EDFB; color: #2F45A0; border: 0; border-radius: 10px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Add date</button>
+        </div>
+        <div class="ev"><div class="dt" style="background: #FDF0DA; color: #7A4904">18<span>NOV</span></div><div><p style="margin: 0; font-size: 14px; font-weight: 700">Science fair trip</p><p style="margin: 2px 0 0; font-size: 12px; color: #5A6482">Class IV-B · Consent form</p></div></div>
+        <div class="ev"><div class="dt" style="background: #E9EDFB; color: #2F45A0">22<span>NOV</span></div><div><p style="margin: 0; font-size: 14px; font-weight: 700">Half-yearly exams begin</p><p style="margin: 2px 0 0; font-size: 12px; color: #5A6482">All classes</p></div></div>
+        <div class="ev"><div class="dt" style="background: #EEEAFB; color: #5940AE">28<span>NOV</span></div><div><p style="margin: 0; font-size: 14px; font-weight: 700">Parent-teacher meeting</p><p style="margin: 2px 0 0; font-size: 12px; color: #5A6482">Booking open</p></div></div>
+        <div class="ev"><div class="dt" style="background: #E2F4EE; color: #16705A">3<span>DEC</span></div><div><p style="margin: 0; font-size: 14px; font-weight: 700">Annual sports day</p><p style="margin: 2px 0 0; font-size: 12px; color: #5A6482">Fee BDT 300</p></div></div>
+        <div class="ev"><div class="dt" style="background: #FCE7E1; color: #A8432B">16<span>DEC</span></div><div><p style="margin: 0; font-size: 14px; font-weight: 700">Victory Day</p><p style="margin: 2px 0 0; font-size: 12px; color: #5A6482">School closed</p></div></div>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  state = { sel: '1-1', cls: 'IV', sec: 'B' };
+  renderVals() {
+    const active = 'Routine and calendar';
+    const menu = [
+      ['Dashboard', 'AdminDashboard'], ['Emergency alert', 'AEmergency'], ['Communication', 'XAdminComms'], ['Notices', 'AdminNotices'], ['Students and families', 'AFamilies'],
+      ['Attendance', 'AdminAttendance'], ['Safe pickup', 'APickup'], ['Results', 'AResults'], ['Routine and calendar', 'ACalendar'], ['Events', 'AEvents'],
+      ['Meals', 'AMeals'], ['Fees', 'AdminFees'], ['Fee setup', 'AFeeSetup'], ['Transport', 'ATransport'], ['Feedback', 'AFeedback']
+    ].map(([label, f]) => ({ label, href: f + '.dc.html', bg: label === active ? '#E9EDFB' : 'transparent', fg: label === active ? '#2F45A0' : '#3E4766' }));
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
+    const times = ['8:30 am', '9:30 am', '10:30 am', '11:30 am', '12:30 pm'];
+    const subjects = [
+      { subject: 'English', teacher: 'Ms. Tania Karim', bg: '#E9EDFB', fg: '#22347F' },
+      { subject: 'Mathematics', teacher: 'Ms. Farzana Ahmed', bg: '#EEEAFB', fg: '#45318C' },
+      { subject: 'Science', teacher: 'Mr. Imran Hossain', bg: '#E2F4EE', fg: '#12503F' },
+      { subject: 'Bangla', teacher: 'Ms. Sadia Noor', bg: '#FDF0DA', fg: '#6B4004' },
+      { subject: 'Art', teacher: 'Mr. Rafiq Alam', bg: '#FCE7E1', fg: '#7E3220' }
+    ];
+    const cells = [];
+    let selSubject = '';
+    times.forEach((t, i) => {
+      cells.push({ isTime: true, isCell: false, label: t });
+      days.forEach((d, day) => {
+        const s = subjects[(i + day + 4) % 5];
+        const key = i + '-' + day;
+        const on = key === this.state.sel;
+        if (on) selSubject = s.subject;
+        cells.push({ isTime: false, isCell: true, ...s, line: on ? '#172042' : 'transparent', pick: () => this.setState({ sel: key }) });
+      });
+    });
+    const [si, sd] = this.state.sel.split('-').map(Number);
+    const chip = (list, key) => list.map((label) => ({ label, bg: label === this.state[key] ? '#172042' : '#FFFFFF', fg: label === this.state[key] ? '#FFFFFF' : '#172042', pick: () => this.setState({ [key]: label }) }));
+    return { menu, days, cells, selSubject, selLabel: days[sd] + ', ' + times[si], cls: this.state.cls, sec: this.state.sec, classes: chip(['III', 'IV', 'V', 'VI', 'VII', 'VIII'], 'cls'), sections: chip(['A', 'B', 'C'], 'sec') };
+  }
+}
+</script>
+<a href="index.html" id="allscreens" style="position:fixed;right:18px;bottom:18px;z-index:99;display:flex;align-items:center;min-height:42px;padding:0 16px;background:#172042;color:#fff;border-radius:21px;font:700 13px 'Plus Jakarta Sans',system-ui,sans-serif;text-decoration:none;box-shadow:0 8px 20px rgba(23,32,66,.25)">← All screens</a>
+</body>
+</html>

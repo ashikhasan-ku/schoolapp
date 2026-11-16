@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin: Students and families</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.panel{display:flex;flex-direction:column;gap:14px;padding:22px;background:#FFFFFF;border:1px solid #E3E7F2;border-radius:20px}
+.th{text-align:left;padding:10px 14px;font-size:12px;font-weight:700;color:#5A6482}
+.td{padding:12px 14px;font-size:14px}
+.chip{display:inline-block;padding:4px 9px;border-radius:9px;font-size:12px;font-weight:800}
+</style>
+</helmet>
+<div style="min-height: 900px; display: flex; flex-wrap: wrap; align-items: stretch; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', system-ui, sans-serif">
+  <nav aria-label="Admin menu" style="flex: 1 1 240px; box-sizing: border-box; padding: 28px 18px; display: flex; flex-direction: column; gap: 2px; background: #FFFFFF; border-right: 1px solid #E3E7F2">
+    <p style="margin: 0; padding: 0 12px; font-size: 19px; font-weight: 800">School admin</p>
+    <p style="margin: 2px 0 16px; padding: 0 12px; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
+    <sc-for list="{{menu}}" as="m" hint-placeholder-count="15">
+      <a href="{{m.href}}" style="display: flex; align-items: center; min-height: 38px; padding: 0 12px; background: {{m.bg}}; color: {{m.fg}}; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none">{{m.label}}</a>
+    </sc-for>
+  </nav>
+
+  <main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 36px); display: flex; flex-direction: column; gap: 20px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+      <div>
+        <h1 style="margin: 0; font-size: 30px; font-weight: 800">Students and families</h1>
+        <p style="margin: 4px 0 0; font-size: 15px; color: #5A6482">1,240 students · 1,198 families on the app</p>
+      </div>
+      <div style="display: flex; gap: 8px">
+        <button style="min-height: 44px; padding: 0 16px; background: #FFFFFF; color: #2F45A0; border: 1px solid #C9D3F3; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Import from Excel</button>
+        <button style="min-height: 44px; padding: 0 16px; background: #2F45A0; color: #FFFFFF; border: 0; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Add student</button>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 18px; align-items: start">
+      <section class="panel">
+        <label style="display: flex; align-items: center; gap: 10px; min-height: 46px; padding: 0 14px; background: #F5F7FC; border: 1px solid #E3E7F2; border-radius: 12px; color: #5A6482">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M11 18a7 7 0 1 0 0-14a7 7 0 0 0 0 14zM20 20l-4-4"></path></svg>
+          <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Search students</span>
+          <input placeholder="Search by name, class or ID" style="flex: 1; min-width: 0; border: 0; background: transparent; outline: none; font: inherit; font-size: 14px; color: #172042">
+        </label>
+        <div style="overflow-x: auto">
+          <div role="table" style="width: 100%; min-width: 440px; display: flex; flex-direction: column">
+            <div role="row" style="display: grid; grid-template-columns: 1.5fr 0.7fr 0.9fr 1fr; align-items: center; border-bottom: 1px solid #E8EBF4"><div role="columnheader" class="th">Student</div><div role="columnheader" class="th">Class</div><div role="columnheader" class="th">Guardians</div><div role="columnheader" class="th">Parent app</div></div>
+            
+              <sc-for list="{{students}}" as="s" hint-placeholder-count="6">
+                <div role="row" style="display: grid; grid-template-columns: 1.5fr 0.7fr 0.9fr 1fr; align-items: center; border-bottom: 1px solid #E8EBF4; background: {{s.rowBg}}">
+                  <div role="cell" class="td" style="font-weight: 700">{{s.name}}</div><div role="cell" class="td">{{s.cls}}</div><div role="cell" class="td">{{s.g}}</div>
+                  <div role="cell" class="td"><span class="chip" style="background: {{s.bg}}; color: {{s.fg}}">{{s.app}}</span></div>
+                </div>
+              </sc-for>
+            
+          </div>
+        </div>
+      </section>
+
+      <div style="display: flex; flex-direction: column; gap: 18px">
+        <section class="panel" style="border: 2px solid #F2C98A">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+            <h2 style="margin: 0; font-size: 18px; font-weight: 800">Guardian request</h2>
+            <span class="chip" style="background: {{reqBg}}; color: {{reqFg}}">{{reqStatus}}</span>
+          </div>
+          <p style="margin: 0; font-size: 15px; line-height: 1.5"><b>Karim Rahman</b> asks to join as <b>father</b> of Aanya Rahman (IV-B) and Rayan Rahman (VII-A). Requested by Nadia Rahman, mother.</p>
+          <div style="display: flex; gap: 10px; padding: 12px 14px; background: #FDF0DA; border-radius: 12px">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A5205" stroke-width="1.8" stroke-linecap="round"><path d="M12 8v5M12 17h.01M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"></path></svg>
+            <p style="margin: 0; font-size: 13px; line-height: 1.45; color: #5C3703">Check identity by phone or in person before approving. Approved guardians can see the children’s records.</p>
+          </div>
+          <button onClick="{{togglePickup}}" style="display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 14px; background: #F5F7FC; border: 1px solid #E3E7F2; border-radius: 12px; font: inherit; text-align: left; cursor: pointer">
+            <span style="flex: 1; font-size: 14px; font-weight: 700; color: #172042">Allowed to pick up from school</span>
+            <span aria-hidden="true" style="width: 48px; height: 28px; display: flex; align-items: center; padding: 3px; box-sizing: border-box; justify-content: {{knob}}; background: {{track}}; border-radius: 14px"><span style="width: 22px; height: 22px; background: #FFFFFF; border-radius: 50%"></span></span>
+          </button>
+          <sc-if value="{{pending}}" hint-placeholder-val="{{ true }}">
+            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+              <button onClick="{{approve}}" style="min-height: 46px; background: #16705A; color: #FFFFFF; border: 0; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer">Approve</button>
+              <button onClick="{{decline}}" style="min-height: 46px; background: #FFFFFF; color: #A8432B; border: 1px solid #E9A894; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Decline</button>
+            </div>
+          </sc-if>
+        </section>
+
+        <section class="panel">
+          <h2 style="margin: 0; font-size: 18px; font-weight: 800">Rahman family</h2>
+          <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px">
+            <div style="display: flex; justify-content: space-between; gap: 8px"><span>Aanya Rahman · IV-B</span><span style="color: #5A6482">Sibling linked</span></div>
+            <div style="display: flex; justify-content: space-between; gap: 8px"><span>Rayan Rahman · VII-A</span><span style="color: #5A6482">Sibling linked</span></div>
+            <div style="display: flex; justify-content: space-between; gap: 8px; padding-top: 10px; border-top: 1px solid #EEF1F8"><span>Nadia Rahman · Mother</span><span class="chip" style="background: #E2F4EE; color: #12503F">Can pick up</span></div>
+            <div style="display: flex; justify-content: space-between; gap: 8px"><span>Karim Rahman · Father</span><span class="chip" style="background: {{reqBg}}; color: {{reqFg}}">{{reqStatus}}</span></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  state = { status: 'Waiting', pickup: true };
+  renderVals() {
+    const active = 'Students and families';
+    const menu = [
+      ['Dashboard', 'AdminDashboard'], ['Emergency alert', 'AEmergency'], ['Communication', 'XAdminComms'], ['Notices', 'AdminNotices'], ['Students and families', 'AFamilies'],
+      ['Attendance', 'AdminAttendance'], ['Safe pickup', 'APickup'], ['Results', 'AResults'], ['Routine and calendar', 'ACalendar'], ['Events', 'AEvents'],
+      ['Meals', 'AMeals'], ['Fees', 'AdminFees'], ['Fee setup', 'AFeeSetup'], ['Transport', 'ATransport'], ['Feedback', 'AFeedback']
+    ].map(([label, f]) => ({ label, href: f + '.dc.html', bg: label === active ? '#E9EDFB' : 'transparent', fg: label === active ? '#2F45A0' : '#3E4766' }));
+    const on = { bg: '#E2F4EE', fg: '#12503F' };
+    const off = { bg: '#FDF0DA', fg: '#7A4904' };
+    const students = [
+      { name: 'Aanya Rahman', cls: 'IV-B', g: '2', app: 'Active', ...on, rowBg: '#F6F8FE' },
+      { name: 'Rayan Rahman', cls: 'VII-A', g: '2', app: 'Active', ...on },
+      { name: 'Arif Karim', cls: 'IV-A', g: '1', app: 'Active', ...on },
+      { name: 'Labiba Sultana', cls: 'VIII-B', g: '2', app: 'Not joined', ...off },
+      { name: 'Mahir Chowdhury', cls: 'IV-B', g: '2', app: 'Active', ...on },
+      { name: 'Samira Islam', cls: 'IV-B', g: '1', app: 'Not joined', ...off }
+    ].map((s) => ({ rowBg: 'transparent', ...s }));
+    const st = this.state.status;
+    const look = st === 'Approved' ? { reqBg: '#E2F4EE', reqFg: '#12503F' } : st === 'Declined' ? { reqBg: '#FCE7E1', reqFg: '#8A3522' } : { reqBg: '#FDF0DA', reqFg: '#7A4904' };
+    return {
+      menu,
+      students,
+      ...look,
+      reqStatus: st,
+      pending: st === 'Waiting',
+      track: this.state.pickup ? '#16705A' : '#C5CBDC',
+      knob: this.state.pickup ? 'flex-end' : 'flex-start',
+      togglePickup: () => this.setState({ pickup: !this.state.pickup }),
+      approve: () => this.setState({ status: 'Approved' }),
+      decline: () => this.setState({ status: 'Declined' })
+    };
+  }
+}
+</script>
+</body>
+</html>

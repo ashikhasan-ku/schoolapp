@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin: Dashboard</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.panel{display:flex;flex-direction:column;gap:12px;padding:22px;background:#FFFFFF;border:1px solid #E3E7F2;border-radius:20px}
+.kpi{display:flex;flex-direction:column;gap:4px;padding:18px;background:#FFFFFF;border:1px solid #E3E7F2;border-radius:16px;color:#172042;text-decoration:none}
+.kpi p{margin:0}
+</style>
+</helmet>
+<div style="min-height: 900px; display: flex; flex-wrap: wrap; align-items: stretch; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', system-ui, sans-serif">
+  <nav aria-label="Admin menu" style="flex: 1 1 240px; box-sizing: border-box; padding: 28px 18px; display: flex; flex-direction: column; gap: 2px; background: #FFFFFF; border-right: 1px solid #E3E7F2">
+    <p style="margin: 0; padding: 0 12px; font-size: 19px; font-weight: 800">School admin</p>
+    <p style="margin: 2px 0 16px; padding: 0 12px; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
+    <sc-for list="{{menu}}" as="m" hint-placeholder-count="15">
+      <a href="{{m.href}}" style="display: flex; align-items: center; min-height: 38px; padding: 0 12px; background: {{m.bg}}; color: {{m.fg}}; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none">{{m.label}}</a>
+    </sc-for>
+  </nav>
+
+  <main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 36px); display: flex; flex-direction: column; gap: 20px">
+    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+      <div>
+        <p style="margin: 0; font-size: 14px; font-weight: 700; color: #2F45A0">{{dateLabel}}</p>
+        <h1 style="margin: 4px 0 0; font-size: 30px; font-weight: 800">{{greeting}}, Sharmin</h1>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px">
+        <a href="AEmergency.dc.html" style="display: flex; align-items: center; min-height: 46px; padding: 0 16px; background: #FCE7E1; color: #A8432B; border: 1px solid #F4CFC4; border-radius: 12px; font-size: 14px; font-weight: 800; text-decoration: none">Emergency alert</a>
+        <a href="AdminAttendance.dc.html" style="display: flex; align-items: center; min-height: 46px; padding: 0 16px; background: #FFFFFF; color: #2F45A0; border: 1px solid #C9D3F3; border-radius: 12px; font-size: 14px; font-weight: 700; text-decoration: none">Take attendance</a>
+        <a href="AdminNotices.dc.html" style="display: flex; align-items: center; min-height: 46px; padding: 0 18px; background: #2F45A0; color: #FFFFFF; border-radius: 12px; font-size: 14px; font-weight: 800; text-decoration: none">New notice</a>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px">
+      <a href="AdminAttendance.dc.html" class="kpi"><p style="font-size: 13px; font-weight: 600; color: #5A6482">Attendance today</p><p style="font-size: 28px; font-weight: 800">95%</p><p style="font-size: 12px; color: #5A6482">38 of 42 sections marked</p></a>
+      <a href="AdminFees.dc.html" class="kpi"><p style="font-size: 13px; font-weight: 600; color: #5A6482">November fees collected</p><p style="font-size: 28px; font-weight: 800">68%</p><p style="font-size: 12px; color: #5A6482">3 payments to check</p></a>
+      <a href="AMeals.dc.html" class="kpi"><p style="font-size: 13px; font-weight: 600; color: #5A6482">Lunches today</p><p style="font-size: 28px; font-weight: 800">652</p><p style="font-size: 12px; color: #5A6482">82% of parents liked this week</p></a>
+      <a href="AFeedback.dc.html" class="kpi"><p style="font-size: 13px; font-weight: 600; color: #5A6482">Feedback to answer</p><p style="font-size: 28px; font-weight: 800">4</p><p style="font-size: 12px; color: #5A6482">Average reply in 5 hours</p></a>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 14px">
+      <section class="panel">
+        <h2 style="margin: 0; font-size: 18px; font-weight: 800">Needs your attention</h2>
+        <sc-for list="{{tasks}}" as="t" hint-placeholder-count="5">
+          <a href="{{t.href}}" style="display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 0 2px; border-top: 1px solid #EEF1F8; color: inherit; text-decoration: none">
+            <span aria-hidden="true" style="width: 10px; height: 10px; flex-shrink: 0; background: {{t.dot}}; border-radius: 50%"></span>
+            <span style="flex: 1; font-size: 15px">{{t.title}}</span>
+            <span style="font-size: 14px; font-weight: 800; color: #2F45A0">{{t.action}}</span>
+          </a>
+        </sc-for>
+      </section>
+      <section class="panel">
+        <h2 style="margin: 0; font-size: 18px; font-weight: 800">Coming up</h2>
+        <sc-for list="{{upcoming}}" as="u" hint-placeholder-count="4">
+          <a href="{{u.href}}" style="display: flex; align-items: center; gap: 12px; min-height: 56px; border-top: 1px solid #EEF1F8; color: inherit; text-decoration: none">
+            <span style="width: 54px; flex-shrink: 0; font-size: 13px; font-weight: 800; color: #2F45A0">{{u.date}}</span>
+            <span style="flex: 1; font-size: 15px">{{u.title}}</span>
+            <span style="font-size: 13px; color: #5A6482">{{u.note}}</span>
+          </a>
+        </sc-for>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const active = 'Dashboard';
+    const menu = [
+      ['Dashboard', 'AdminDashboard'], ['Emergency alert', 'AEmergency'], ['Communication', 'XAdminComms'], ['Notices', 'AdminNotices'], ['Students and families', 'AFamilies'],
+      ['Attendance', 'AdminAttendance'], ['Safe pickup', 'APickup'], ['Results', 'AResults'], ['Routine and calendar', 'ACalendar'], ['Events', 'AEvents'],
+      ['Meals', 'AMeals'], ['Fees', 'AdminFees'], ['Fee setup', 'AFeeSetup'], ['Transport', 'ATransport'], ['Feedback', 'AFeedback']
+    ].map(([label, f]) => ({ label, href: f + '.dc.html', bg: label === active ? '#E9EDFB' : 'transparent', fg: label === active ? '#2F45A0' : '#3E4766' }));
+    const now = new Date(); const h = now.getHours();
+    return {
+      menu,
+      dateLabel: now.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }),
+      greeting: h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening',
+      tasks: [
+        { title: '4 sections have not marked attendance', action: 'Mark now', href: 'AdminAttendance.dc.html', dot: '#A8432B' },
+        { title: 'Science marks missing for IV-B', action: 'Enter marks', href: 'AResults.dc.html', dot: '#B86A06' },
+        { title: '6 card payments need checking', action: 'Check', href: 'AdminFees.dc.html', dot: '#B86A06' },
+        { title: 'Jamal Mia added as a pickup person for Aanya', action: 'Check photo', href: 'AFamilies.dc.html', dot: '#2F45A0' },
+        { title: 'Karim Rahman asks to join as a guardian', action: 'Review', href: 'AFamilies.dc.html', dot: '#2F45A0' },
+        { title: '11 families have not answered the trip consent', action: 'Remind', href: 'AEvents.dc.html', dot: '#2F45A0' }
+      ],
+      upcoming: [
+        { date: '18 Nov', title: 'Science fair trip · IV-B', note: '28 yes so far', href: 'AEvents.dc.html' },
+        { date: '22 Nov', title: 'Half-yearly exams begin', note: 'All classes', href: 'ACalendar.dc.html' },
+        { date: '28 Nov', title: 'Parent-teacher meeting', note: '702 booked', href: 'AEvents.dc.html' },
+        { date: '30 Nov', title: 'November fee due date', note: 'Reminders on', href: 'AFeeSetup.dc.html' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

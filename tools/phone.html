@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>App preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{display:flex;background:#E9ECF5;color:#172042;font-family:'Plus Jakarta Sans',system-ui,sans-serif}
+aside{width:280px;flex-shrink:0;height:100%;overflow:auto;padding:24px 16px;background:#fff;border-right:1px solid #E3E7F2}
+aside .back{display:inline-block;margin:0 8px 18px;font-size:14px;font-weight:700;color:#2F45A0;text-decoration:none}
+aside h1{margin:0 8px 4px;font-size:20px;font-weight:800}
+aside p{margin:0 8px 16px;font-size:13px;color:#5A6482}
+.tabs{display:flex;gap:6px;margin:0 8px 14px}
+.tabs a{flex:1;text-align:center;padding:8px;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;color:#3E4766;background:#F5F7FC}
+.tabs a.on{background:#172042;color:#fff}
+nav a{display:flex;align-items:center;min-height:40px;padding:0 12px;border-radius:10px;font-size:14px;font-weight:600;color:#3E4766;text-decoration:none}
+nav a.on{background:#E9EDFB;color:#2F45A0}
+main{flex:1;display:flex;align-items:center;justify-content:center;overflow:auto;padding:24px}
+.device{width:414px;height:868px;padding:12px;background:#172042;border-radius:52px;box-shadow:0 30px 60px rgba(23,32,66,.25);flex-shrink:0}
+iframe{display:block;width:390px;height:844px;border:0;border-radius:40px;background:#F5F7FC}
+.hint{position:fixed;right:20px;bottom:16px;font-size:12px;color:#5A6482}
+@media (max-height:920px){.device{transform:scale(calc((100vh - 48px)/868));transform-origin:center}}
+</style>
+</head>
+<body>
+<aside>
+  <a class="back" href="index.html">← All apps</a>
+  <div class="tabs"><a id="t-parent" href="phone.html?app=parent&s=XLogin">Parent</a><a id="t-teacher" href="phone.html?app=teacher&s=TLogin">Teacher</a></div>
+  <h1 id="title"></h1>
+  <p>Tap inside the phone. Or jump to a screen:</p>
+  <nav id="nav"></nav>
+</aside>
+<main><div class="device"><iframe id="f" title="App screen"></iframe></div></main>
+<p class="hint">Concept · Sample data</p>
+<script src="screens.js"></script>
+<script>
+const q = new URLSearchParams(location.search);
+const app = q.get('app') === 'teacher' ? 'teacher' : 'parent';
+const list = SCREENS[app];
+let s = q.get('s'); if (!list.some(x => x[0] === s)) s = list[0][0];
+// On a real phone, skip the frame and open the screen itself.
+if (window.innerWidth < 760) location.replace(s + '.dc.html');
+document.getElementById('t-' + app).classList.add('on');
+document.getElementById('title').textContent = app === 'parent' ? 'Parent app' : 'Teacher app';
+const nav = document.getElementById('nav'), f = document.getElementById('f');
+for (const [file, label] of list) {
+  const a = document.createElement('a'); a.textContent = label; a.href = '#'; a.dataset.f = file;
+  a.onclick = (e) => { e.preventDefault(); f.src = file + '.dc.html'; };
+  nav.appendChild(a);
+}
+function mark() {
+  let cur = s;
+  try { cur = f.contentWindow.location.pathname.split('/').pop().replace('.dc.html', ''); } catch (e) {}
+  for (const a of nav.children) a.classList.toggle('on', a.dataset.f === cur);
+  history.replaceState(null, '', 'phone.html?app=' + app + '&s=' + cur);
+}
+f.addEventListener('load', mark);
+f.src = s + '.dc.html';
+</script>
+</body>
+</html>

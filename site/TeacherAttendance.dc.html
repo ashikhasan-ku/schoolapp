@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390">
+<title>Teacher: Attendance</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.scroll>*{flex-shrink:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 100vh; height: 100dvh; box-sizing: border-box; display: flex; flex-direction: column; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', system-ui, sans-serif">
+  <div class="scroll" style="flex: 1; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 22px 18px; display: flex; flex-direction: column; gap: 12px">
+    <p style="margin: 0; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 10px">
+      <div>
+        <h1 style="margin: 0; font-size: 26px; font-weight: 800">Attendance</h1>
+        <p style="margin: 2px 0 0; font-size: 14px; color: #5A6482">Class IV-B · {{today}}</p>
+      </div>
+      <span style="padding: 6px 10px; background: #E2F4EE; color: #16705A; border-radius: 20px; font-size: 12px; font-weight: 800">{{nP}} present</span>
+    </div>
+
+    <div style="padding: 12px 14px; background: #E9EDFB; border-radius: 14px; font-size: 14px; line-height: 1.45; color: #22347F"><b>Tap only who is absent.</b> Everyone else is marked present when you send.</div>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+      <sc-for list="{{students}}" as="s" hint-placeholder-count="12">
+        <button onClick="{{s.toggle}}" aria-pressed="{{s.pressed}}" style="display: flex; align-items: center; gap: 8px; min-height: 56px; padding: 6px 10px; background: {{s.bg}}; color: #172042; border: 2px solid {{s.line}}; border-radius: 14px; font: inherit; text-align: left; cursor: pointer">
+          <span style="flex-shrink: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: {{s.avBg}}; color: {{s.avFg}}; border-radius: 50%; font-size: 12px; font-weight: 800">{{s.ini}}</span>
+          <span style="min-width: 0">
+            <span style="display: block; font-size: 13px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{s.first}}</span>
+            <span style="display: block; font-size: 11px; font-weight: 700; color: {{s.stFg}}">{{s.status}}</span>
+          </span>
+        </button>
+      </sc-for>
+    </div>
+    <p style="margin: 0; font-size: 12px; color: #5A6482; text-align: center">Showing 12 of 42 · scroll the full class in the real app</p>
+  </div>
+
+  <div style="padding: 12px 18px; background: #FFFFFF; border-top: 1px solid #E3E7F2; display: flex; flex-direction: column; gap: 8px">
+    <sc-if value="{{notDone}}" hint-placeholder-val="{{ true }}">
+      <button onClick="{{submit}}" style="min-height: 52px; background: #2F45A0; color: #FFFFFF; border: 0; border-radius: 14px; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Send · {{nA}} absent, {{nP}} present</button>
+    </sc-if>
+    <sc-if value="{{done}}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 12px 14px; background: #E2F4EE; border-radius: 14px">
+        <p style="margin: 0; font-size: 15px; font-weight: 800; color: #0E4436">Sent at {{time}}</p>
+        <p style="margin: 3px 0 0; font-size: 13px; line-height: 1.4; color: #12503F">The office panel is updated and {{nA}} {{parentWord}} asked for a reason.</p>
+      </div>
+    </sc-if>
+  </div>
+
+  <nav aria-label="Main" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 8px 6px 12px; background: #FFFFFF; border-top: 1px solid #E3E7F2">
+    <sc-for list="{{tabs}}" as="tab" hint-placeholder-count="4">
+      <a href="{{tab.href}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; color: {{tab.color}}; font-size: 11px; font-weight: 700; text-decoration: none">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{tab.d}}"></path></svg>
+        {{tab.label}}
+      </a>
+    </sc-for>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  state = { absent: ['Mahir Chowdhury'], done: false };
+  renderVals() {
+    const active = 'Attendance';
+    const tabs = [
+      { label: 'Today', href: 'TeacherToday.dc.html', d: 'M3 11l9-8 9 8M5 10v10h14V10' },
+      { label: 'Attendance', href: 'TeacherAttendance.dc.html', d: 'M4 5h16v14H4zM8 12l3 3 5-6' },
+      { label: 'Messages', href: 'TMessages.dc.html', d: 'M4 5h16v11H9l-5 4z' },
+      { label: 'Homework', href: 'TeacherHomework.dc.html', d: 'M6 3h9l4 4v14H6zM9 12h7M9 16h7' }
+    ].map((t) => ({ ...t, color: t.label === active ? '#2F45A0' : '#5A6482' }));
+    const names = ['Aanya Rahman', 'Arif Karim', 'Fahim Uddin', 'Ishrat Jahan', 'Labiba Sultana', 'Mahir Chowdhury', 'Maliha Akter', 'Nafis Ahmed', 'Nusrat Jahan', 'Rafsan Kabir', 'Samira Islam', 'Tahmid Hasan'];
+    const absent = this.state.absent;
+    const students = names.map((name) => {
+      const a = absent.includes(name);
+      return {
+        first: name, ini: name.split(' ').map((w) => w[0]).join(''), status: a ? 'Absent' : 'Present', pressed: a ? 'true' : 'false',
+        bg: a ? '#FCE7E1' : '#FFFFFF', line: a ? '#A8432B' : '#E3E7F2', avBg: a ? '#A8432B' : '#E2F4EE', avFg: a ? '#FFFFFF' : '#16705A', stFg: a ? '#A8432B' : '#16705A',
+        toggle: () => this.setState({ absent: a ? absent.filter((n) => n !== name) : [...absent, name], done: false })
+      };
+    });
+    const nA = absent.length;
+    const now = new Date();
+    return {
+      tabs, students, nA, nP: 42 - nA,
+      parentWord: nA === 1 ? 'parent was' : 'parents were',
+      today: now.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'short' }),
+      time: now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }),
+      done: this.state.done, notDone: !this.state.done,
+      submit: () => this.setState({ done: true })
+    };
+  }
+}
+</script>
+</body>
+</html>

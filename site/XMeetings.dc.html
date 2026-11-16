@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390">
+<title>App: Book a meeting</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.scroll>*{flex-shrink:0}
+.lbl{margin:0;font-size:14px;font-weight:800}
+</style>
+</helmet>
+<div style="width: 390px; height: 100vh; height: 100dvh; box-sizing: border-box; display: flex; flex-direction: column; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', 'Hind Siliguri', system-ui, sans-serif">
+  <div class="scroll" style="flex: 1; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 18px 18px 24px; display: flex; flex-direction: column; gap: 14px">
+    <p style="margin: 0; font-size: 12px; font-weight: 600; color: #5A6482">Concept · Sample data</p>
+    <h1 style="margin: 0; font-size: 26px; font-weight: 800">Parent-teacher meeting</h1>
+    <p style="margin: -6px 0 0; font-size: 14px; color: #5A6482">Saturday, 28 November · 15 minutes each</p>
+
+    <sc-if value="{{notBooked}}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-direction: column; gap: 14px; padding: 18px; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 20px">
+        <p class="lbl">Teacher</p>
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: -4px">
+          <sc-for list="{{teachers}}" as="t" hint-placeholder-count="2">
+            <button onClick="{{t.pick}}" style="display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 0 12px; background: {{t.bg}}; border: 2px solid {{t.line}}; border-radius: 14px; font: inherit; text-align: left; cursor: pointer">
+              <span aria-hidden="true" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: #EEEAFB; color: #5940AE; border-radius: 50%; font-weight: 800">{{t.initial}}</span>
+              <span><span style="display: block; font-size: 15px; font-weight: 800; color: #172042">{{t.name}}</span><span style="display: block; font-size: 12px; color: #5A6482">{{t.role}}</span></span>
+            </button>
+          </sc-for>
+        </div>
+        <p class="lbl">Time</p>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: -4px">
+          <sc-for list="{{slots}}" as="s" hint-placeholder-count="6">
+            <button onClick="{{s.pick}}" disabled="{{s.taken}}" style="min-height: 46px; background: {{s.bg}}; color: {{s.fg}}; border: 1px solid #D5DBEE; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 700; text-decoration: {{s.strike}}; cursor: pointer">{{s.label}}</button>
+          </sc-for>
+        </div>
+        <p class="lbl">How do you want to meet?</p>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: -4px">
+          <sc-for list="{{modes}}" as="m" hint-placeholder-count="3">
+            <button onClick="{{m.pick}}" style="min-height: 46px; background: {{m.bg}}; color: {{m.fg}}; border: 1px solid #D5DBEE; border-radius: 12px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer">{{m.label}}</button>
+          </sc-for>
+        </div>
+        <button onClick="{{book}}" style="min-height: 52px; background: #5940AE; color: #FFFFFF; border: 0; border-radius: 14px; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer">Book {{slot}}</button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{booked}}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; flex-direction: column; gap: 12px; padding: 22px 18px; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 20px">
+        <div style="width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; background: #EEEAFB; color: #5940AE; border-radius: 50%">
+          <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4 10-11"></path></svg>
+        </div>
+        <h2 style="margin: 0; font-size: 22px; font-weight: 800">Meeting booked</h2>
+        <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #5A6482">{{summary}} We will remind you the evening before.</p>
+        <button onClick="{{reset}}" style="min-height: 46px; background: #EEEAFB; color: #5940AE; border: 0; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">Change booking</button>
+      </div>
+    </sc-if>
+  </div>
+
+  <nav aria-label="Main" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 8px 4px 14px; background: #FFFFFF; border-top: 1px solid #E3E7F2">
+    <sc-for list="{{tabs}}" as="tab" hint-placeholder-count="5">
+      <a href="{{tab.href}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 54px; color: {{tab.color}}; font-size: 11px; font-weight: 700; text-decoration: none">
+        <span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; background: {{tab.pill}}; border-radius: 15px"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{tab.d}}"></path></svg></span>
+        {{tab.label}}
+      </a>
+    </sc-for>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  state = { teacher: 0, slot: '10:30 am', mode: 'In person', booked: false };
+  renderVals() {
+    const active = 'Services';
+    const tabs = [
+      { label: 'Home', href: 'XHome.dc.html', d: 'M3 11l9-8 9 8M5 10v10h14V10' },
+      { label: 'Messages', href: 'XMessages.dc.html', d: 'M4 5h16v11H9l-5 4z' },
+      { label: 'Calendar', href: 'XEvents.dc.html', d: 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4' },
+      { label: 'Fees', href: 'XPay.dc.html', d: 'M3 7h18v12H3zM3 11h18M7 15h3' },
+      { label: 'Services', href: 'XServices.dc.html', d: 'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z' }
+    ].map((t) => ({ ...t, color: t.label === active ? '#2F45A0' : '#5A6482', pill: t.label === active ? '#E9EDFB' : 'transparent' }));
+    const tdata = [
+      { name: 'Ms. Farzana Ahmed', role: 'Class teacher · Mathematics', initial: 'F' },
+      { name: 'Mr. Imran Hossain', role: 'Science', initial: 'I' }
+    ];
+    const teachers = tdata.map((t, i) => {
+      const on = i === this.state.teacher;
+      return { ...t, bg: on ? '#F6F4FE' : '#FFFFFF', line: on ? '#5940AE' : '#E3E7F2', pick: () => this.setState({ teacher: i }) };
+    });
+    const taken = ['10:00 am', '11:00 am'];
+    const slots = ['10:00 am', '10:15 am', '10:30 am', '10:45 am', '11:00 am', '11:15 am'].map((label) => {
+      const isTaken = taken.includes(label);
+      const on = label === this.state.slot;
+      return {
+        label,
+        taken: isTaken,
+        strike: isTaken ? 'line-through' : 'none',
+        bg: on ? '#5940AE' : isTaken ? '#F0F2F8' : '#FFFFFF',
+        fg: on ? '#FFFFFF' : isTaken ? '#6B7390' : '#172042',
+        pick: () => { if (!isTaken) this.setState({ slot: label }); }
+      };
+    });
+    const modes = ['In person', 'Phone call', 'Video'].map((label) => ({
+      label,
+      bg: label === this.state.mode ? '#172042' : '#FFFFFF',
+      fg: label === this.state.mode ? '#FFFFFF' : '#172042',
+      pick: () => this.setState({ mode: label })
+    }));
+    return {
+      tabs,
+      teachers,
+      slots,
+      modes,
+      slot: this.state.slot,
+      booked: this.state.booked,
+      notBooked: !this.state.booked,
+      summary: tdata[this.state.teacher].name + ' · 28 November, ' + this.state.slot + ' · ' + this.state.mode + '.',
+      book: () => this.setState({ booked: true }),
+      reset: () => this.setState({ booked: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

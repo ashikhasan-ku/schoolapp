@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin: Events and consent</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.panel{display:flex;flex-direction:column;gap:14px;padding:22px;background:#FFFFFF;border:1px solid #E3E7F2;border-radius:20px}
+.stat{flex:1;min-width:110px;padding:14px;border-radius:14px}
+.stat p{margin:0}
+</style>
+</helmet>
+<div style="min-height: 900px; display: flex; flex-wrap: wrap; align-items: stretch; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', system-ui, sans-serif">
+  <nav aria-label="Admin menu" style="flex: 1 1 240px; box-sizing: border-box; padding: 28px 18px; display: flex; flex-direction: column; gap: 2px; background: #FFFFFF; border-right: 1px solid #E3E7F2">
+    <p style="margin: 0; padding: 0 12px; font-size: 19px; font-weight: 800">School admin</p>
+    <p style="margin: 2px 0 16px; padding: 0 12px; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
+    <sc-for list="{{menu}}" as="m" hint-placeholder-count="15">
+      <a href="{{m.href}}" style="display: flex; align-items: center; min-height: 38px; padding: 0 12px; background: {{m.bg}}; color: {{m.fg}}; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none">{{m.label}}</a>
+    </sc-for>
+  </nav>
+
+  <main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 36px); display: flex; flex-direction: column; gap: 20px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+      <div>
+        <h1 style="margin: 0; font-size: 30px; font-weight: 800">Events and consent</h1>
+        <p style="margin: 4px 0 0; font-size: 15px; color: #5A6482">Ask parents once. See who replied and who paid.</p>
+      </div>
+      <button style="min-height: 44px; padding: 0 18px; background: #2F45A0; color: #FFFFFF; border: 0; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">New event</button>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start">
+      <section class="panel" style="flex: 1 1 280px; gap: 8px">
+        <sc-for list="{{events}}" as="e" hint-placeholder-count="3">
+          <button onClick="{{e.pick}}" style="display: flex; flex-direction: column; gap: 3px; min-height: 64px; padding: 12px 14px; background: {{e.bg}}; border: 2px solid {{e.line}}; border-radius: 14px; font: inherit; text-align: left; cursor: pointer">
+            <span style="font-size: 15px; font-weight: 800; color: #172042">{{e.name}}</span>
+            <span style="font-size: 12px; color: #5A6482">{{e.when}} · {{e.who}}</span>
+          </button>
+        </sc-for>
+      </section>
+
+      <section class="panel" style="flex: 2 1 480px; min-width: 0">
+        <div>
+          <p style="margin: 0; font-size: 13px; font-weight: 700; color: #2F45A0">{{ev.kind}}</p>
+          <h2 style="margin: 4px 0 0; font-size: 22px; font-weight: 800">{{ev.name}}</h2>
+          <p style="margin: 4px 0 0; font-size: 14px; color: #5A6482">{{ev.when}} · {{ev.who}} · {{ev.deadline}}</p>
+        </div>
+        <div style="display: flex; height: 14px; border-radius: 7px; overflow: hidden; background: #EEF1F8">
+          <div style="width: {{ev.p1}}%; background: #16705A"></div>
+          <div style="width: {{ev.p2}}%; background: #A8432B"></div>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px">
+          <div class="stat" style="background: #E2F4EE"><p style="font-size: 12px; font-weight: 700; color: #12503F">{{ev.l1}}</p><p style="margin-top: 4px; font-size: 26px; font-weight: 800; color: #0E4436">{{ev.n1}}</p></div>
+          <div class="stat" style="background: #FCE7E1"><p style="font-size: 12px; font-weight: 700; color: #7E3220">{{ev.l2}}</p><p style="margin-top: 4px; font-size: 26px; font-weight: 800; color: #6A2A1A">{{ev.n2}}</p></div>
+          <div class="stat" style="background: #FDF0DA"><p style="font-size: 12px; font-weight: 700; color: #6B4004">{{ev.l3}}</p><p style="margin-top: 4px; font-size: 26px; font-weight: 800; color: #5C3703">{{ev.n3}}</p></div>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px; background: #F5F7FC; border-radius: 14px">
+          <p style="margin: 0; flex: 1; min-width: 200px; font-size: 14px; color: #3E4766">{{ev.remindText}}</p>
+          <button onClick="{{remind}}" style="min-height: 44px; padding: 0 16px; background: {{remBg}}; color: #FFFFFF; border: 0; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">{{remLabel}}</button>
+        </div>
+        <button style="align-self: flex-start; min-height: 40px; padding: 0 14px; background: #FFFFFF; color: #2F45A0; border: 1px solid #C9D3F3; border-radius: 10px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Download list for class teacher</button>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  state = { sel: 0, reminded: [] };
+  renderVals() {
+    const active = 'Events';
+    const menu = [
+      ['Dashboard', 'AdminDashboard'], ['Emergency alert', 'AEmergency'], ['Communication', 'XAdminComms'], ['Notices', 'AdminNotices'], ['Students and families', 'AFamilies'],
+      ['Attendance', 'AdminAttendance'], ['Safe pickup', 'APickup'], ['Results', 'AResults'], ['Routine and calendar', 'ACalendar'], ['Events', 'AEvents'],
+      ['Meals', 'AMeals'], ['Fees', 'AdminFees'], ['Fee setup', 'AFeeSetup'], ['Transport', 'ATransport'], ['Feedback', 'AFeedback']
+    ].map(([label, f]) => ({ label, href: f + '.dc.html', bg: label === active ? '#E9EDFB' : 'transparent', fg: label === active ? '#2F45A0' : '#3E4766' }));
+    const data = [
+      { name: 'Science fair trip', kind: 'Consent form', when: '18 Nov', who: 'Class IV-B · 42 families', deadline: 'Reply by 17 Nov', l1: 'Said yes', n1: 28, l2: 'Said no', n2: 3, l3: 'No reply yet', n3: 11, total: 42, remindText: '11 families have not replied. Remind them in the app, with SMS backup.' },
+      { name: 'Annual sports day', kind: 'Event fee · BDT 300', when: '3 Dec', who: 'Whole school · 1,240 families', deadline: 'Pay by 25 Nov', l1: 'Paid', n1: 640, l2: 'Not taking part', n2: 45, l3: 'Not paid yet', n3: 555, total: 1240, remindText: '555 families have not paid. Remind them with a Pay button.' },
+      { name: 'Parent-teacher meeting', kind: 'Booking', when: '28 Nov', who: 'All classes', deadline: 'Booking closes 26 Nov', l1: 'Booked', n1: 702, l2: 'Cannot attend', n2: 38, l3: 'Not booked yet', n3: 500, total: 1240, remindText: '500 families have not booked a slot. Remind them to pick a time.' }
+    ];
+    const fmt = (n) => n.toLocaleString('en-US');
+    const e = data[this.state.sel];
+    const ev = { ...e, n1: fmt(e.n1), n2: fmt(e.n2), n3: fmt(e.n3), p1: (e.n1 / e.total * 100).toFixed(1), p2: (e.n2 / e.total * 100).toFixed(1) };
+    const done = this.state.reminded.includes(this.state.sel);
+    return {
+      menu,
+      ev,
+      events: data.map((d, i) => ({ ...d, bg: i === this.state.sel ? '#F6F8FE' : '#FFFFFF', line: i === this.state.sel ? '#2F45A0' : '#E3E7F2', pick: () => this.setState({ sel: i }) })),
+      remLabel: done ? 'Reminder sent' : 'Send reminder',
+      remBg: done ? '#16705A' : '#2F45A0',
+      remind: () => this.setState({ reminded: [...this.state.reminded, this.state.sel] })
+    };
+  }
+}
+</script>
+</body>
+</html>

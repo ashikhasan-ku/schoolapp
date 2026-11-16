@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390">
+<title>Teacher app: Class moments and diary</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.scroll>*{flex-shrink:0}
+.lbl{margin:0;font-size:14px;font-weight:800}
+</style>
+</helmet>
+<div style="width: 390px; height: 100vh; height: 100dvh; box-sizing: border-box; display: flex; flex-direction: column; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', system-ui, sans-serif">
+  <div class="scroll" style="flex: 1; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 22px 18px; display: flex; flex-direction: column; gap: 12px">
+    <p style="margin: 0; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
+    <div style="display: flex; align-items: center; gap: 8px">
+      <a href="TeacherToday.dc.html" aria-label="Back to today" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-left: -10px; color: #172042">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>
+      </a>
+      <h1 style="margin: 0; font-size: 26px; font-weight: 800">Share with parents</h1>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 4px; background: #E7EBF6; border-radius: 14px">
+      <sc-for list="{{modes}}" as="m" hint-placeholder-count="2">
+        <button onClick="{{m.pick}}" style="min-height: 42px; background: {{m.bg}}; color: #172042; border: 0; border-radius: 11px; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer">{{m.label}}</button>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{isPhotos}}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-direction: column; gap: 12px; padding: 16px; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 18px">
+        <p class="lbl">Class IV-B · {{picked}} photos selected</p>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px">
+          <sc-for list="{{photos}}" as="p" hint-placeholder-count="6">
+            <button onClick="{{p.toggle}}" aria-pressed="{{p.on}}" aria-label="Photo {{p.n}}" style="position: relative; height: 92px; padding: 0; background: {{p.sky}}; border: 3px solid {{p.line}}; border-radius: 12px; overflow: hidden; cursor: pointer">
+              <svg aria-hidden="true" width="100%" height="92" viewBox="0 0 100 92" preserveAspectRatio="none" style="display: block"><circle cx="{{p.sx}}" cy="26" r="10" fill="#FBD38D"></circle><path d="{{p.hill}}" fill="{{p.ground}}"></path></svg>
+              <sc-if value="{{p.on}}" hint-placeholder-val="{{ false }}">
+                <span style="position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; background: #2F45A0; color: #FFFFFF; border-radius: 50%; font-size: 12px; font-weight: 800">✓</span>
+              </sc-if>
+            </button>
+          </sc-for>
+        </div>
+        <label style="display: flex; flex-direction: column; gap: 6px">
+          <span class="lbl">Caption</span>
+          <input value="Our science fair practice" style="min-height: 46px; box-sizing: border-box; padding: 0 12px; border: 1px solid #D5DBEE; border-radius: 12px; font: inherit; font-size: 15px">
+        </label>
+        <div style="display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; background: #FDF0DA; border-radius: 12px">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A5205" stroke-width="1.8" stroke-linecap="round"><path d="M12 8v5M12 17h.01M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"></path></svg>
+          <p style="margin: 0; font-size: 13px; line-height: 1.45; color: #5C3703">2 students in this class have no photo consent: Samira Islam and Zayan Ahmed. Please check they are not in these photos.</p>
+        </div>
+        <button onClick="{{post}}" style="min-height: 50px; background: {{postBg}}; color: #FFFFFF; border: 0; border-radius: 14px; font: inherit; font-size: 15px; font-weight: 800; cursor: pointer">{{postLabel}}</button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isDiary}}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; flex-direction: column; gap: 12px; padding: 16px; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 18px">
+        <p class="lbl">Today’s diary · Class IV-B</p>
+        <textarea aria-label="Diary note" rows="5" style="box-sizing: border-box; padding: 12px; border: 1px solid #D5DBEE; border-radius: 12px; font: inherit; font-size: 15px; line-height: 1.5">We started fractions in maths. Please bring an empty bottle for science on Thursday.</textarea>
+        <p class="lbl">Quick add</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <span style="padding: 8px 12px; background: #E9EDFB; color: #22347F; border-radius: 16px; font-size: 13px; font-weight: 700">Bring sports uniform</span>
+          <span style="padding: 8px 12px; background: #E9EDFB; color: #22347F; border-radius: 16px; font-size: 13px; font-weight: 700">Library day</span>
+          <span style="padding: 8px 12px; background: #E9EDFB; color: #22347F; border-radius: 16px; font-size: 13px; font-weight: 700">Test tomorrow</span>
+        </div>
+        <button onClick="{{post}}" style="min-height: 50px; background: {{postBg}}; color: #FFFFFF; border: 0; border-radius: 14px; font: inherit; font-size: 15px; font-weight: 800; cursor: pointer">{{diaryLabel}}</button>
+      </div>
+    </sc-if>
+    <p style="margin: 0; font-size: 13px; color: #5A6482; text-align: center">Parents of 42 students in IV-B will see this on their Home screen.</p>
+  </div>
+
+  <nav aria-label="Main" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 8px 6px 12px; background: #FFFFFF; border-top: 1px solid #E3E7F2">
+    <sc-for list="{{tabs}}" as="tab" hint-placeholder-count="4">
+      <a href="{{tab.href}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; color: {{tab.color}}; font-size: 11px; font-weight: 600; text-decoration: none">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{tab.d}}"></path></svg>
+        {{tab.label}}
+      </a>
+    </sc-for>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  state = { mode: 'Class photos', sel: [0, 1, 3], posted: false };
+  renderVals() {
+    const active = 'Today';
+    const tabs = [
+      { label: 'Today', href: 'TeacherToday.dc.html', d: 'M3 11l9-8 9 8M5 10v10h14V10' },
+      { label: 'Attendance', href: 'TeacherAttendance.dc.html', d: 'M4 5h16v14H4zM8 12l3 3 5-6' },
+      { label: 'Messages', href: 'TMessages.dc.html', d: 'M4 5h16v11H9l-5 4z' },
+      { label: 'Homework', href: 'TeacherHomework.dc.html', d: 'M6 3h9l4 4v14H6zM9 12h7M9 16h7' }
+    ].map((t) => ({ ...t, color: t.label === active ? '#2F45A0' : '#5A6482' }));
+    const modes = ['Class photos', 'Diary note'].map((label) => ({ label, bg: label === this.state.mode ? '#FFFFFF' : 'transparent', pick: () => this.setState({ mode: label, posted: false }) }));
+    const scenes = [
+      { sky: '#CFE6F5', ground: '#7FB89A', sx: 72, hill: 'M0 92L30 50L55 75L75 58L100 80V92Z' },
+      { sky: '#F5DCCF', ground: '#C98B6F', sx: 28, hill: 'M0 92L25 62L50 80L80 46L100 70V92Z' },
+      { sky: '#E0DBF7', ground: '#8F80CF', sx: 50, hill: 'M0 92L20 70L45 55L70 72L100 52V92Z' },
+      { sky: '#DDF1E8', ground: '#5FA88A', sx: 80, hill: 'M0 92L35 58L60 78L85 60L100 74V92Z' },
+      { sky: '#FBEFD9', ground: '#D3A05A', sx: 22, hill: 'M0 92L28 66L52 50L78 74L100 62V92Z' },
+      { sky: '#E3EEF9', ground: '#6E94C4', sx: 60, hill: 'M0 92L22 56L48 76L72 54L100 78V92Z' }
+    ];
+    const sel = this.state.sel;
+    const photos = scenes.map((s, i) => {
+      const on = sel.includes(i);
+      return { ...s, n: i + 1, on, line: on ? '#2F45A0' : 'transparent', toggle: () => this.setState({ sel: on ? sel.filter((x) => x !== i) : [...sel, i], posted: false }) };
+    });
+    const p = this.state.posted;
+    return {
+      tabs, modes, photos,
+      picked: sel.length,
+      isPhotos: this.state.mode === 'Class photos',
+      isDiary: this.state.mode === 'Diary note',
+      postLabel: p ? 'Posted to parents' : 'Post ' + sel.length + ' photos',
+      diaryLabel: p ? 'Diary sent to parents' : 'Send diary note',
+      postBg: p ? '#16705A' : '#2F45A0',
+      post: () => this.setState({ posted: true })
+    };
+  }
+}
+</script>
+</body>
+</html>

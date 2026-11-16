@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Parent app: Routine</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.scroll>*{flex-shrink:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', 'Hind Siliguri', system-ui, sans-serif">
+  <div class="scroll" style="flex: 1; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 18px 18px 24px; display: flex; flex-direction: column; gap: 12px">
+    <div style="display: flex; align-items: center; gap: 8px">
+      <a href="XHome.dc.html" aria-label="Back to home" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-left: -10px; color: #172042">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>
+      </a>
+      <div>
+        <h1 style="margin: 0; font-size: 26px; font-weight: 800">Class routine</h1>
+        <p style="margin: 0; font-size: 12px; font-weight: 600; color: #8A93AE">Aanya · Class IV-B · Concept · Sample data</p>
+      </div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px">
+      <sc-for list="{{days}}" as="d" hint-placeholder-count="5">
+        <button onClick="{{d.pick}}" style="min-height: 52px; padding: 0; background: {{d.bg}}; color: {{d.fg}}; border: 1px solid #D5DBEE; border-radius: 14px; font: inherit; cursor: pointer">
+          <span style="display: block; font-size: 14px; font-weight: 800">{{d.label}}</span>
+          <span style="display: block; font-size: 10px; font-weight: 700">{{d.tag}}</span>
+        </button>
+      </sc-for>
+    </div>
+    <sc-for list="{{classes}}" as="c" hint-placeholder-count="5">
+      <div style="display: flex; align-items: center; gap: 14px; padding: 13px 14px; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 16px">
+        <span style="width: 6px; align-self: stretch; background: {{c.color}}; border-radius: 3px"></span>
+        <p style="margin: 0; width: 64px; font-size: 13px; font-weight: 700; color: #3E4766">{{c.time}}</p>
+        <div>
+          <p style="margin: 0; font-size: 16px; font-weight: 800">{{c.subject}}</p>
+          <p style="margin: 2px 0 0; font-size: 13px; color: #5A6482">{{c.teacher}}</p>
+        </div>
+      </div>
+    </sc-for>
+    <a href="ParentNotices.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #EEEAFB; border-radius: 16px; color: #2E2163; text-decoration: none">
+      <span style="flex: 1"><span style="display: block; font-size: 12px; font-weight: 700">Exam routine</span><span style="display: block; margin-top: 2px; font-size: 15px; font-weight: 800">Half-yearly exams from 22 November</span></span>
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+    </a>
+  </div>
+
+  <nav aria-label="Main" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 8px 4px 14px; background: #FFFFFF; border-top: 1px solid #E3E7F2">
+    <sc-for list="{{tabs}}" as="tab" hint-placeholder-count="5">
+      <a href="{{tab.href}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 54px; color: {{tab.color}}; font-size: 11px; font-weight: 700; text-decoration: none">
+        <span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; background: {{tab.pill}}; border-radius: 15px"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{tab.d}}"></path></svg></span>
+        {{tab.label}}
+      </a>
+    </sc-for>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  state = { day: null };
+  renderVals() {
+    const active = 'Home';
+    const tabs = [
+      { label: 'Home', href: 'XHome.dc.html', d: 'M3 11l9-8 9 8M5 10v10h14V10' },
+      { label: 'Messages', href: 'XMessages.dc.html', d: 'M4 5h16v11H9l-5 4z' },
+      { label: 'Calendar', href: 'XEvents.dc.html', d: 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4' },
+      { label: 'Fees', href: 'XPay.dc.html', d: 'M3 7h18v12H3zM3 11h18M7 15h3' },
+      { label: 'Services', href: 'XServices.dc.html', d: 'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z' }
+    ].map((t) => ({ ...t, color: t.label === active ? '#2F45A0' : '#5A6482', pill: t.label === active ? '#E9EDFB' : 'transparent' }));
+    const today = new Date().getDay();
+    const def = today <= 4 ? today : 0;
+    const sel = this.state.day == null ? def : this.state.day;
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu'].map((label, i) => ({
+      label, tag: i === def ? (today <= 4 ? 'Today' : 'Next') : '',
+      bg: i === sel ? '#172042' : '#FFFFFF', fg: i === sel ? '#FFFFFF' : '#172042', pick: () => this.setState({ day: i })
+    }));
+    const times = ['8:30 am', '9:30 am', '10:30 am', '11:30 am', '12:30 pm'];
+    const subjects = [
+      { subject: 'English', teacher: 'Ms. Tania Karim', color: '#2F45A0' },
+      { subject: 'Mathematics', teacher: 'Ms. Farzana Ahmed', color: '#5940AE' },
+      { subject: 'Science', teacher: 'Mr. Imran Hossain', color: '#16705A' },
+      { subject: 'Bangla', teacher: 'Ms. Sadia Noor', color: '#B86A06' },
+      { subject: 'Art', teacher: 'Mr. Rafiq Alam', color: '#A8432B' }
+    ];
+    const classes = times.map((time, i) => ({ time, ...subjects[(i + sel + 4) % 5] }));
+    return { tabs, days, classes };
+  }
+}
+</script>
+</body>
+</html>

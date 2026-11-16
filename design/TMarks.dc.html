@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Teacher app: Marks entry</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.scroll>*{flex-shrink:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', system-ui, sans-serif">
+  <div class="scroll" style="flex: 1; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 22px 18px; display: flex; flex-direction: column; gap: 12px">
+    <p style="margin: 0; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
+    <div style="display: flex; align-items: center; gap: 8px">
+      <a href="TeacherToday.dc.html" aria-label="Back to today" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-left: -10px; color: #172042">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>
+      </a>
+      <h1 style="margin: 0; font-size: 26px; font-weight: 800">Enter marks</h1>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #EEEAFB; border-radius: 16px">
+      <div style="flex: 1">
+        <p style="margin: 0; font-size: 13px; font-weight: 700; color: #45318C">Class test 3 · Mathematics · IV-B</p>
+        <p style="margin: 3px 0 0; font-size: 18px; font-weight: 800; color: #2E2163">{{count}} of 8 entered · out of 100</p>
+      </div>
+      <p style="margin: 0; font-size: 13px; font-weight: 700; color: #45318C">Avg {{avg}}</p>
+    </div>
+
+    <div style="display: flex; flex-direction: column; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 18px; overflow: hidden">
+      <sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+        <label style="display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 56px; padding: 0 14px; border-bottom: 1px solid #EEF1F8">
+          <span style="font-size: 15px; font-weight: 600">{{r.name}}</span>
+          <input value="{{r.val}}" onChange="{{r.set}}" inputmode="numeric" disabled="{{locked}}" placeholder="—" style="width: 72px; min-height: 42px; box-sizing: border-box; text-align: center; border: 1px solid {{r.line}}; border-radius: 10px; background: {{r.bg}}; font: inherit; font-size: 16px; font-weight: 800; color: #172042">
+        </label>
+      </sc-for>
+    </div>
+
+    <p style="margin: 0; font-size: 13px; color: #5A6482">Marks are saved as you type. After you submit, the office checks and releases them to parents.</p>
+    <button onClick="{{submit}}" style="min-height: 52px; background: {{subBg}}; color: #FFFFFF; border: 0; border-radius: 14px; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer">{{subLabel}}</button>
+  </div>
+
+  <nav aria-label="Main" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 8px 6px 12px; background: #FFFFFF; border-top: 1px solid #E3E7F2">
+    <sc-for list="{{tabs}}" as="tab" hint-placeholder-count="4">
+      <a href="{{tab.href}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; color: {{tab.color}}; font-size: 11px; font-weight: 600; text-decoration: none">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{tab.d}}"></path></svg>
+        {{tab.label}}
+      </a>
+    </sc-for>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  state = { marks: { 'Aanya Rahman': '91', 'Arif Karim': '78', 'Labiba Sultana': '84', 'Mahir Chowdhury': '72', 'Nusrat Jahan': '88', 'Samira Islam': '', 'Tahmid Hasan': '', 'Zayan Ahmed': '81' }, done: false };
+  renderVals() {
+    const active = 'Today';
+    const tabs = [
+      { label: 'Today', href: 'TeacherToday.dc.html', d: 'M3 11l9-8 9 8M5 10v10h14V10' },
+      { label: 'Attendance', href: 'TeacherAttendance.dc.html', d: 'M4 5h16v14H4zM8 12l3 3 5-6' },
+      { label: 'Messages', href: 'TMessages.dc.html', d: 'M4 5h16v11H9l-5 4z' },
+      { label: 'Homework', href: 'TeacherHomework.dc.html', d: 'M6 3h9l4 4v14H6zM9 12h7M9 16h7' }
+    ].map((t) => ({ ...t, color: t.label === active ? '#2F45A0' : '#5A6482' }));
+    const m = this.state.marks;
+    const rows = Object.keys(m).map((name) => {
+      const v = m[name];
+      const n = Number(v);
+      const bad = v !== '' && (isNaN(n) || n < 0 || n > 100);
+      return {
+        name, val: v,
+        line: bad ? '#A8432B' : v === '' ? '#F2C98A' : '#D5DBEE',
+        bg: v === '' ? '#FFFBF3' : '#FFFFFF',
+        set: (e) => this.setState({ marks: { ...m, [name]: e.target.value }, done: false })
+      };
+    });
+    const vals = Object.values(m).filter((v) => v !== '' && !isNaN(Number(v))).map(Number);
+    const count = vals.length;
+    const all = count === 8;
+    return {
+      tabs, rows, count,
+      avg: count ? Math.round(vals.reduce((a, b) => a + b, 0) / count) : '—',
+      locked: this.state.done,
+      subLabel: this.state.done ? 'Submitted to the office' : all ? 'Submit to the office' : 'Enter all marks to submit',
+      subBg: this.state.done ? '#16705A' : all ? '#5940AE' : '#9AA0B8',
+      submit: () => { if (all) this.setState({ done: true }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Parent app: Meals</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.scroll>*{flex-shrink:0}
+.card{background:#FFFFFF;border:1px solid #E3E7F2;border-radius:20px}
+</style>
+</helmet>
+<div style="width: 390px; height: 1120px; box-sizing: border-box; display: flex; flex-direction: column; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', 'Hind Siliguri', system-ui, sans-serif">
+  <div class="scroll" style="flex: 1; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 18px 18px 24px; display: flex; flex-direction: column; gap: 14px">
+    <div style="display: flex; align-items: center; gap: 8px">
+      <a href="XHome.dc.html" aria-label="Back to home" style="display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-left: -10px; color: #172042">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>
+      </a>
+      <div>
+        <h1 style="margin: 0; font-size: 26px; font-weight: 800">Meals</h1>
+        <p style="margin: 0; font-size: 12px; font-weight: 600; color: #8A93AE">Concept · Sample data</p>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px">
+      <sc-for list="{{days}}" as="d" hint-placeholder-count="5">
+        <button onClick="{{d.pick}}" style="min-height: 52px; padding: 0; background: {{d.bg}}; color: {{d.fg}}; border: 1px solid #D5DBEE; border-radius: 14px; font: inherit; cursor: pointer">
+          <span style="display: block; font-size: 12px; font-weight: 600">{{d.short}}</span>
+          <span style="display: block; font-size: 14px; font-weight: 800">{{d.tag}}</span>
+        </button>
+      </sc-for>
+    </div>
+
+    <section class="card" style="overflow: hidden">
+      <div aria-hidden="true" style="height: 110px; background: #E2F4EE; display: flex; align-items: center; justify-content: center">
+        <svg width="150" height="90" viewBox="0 0 150 90"><ellipse cx="75" cy="62" rx="62" ry="18" fill="#FFFFFF"></ellipse><ellipse cx="75" cy="56" rx="48" ry="14" fill="#F6D58E"></ellipse><circle cx="58" cy="50" r="7" fill="#E8915A"></circle><circle cx="82" cy="48" r="6" fill="#7FB89A"></circle><circle cx="95" cy="54" r="5" fill="#E8915A"></circle><circle cx="70" cy="57" r="4" fill="#7FB89A"></circle><path d="M40 20c3-6 0-10 3-15M75 18c3-6 0-10 3-15M110 20c3-6 0-10 3-15" stroke="#A9CDBE" stroke-width="3" fill="none" stroke-linecap="round"></path></svg>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px; padding: 16px">
+        <div>
+          <p style="margin: 0; font-size: 12px; font-weight: 700; color: #16705A">{{sel.day}} · Lunch, 12:30 pm</p>
+          <p style="margin: 3px 0 0; font-size: 20px; font-weight: 800">{{sel.lunch}}</p>
+        </div>
+        <div style="display: flex; justify-content: space-between; gap: 10px; padding-top: 10px; border-top: 1px solid #EEF1F8">
+          <div><p style="margin: 0; font-size: 12px; font-weight: 700; color: #8A5205">Snack, 10:30 am</p><p style="margin: 2px 0 0; font-size: 15px; font-weight: 700">{{sel.snack}}</p></div>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px">
+          <sc-for list="{{sel.tags}}" as="t" hint-placeholder-count="2"><span style="padding: 5px 10px; background: #F5F7FC; border-radius: 10px; font-size: 12px; font-weight: 700; color: #3E4766">{{t}}</span></sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" style="display: flex; flex-direction: column; gap: 12px; padding: 16px">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 10px">
+        <div>
+          <p style="margin: 0; font-size: 16px; font-weight: 800">Monthly lunch and snack plan</p>
+          <p style="margin: 3px 0 0; font-size: 13px; color: #5A6482">BDT 1,800 a month · added to the monthly fee</p>
+        </div>
+        <span style="flex-shrink: 0; padding: 5px 10px; background: {{subBg}}; color: {{subFg}}; border-radius: 10px; font-size: 12px; font-weight: 800">{{subStatus}}</span>
+      </div>
+      <button onClick="{{toggleSub}}" style="min-height: 50px; background: {{subBtnBg}}; color: {{subBtnFg}}; border: 1px solid #C9D3F3; border-radius: 14px; font: inherit; font-size: 15px; font-weight: 800; cursor: pointer">{{subBtn}}</button>
+      <p style="margin: 0; font-size: 12px; color: #5A6482">Allergies or food needs? Tell us in Feedback and the kitchen will see it.</p>
+    </section>
+
+    <section class="card" style="display: flex; flex-direction: column; gap: 12px; padding: 16px">
+      <p style="margin: 0; font-size: 16px; font-weight: 800">How was today’s lunch for Aanya?</p>
+      <sc-if value="{{notRated}}" hint-placeholder-val="{{ true }}">
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+          <sc-for list="{{rates}}" as="r" hint-placeholder-count="3">
+            <button onClick="{{r.pick}}" style="display: flex; flex-direction: column; align-items: center; gap: 4px; min-height: 76px; justify-content: center; background: {{r.bg}}; color: {{r.fg}}; border: 0; border-radius: 14px; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer">
+              <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0M9 10h.01M15 10h.01{{r.mouth}}"></path></svg>
+              {{r.label}}
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{rated}}" hint-placeholder-val="{{ false }}">
+        <div style="padding: 14px; background: #E2F4EE; border-radius: 14px">
+          <p style="margin: 0; font-size: 14px; font-weight: 800; color: #0E4436">Thanks. The kitchen team sees your rating.</p>
+          <p style="margin: 4px 0 0; font-size: 13px; color: #12503F">You said: {{ratedLabel}}</p>
+        </div>
+      </sc-if>
+      <a href="XFeedback.dc.html" style="display: flex; align-items: center; justify-content: center; min-height: 46px; background: #E9EDFB; color: #2F45A0; border-radius: 12px; font-size: 14px; font-weight: 700; text-decoration: none">Write detailed feedback</a>
+    </section>
+  </div>
+
+  <nav aria-label="Main" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 8px 4px 14px; background: #FFFFFF; border-top: 1px solid #E3E7F2">
+    <sc-for list="{{tabs}}" as="tab" hint-placeholder-count="5">
+      <a href="{{tab.href}}" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 54px; color: {{tab.color}}; font-size: 11px; font-weight: 700; text-decoration: none">
+        <span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; background: {{tab.pill}}; border-radius: 15px"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{tab.d}}"></path></svg></span>
+        {{tab.label}}
+      </a>
+    </sc-for>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1120}}'>
+class Component extends DCLogic {
+  state = { day: null, sub: true, rate: null };
+  renderVals() {
+    const active = 'Services';
+    const tabs = [
+      { label: 'Home', href: 'XHome.dc.html', d: 'M3 11l9-8 9 8M5 10v10h14V10' },
+      { label: 'Messages', href: 'XMessages.dc.html', d: 'M4 5h16v11H9l-5 4z' },
+      { label: 'Calendar', href: 'XEvents.dc.html', d: 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4' },
+      { label: 'Fees', href: 'XPay.dc.html', d: 'M3 7h18v12H3zM3 11h18M7 15h3' },
+      { label: 'Services', href: 'XServices.dc.html', d: 'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z' }
+    ].map((t) => ({ ...t, color: t.label === active ? '#2F45A0' : '#5A6482', pill: t.label === active ? '#E9EDFB' : 'transparent' }));
+    const menu = [
+      { day: 'Sunday', short: 'Sun', lunch: 'Chicken khichuri', snack: 'Banana and milk', tags: ['Mild spice', 'No nuts'] },
+      { day: 'Monday', short: 'Mon', lunch: 'Rice, dal and fish curry', snack: 'Fruit cup', tags: ['Contains: fish', 'Mild spice'] },
+      { day: 'Tuesday', short: 'Tue', lunch: 'Vegetable noodles with egg', snack: 'Yoghurt', tags: ['Contains: egg, milk'] },
+      { day: 'Wednesday', short: 'Wed', lunch: 'Rice, chicken curry and salad', snack: 'Seasonal fruit', tags: ['Mild spice'] },
+      { day: 'Thursday', short: 'Thu', lunch: 'Vegetable pulao with egg', snack: 'Milk and biscuits', tags: ['Contains: egg, milk, wheat'] }
+    ];
+    const today = new Date().getDay();
+    const def = today <= 4 ? today : 0;
+    const di = this.state.day == null ? def : this.state.day;
+    const days = menu.map((m, i) => ({
+      short: m.short, tag: i === def ? 'Today' : m.short === 'Sun' && def !== 0 ? 'Next' : String(i + 1),
+      bg: i === di ? '#172042' : '#FFFFFF', fg: i === di ? '#FFFFFF' : '#172042', pick: () => this.setState({ day: i })
+    })).map((d, i) => ({ ...d, tag: i === def ? (today <= 4 ? 'Today' : 'Next') : '' }));
+    const s = this.state.sub;
+    const rateDefs = [
+      { label: 'Loved it', mouth: 'M8 14c2 3 6 3 8 0', bg: '#E2F4EE', fg: '#0E4436' },
+      { label: 'It was okay', mouth: 'M8 15h8', bg: '#FDF0DA', fg: '#5C3703' },
+      { label: 'Not good', mouth: 'M8 16c2-2.5 6-2.5 8 0', bg: '#FCE7E1', fg: '#6A2A1A' }
+    ];
+    return {
+      tabs, days, sel: menu[di],
+      subStatus: s ? 'Subscribed' : 'Not subscribed',
+      subBg: s ? '#E2F4EE' : '#F0F2F8', subFg: s ? '#0E4436' : '#3E4766',
+      subBtn: s ? 'Pause plan from next month' : 'Subscribe for BDT 1,800 a month',
+      subBtnBg: s ? '#FFFFFF' : '#2F45A0', subBtnFg: s ? '#2F45A0' : '#FFFFFF',
+      toggleSub: () => this.setState({ sub: !s }),
+      rates: rateDefs.map((r) => ({ ...r, pick: () => this.setState({ rate: r.label }) })),
+      rated: this.state.rate !== null, notRated: this.state.rate === null, ratedLabel: this.state.rate
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin: Fee setup</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.panel{display:flex;flex-direction:column;gap:14px;padding:22px;background:#FFFFFF;border:1px solid #E3E7F2;border-radius:20px}
+.lbl{margin:0;font-size:14px;font-weight:800}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:50px;border-top:1px solid #EEF1F8;font-size:15px}
+</style>
+</helmet>
+<div style="min-height: 900px; display: flex; flex-wrap: wrap; align-items: stretch; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', system-ui, sans-serif">
+  <nav aria-label="Admin menu" style="flex: 1 1 240px; box-sizing: border-box; padding: 28px 18px; display: flex; flex-direction: column; gap: 2px; background: #FFFFFF; border-right: 1px solid #E3E7F2">
+    <p style="margin: 0; padding: 0 12px; font-size: 19px; font-weight: 800">School admin</p>
+    <p style="margin: 2px 0 16px; padding: 0 12px; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
+    <sc-for list="{{menu}}" as="m" hint-placeholder-count="15">
+      <a href="{{m.href}}" style="display: flex; align-items: center; min-height: 38px; padding: 0 12px; background: {{m.bg}}; color: {{m.fg}}; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none">{{m.label}}</a>
+    </sc-for>
+  </nav>
+
+  <main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 36px); display: flex; flex-direction: column; gap: 20px">
+    <div>
+      <h1 style="margin: 0; font-size: 30px; font-weight: 800">Fee setup</h1>
+      <p style="margin: 4px 0 0; font-size: 15px; color: #5A6482">Set fees once. Parents see dues, reminders and receipts automatically.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 18px; align-items: start">
+      <section class="panel">
+        <p class="lbl">Monthly fee plan · November 2026</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <sc-for list="{{classes}}" as="c" hint-placeholder-count="5">
+            <button onClick="{{c.pick}}" style="min-height: 40px; padding: 0 14px; background: {{c.bg}}; color: {{c.fg}}; border: 1px solid #D5DBEE; border-radius: 20px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer">{{c.label}}</button>
+          </sc-for>
+        </div>
+        <div style="display: flex; flex-direction: column">
+          <sc-for list="{{items}}" as="i" hint-placeholder-count="3">
+            <div class="row"><span>{{i.name}}</span><span style="font-weight: 700">BDT {{i.amt}}</span></div>
+          </sc-for>
+          <div class="row" style="border-top: 2px solid #E3E7F2"><span style="font-weight: 800">Total for {{cls}}</span><span style="font-size: 19px; font-weight: 800">BDT {{total}}</span></div>
+        </div>
+        <button style="align-self: flex-start; min-height: 40px; padding: 0 14px; background: #E9EDFB; color: #2F45A0; border: 0; border-radius: 10px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer">Add a fee item</button>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 800">Due date
+            <input value="30 November 2026" style="min-height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #D5DBEE; border-radius: 10px; font: inherit; font-size: 14px; font-weight: 400">
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 800">Late fee
+            <input value="[AS PER SCHOOL POLICY]" style="min-height: 44px; box-sizing: border-box; padding: 0 12px; border: 1px solid #D5DBEE; border-radius: 10px; font: inherit; font-size: 14px; font-weight: 400">
+          </label>
+        </div>
+      </section>
+
+      <div style="display: flex; flex-direction: column; gap: 18px">
+        <section class="panel">
+          <button onClick="{{toggleInst}}" style="display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 0; background: transparent; border: 0; font: inherit; text-align: left; cursor: pointer">
+            <span style="flex: 1"><span style="display: block; font-size: 15px; font-weight: 800; color: #172042">Sibling discount</span><span style="display: block; font-size: 13px; color: #5A6482">{{instNote}}</span></span>
+            <span aria-hidden="true" style="width: 48px; height: 28px; display: flex; align-items: center; padding: 3px; box-sizing: border-box; justify-content: {{knob}}; background: {{track}}; border-radius: 14px"><span style="width: 22px; height: 22px; background: #FFFFFF; border-radius: 50%"></span></span>
+          </button>
+          <p class="lbl" style="padding-top: 10px; border-top: 1px solid #EEF1F8">Remind parents</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px">
+            <sc-for list="{{reminders}}" as="r" hint-placeholder-count="4">
+              <button onClick="{{r.toggle}}" style="min-height: 40px; padding: 0 14px; background: {{r.bg}}; color: {{r.fg}}; border: 1px solid #D5DBEE; border-radius: 20px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer">{{r.label}}</button>
+            </sc-for>
+          </div>
+          <p style="margin: 0; font-size: 13px; color: #5A6482">Accepted: bank cards (Visa, Mastercard, Amex) and internet banking. Money goes straight to the school’s bank account.</p>
+        </section>
+
+        <section style="display: flex; flex-direction: column; gap: 10px; padding: 20px; background: #172042; color: #FFFFFF; border-radius: 20px">
+          <p style="margin: 0; font-size: 13px; font-weight: 700; color: #C9D3F3">What parents of {{cls}} will see</p>
+          <p style="margin: 0; font-size: 28px; font-weight: 800">BDT {{total}}</p>
+          <p style="margin: 0; font-size: 14px; color: #E9EDFB">November fee · Due 30 Nov{{instShort}}</p>
+          <button onClick="{{publish}}" style="align-self: flex-start; min-height: 46px; margin-top: 6px; padding: 0 20px; background: #FFFFFF; color: #172042; border: 0; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer">{{pubLabel}}</button>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  state = { cls: 'Class IV', inst: false, rem: ['7 days before', '1 day before'], pub: false };
+  renderVals() {
+    const active = 'Fee setup';
+    const menu = [
+      ['Dashboard', 'AdminDashboard'], ['Emergency alert', 'AEmergency'], ['Communication', 'XAdminComms'], ['Notices', 'AdminNotices'], ['Students and families', 'AFamilies'],
+      ['Attendance', 'AdminAttendance'], ['Safe pickup', 'APickup'], ['Results', 'AResults'], ['Routine and calendar', 'ACalendar'], ['Events', 'AEvents'],
+      ['Meals', 'AMeals'], ['Fees', 'AdminFees'], ['Fee setup', 'AFeeSetup'], ['Transport', 'ATransport'], ['Feedback', 'AFeedback']
+    ].map(([label, f]) => ({ label, href: f + '.dc.html', bg: label === active ? '#E9EDFB' : 'transparent', fg: label === active ? '#2F45A0' : '#3E4766' }));
+    const plans = {
+      'Class III': [6000, 700, 500], 'Class IV': [6500, 800, 500], 'Class V': [6800, 800, 500],
+      'Class VII': [7200, 900, 500], 'Class VIII': [7500, 900, 500]
+    };
+    const fmt = (n) => n.toLocaleString('en-US');
+    const p = plans[this.state.cls];
+    const total = p.reduce((a, b) => a + b, 0);
+    const classes = Object.keys(plans).map((label) => ({
+      label, bg: label === this.state.cls ? '#172042' : '#FFFFFF', fg: label === this.state.cls ? '#FFFFFF' : '#172042',
+      pick: () => this.setState({ cls: label, pub: false })
+    }));
+    const rem = this.state.rem;
+    const reminders = ['14 days before', '7 days before', '1 day before', 'On the due date'].map((label) => {
+      const on = rem.includes(label);
+      return { label, bg: on ? '#E2F4EE' : '#FFFFFF', fg: on ? '#12503F' : '#172042', toggle: () => this.setState({ rem: on ? rem.filter((r) => r !== label) : [...rem, label] }) };
+    });
+    const half = fmt(Math.round(total / 2));
+    return {
+      menu,
+      classes,
+      cls: this.state.cls,
+      items: [{ name: 'Tuition fee', amt: fmt(p[0]) }, { name: 'Exam fee', amt: fmt(p[1]) }, { name: 'Activities', amt: fmt(p[2]) }],
+      total: fmt(total),
+      reminders,
+      instNote: this.state.inst ? '10% off tuition for the second child · BDT ' + fmt(Math.round(p[0] * 0.1)) + ' less' : 'Off · every child pays the full fee',
+      instShort: this.state.inst ? ' · sibling discount applied for second child' : '',
+      track: this.state.inst ? '#16705A' : '#C5CBDC',
+      knob: this.state.inst ? 'flex-end' : 'flex-start',
+      toggleInst: () => this.setState({ inst: !this.state.inst, pub: false }),
+      pubLabel: this.state.pub ? 'Published to parents' : 'Publish fee plan',
+      publish: () => this.setState({ pub: true })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390">
+<title>Parent: Sign in</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Hind+Siliguri:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.scroll>*{flex-shrink:0}
+.box{width:44px;height:54px;display:flex;align-items:center;justify-content:center;background:#FFFFFF;border:2px solid #D5DBEE;border-radius:12px;font-size:22px;font-weight:800}
+</style>
+</helmet>
+<div style="width: 390px; height: 100vh; height: 100dvh; box-sizing: border-box; display: flex; flex-direction: column; background: #F5F7FC; color: #172042; font-family: {{font}}">
+  <div class="scroll" style="flex: 1; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 22px 22px 28px; display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <sc-if value="{{canBack}}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{back}}" aria-label="Back" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 50%; color: #172042; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg></button>
+      </sc-if>
+      <sc-if value="{{noBack}}" hint-placeholder-val="{{ true }}"><p style="margin: 0; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p></sc-if>
+      <button onClick="{{lang}}" style="min-height: 38px; padding: 0 14px; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 20px; font: inherit; font-family: 'Hind Siliguri', 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 700; color: #2F45A0; cursor: pointer">{{t.langBtn}}</button>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding-top: 18px; text-align: center">
+      <span aria-hidden="true" style="width: 72px; height: 72px; display: flex; align-items: center; justify-content: center; background: #2F45A0; border-radius: 22px; color: #FFFFFF">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-5 9 5-9 5zM7 11v5c0 1.5 2.5 3 5 3s5-1.5 5-3v-5"></path></svg>
+      </span>
+      <p style="margin: 0; font-size: 14px; font-weight: 700; color: #5A6482">{{t.app}}</p>
+    </div>
+
+    <sc-if value="{{s1}}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-direction: column; gap: 14px">
+        <h1 style="margin: 0; font-size: 26px; line-height: 1.25; font-weight: 800">{{t.h1}}</h1>
+        <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #5A6482">{{t.p1}}</p>
+        <label style="display: flex; flex-direction: column; gap: 8px; font-size: 14px; font-weight: 800">{{t.phoneLabel}}
+          <span style="display: flex; align-items: center; min-height: 56px; background: #FFFFFF; border: 2px solid #2F45A0; border-radius: 14px; overflow: hidden">
+            <span style="display: flex; align-items: center; height: 56px; padding: 0 14px; background: #F0F2F8; font-size: 17px; font-weight: 800">+880</span>
+            <input value="1712 345 678" inputmode="tel" style="flex: 1; min-width: 0; height: 52px; padding: 0 14px; border: 0; outline: none; background: transparent; font: inherit; font-size: 18px; font-weight: 700; letter-spacing: 0.04em; color: #172042">
+          </span>
+        </label>
+        <button onClick="{{send}}" style="min-height: 54px; background: #2F45A0; color: #FFFFFF; border: 0; border-radius: 14px; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer">{{t.send}}</button>
+        <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5A6482; text-align: center">{{t.note}}</p>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{s2}}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; flex-direction: column; gap: 14px">
+        <h1 style="margin: 0; font-size: 26px; line-height: 1.25; font-weight: 800">{{t.h2}}</h1>
+        <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #5A6482">{{t.p2}} <b style="color: #172042">+880 1712 345 678</b></p>
+        <div style="display: flex; justify-content: space-between; gap: 6px">
+          <sc-for list="{{digits}}" as="d" hint-placeholder-count="6"><span class="box" style="border-color: {{d.line}}">{{d.v}}</span></sc-for>
+        </div>
+        <p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #16705A"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"></path></svg>{{t.auto}}</p>
+        <button onClick="{{verify}}" style="min-height: 54px; background: #2F45A0; color: #FFFFFF; border: 0; border-radius: 14px; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer">{{t.verify}}</button>
+        <p style="margin: 0; font-size: 13px; color: #5A6482; text-align: center">{{t.resend}}</p>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{s3}}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; flex-direction: column; gap: 14px">
+        <h1 style="margin: 0; font-size: 26px; line-height: 1.25; font-weight: 800">{{t.h3}}</h1>
+        <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #5A6482">{{t.p3}}</p>
+        <sc-for list="{{found}}" as="c" hint-placeholder-count="2">
+          <div style="display: flex; align-items: center; gap: 12px; padding: 14px; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 16px">
+            <span style="flex-shrink: 0; width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; background: {{c.bg}}; color: {{c.fg}}; border-radius: 50%; font-size: 16px; font-weight: 800">{{c.ini}}</span>
+            <span style="flex: 1"><span style="display: block; font-size: 16px; font-weight: 800">{{c.name}}</span><span style="display: block; font-size: 13px; color: #5A6482">{{c.sub}}</span></span>
+            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16705A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"></path></svg>
+          </div>
+        </sc-for>
+        <a href="XHome.dc.html" style="display: flex; align-items: center; justify-content: center; min-height: 54px; background: #2F45A0; color: #FFFFFF; border-radius: 14px; font-size: 16px; font-weight: 800; text-decoration: none">{{t.go}}</a>
+        <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #5A6482; text-align: center">{{t.stay}}</p>
+      </div>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  state = { step: 1, bn: false };
+  renderVals() {
+    const st = this.state;
+    const L = {"en": {"langBtn": "বাংলা", "phoneLabel": "Mobile number", "send": "Send me a code", "h2": "Enter the 6-digit code", "p2": "We sent it by SMS to", "auto": "Filled in from your SMS", "verify": "Sign in", "resend": "No SMS? Resend in 0:28", "app": "Sunnydale School · Parent app", "h1": "Welcome. Sign in with your phone.", "p1": "Use the mobile number you gave the school. No password to remember.", "note": "Only numbers registered with the school can sign in. New number? Ask the office to update it.", "h3": "We found your children", "p3": "Everything for both of them is in one place. Switch any time from Home.", "go": "Go to my Home", "stay": "You stay signed in on this phone. Signing in on a new phone needs a new code."}, "bn": {"langBtn": "English", "phoneLabel": "মোবাইল নম্বর", "send": "কোড পাঠান", "h2": "৬ সংখ্যার কোডটি দিন", "p2": "এসএমএস পাঠানো হয়েছে", "auto": "এসএমএস থেকে নিজে থেকেই বসেছে", "verify": "প্রবেশ করুন", "resend": "এসএমএস আসেনি? ০:২৮ পরে আবার পাঠান", "app": "সানিডেল স্কুল · অভিভাবক অ্যাপ", "h1": "স্বাগতম। ফোন নম্বর দিয়ে প্রবেশ করুন।", "p1": "স্কুলে দেওয়া মোবাইল নম্বরটি দিন। কোনো পাসওয়ার্ড মনে রাখতে হবে না।", "note": "শুধু স্কুলে নিবন্ধিত নম্বর দিয়েই প্রবেশ করা যাবে। নম্বর বদলেছে? অফিসকে জানান।", "h3": "আপনার সন্তানদের পাওয়া গেছে", "p3": "দুজনের সব তথ্য এক জায়গায়। হোম থেকে যেকোনো সময় বদলান।", "go": "হোমে যান", "stay": "এই ফোনে আপনি প্রবেশ করা অবস্থায় থাকবেন।"}};
+    const t = st.bn ? L.bn : L.en;
+    const code = '482915';
+    return {
+      t, s1: st.step === 1, s2: st.step === 2, s3: st.step === 3, canBack: st.step > 1, noBack: st.step === 1,
+      font: st.bn ? "'Hind Siliguri', 'Plus Jakarta Sans', sans-serif" : "'Plus Jakarta Sans', system-ui, sans-serif",
+      digits: code.split('').map((v) => ({ v, line: '#16705A' })),
+      found: [{ ini: 'AR', name: 'Aanya Rahman', sub: 'Class IV-B · Roll 07', bg: '#FCE7E1', fg: '#A8432B' }, { ini: 'RR', name: 'Rayan Rahman', sub: 'Class VII-A · Roll 15', bg: '#E2EFFB', fg: '#1D5E9C' }],
+      lang: () => this.setState({ bn: !st.bn }),
+      back: () => this.setState({ step: st.step - 1 }),
+      send: () => this.setState({ step: 2 }),
+      verify: () => this.setState({ step: 3 })
+    };
+  }
+}
+</script>
+</body>
+</html>

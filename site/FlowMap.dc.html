@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1440">
+<title>How every feature connects</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.th{padding:12px 14px;font-size:13px;font-weight:800;color:#FFFFFF}
+.td{padding:12px 14px;font-size:14px;line-height:1.4}
+.td b{display:block;font-size:12px;font-weight:700;color:#5A6482;margin-top:3px}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1500px; box-sizing: border-box; padding: 52px 64px; display: flex; flex-direction: column; gap: 24px; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', system-ui, sans-serif">
+  <div style="display: flex; flex-direction: column; gap: 8px">
+    <h1 style="margin: 0; font-size: 40px; font-weight: 800; letter-spacing: -0.02em">How every feature connects</h1>
+    <p style="margin: 0; font-size: 18px; color: #5A6482">Each row is one full loop: who enters it, what parents see, how they reply, and what the school gets back.</p>
+  </div>
+  <div role="table" style="display: flex; flex-direction: column; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 18px; overflow: hidden">
+    <div role="row" style="display: grid; grid-template-columns: 1fr 1.6fr 1.6fr 1.6fr 1.7fr; background: #172042">
+      <div role="columnheader" class="th">Feature</div><div role="columnheader" class="th">1 · School enters</div><div role="columnheader" class="th">2 · Parent sees</div><div role="columnheader" class="th">3 · Parent replies</div><div role="columnheader" class="th">4 · School gets back</div>
+    </div>
+    <sc-for list="{{rows}}" as="r" hint-placeholder-count="16">
+      <div role="row" style="display: grid; grid-template-columns: 1fr 1.6fr 1.6fr 1.6fr 1.7fr; background: {{r.bg}}; border-top: 1px solid #EEF1F8">
+        <div role="cell" class="td" style="font-weight: 800">{{r.f}}</div>
+        <div role="cell" class="td">{{r.a}}<b>{{r.as}}</b></div>
+        <div role="cell" class="td">{{r.b}}<b>{{r.bs}}</b></div>
+        <div role="cell" class="td">{{r.c}}<b>{{r.cs}}</b></div>
+        <div role="cell" class="td">{{r.d}}<b>{{r.ds}}</b></div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const rows = [
+      ['Sign in', 'Office adds each phone number once', 'Admin: Students and families', 'Phone number and a one-time SMS code; no password', 'Parent and teacher apps', 'Sees all their children under one login', 'Parent app: Home', 'Only registered numbers get in; staff by role', 'Admin: Sign in'],
+      ['Attendance', 'Teacher taps who is absent, or office uploads the register (Excel or photo)', 'Teacher app · Admin: Attendance', 'Arrival time on Home, monthly calendar', 'Parent app: Home, Attendance', 'Gives a reason for an absence in one tap', 'Parent app: Attendance', 'Same register in both places; reasons on record', 'Admin: Attendance · Teacher app'],
+      ['Leave', 'Teacher approves or declines', 'Teacher app: Leave', 'Request form, then approved or declined', 'Parent app: Leave', 'Sends sick, family or travel leave', 'Parent app: Leave', 'Day shows as “Leave”, not “Absent”', 'Teacher app · Admin: Attendance'],
+      ['Homework and diary', 'Teacher posts work, files and a diary note', 'Teacher app: Homework, Diary', 'Due dates, worksheet, diary note', 'Parent app: Homework', 'Marks it done', 'Parent app: Homework', 'Teacher sees how many families finished', 'Teacher app: Homework'],
+      ['Results', 'Teacher or office enters marks; office releases', 'Teacher app: Marks · Admin: Results', 'Report card after release', 'Parent app: Results', 'Asks the teacher or books a meeting', 'Parent app: Chat, Meetings', 'Questions and bookings arrive by teacher', 'Teacher app: Messages, Slots'],
+      ['Fees', 'Office sets the monthly fee; reminders run on their own', 'Admin: Fee setup', 'Amount due on Home, breakdown', 'Parent app: Home, Fees', 'Pays by bank card or internet banking', 'Parent app: Pay fees', 'Collection by class, late list, export for the accountant', 'Admin: Fee collection'],
+      ['Notices', 'Office sends to school, class or section', 'Admin: Notices, Communication', 'Alert plus the notice in the app', 'Parent app: Notices', 'Taps “Got it”', 'Parent app: Notices', 'Read rate per notice; SMS to those who miss it', 'Admin: Communication'],
+      ['Messages', 'Teacher replies by text or voice', 'Teacher app: Messages', 'Conversation with Bangla translation', 'Parent app: Chat', 'Writes, sends voice or a quick reply', 'Parent app: Chat', 'Within teacher quiet hours', 'Teacher app: Messages'],
+      ['Events and consent', 'Office creates an event or a fee', 'Admin: Events', 'Event card with Yes or No', 'Parent app: Calendar', 'Answers or pays in one tap', 'Parent app: Calendar, Pay', 'Live yes, no and waiting counts; reminders', 'Admin: Events'],
+      ['Meals', 'Office plans the weekly menu', 'Admin: Meal planner', 'Today’s lunch and snack on Home', 'Parent app: Home, Meals', 'Subscribes and rates each meal', 'Parent app: Meals', 'Lunch count, ratings and allergy notes', 'Admin: Meal planner'],
+      ['Feedback', 'Office team replies and resolves', 'Admin: Feedback', 'Status and reply under “Your feedback”', 'Parent app: Feedback', 'Picks a topic from a list and sends', 'Parent app: Feedback', 'Routed to the right team, tracked to resolved', 'Admin: Feedback'],
+      ['Bus', 'Attendant marks boarding; GPS on the bus', 'Admin: Transport', 'Live arrival time and who boarded', 'Parent app: Bus', 'Gets an alert 10 minutes before', 'Parent app: Bus', 'Missing students flagged to the office', 'Admin: Transport'],
+      ['Meetings', 'Teacher opens time slots', 'Teacher app: Meeting slots', 'Free slots with each teacher', 'Parent app: Meetings', 'Books a slot, in person or by phone', 'Parent app: Meetings', 'Booking appears in the teacher’s list', 'Teacher app: Meeting slots'],
+      ['Safe pickup', 'Office checks each pickup person; gate scans the pass', 'Admin: Safe pickup', 'Daily gate pass and approved list', 'Parent app: Safe pickup', 'Sends a one-day pass for someone else', 'Parent app: Safe pickup', 'Handed over only to approved people; parent alerted', 'Admin: Safe pickup · Parent Home'],
+      ['Emergency alert', 'Office picks a ready-made alert and sends', 'Admin: Emergency alert', 'Loud alert in the app, SMS if offline', 'Parent app: Emergency alert', 'Taps “I have seen this”', 'Parent app: Emergency alert', 'Live count of who has seen it; call list for the rest', 'Admin: Emergency alert · Teacher app'],
+      ['Family and guardians', 'Office imports students and families', 'Admin: Students and families', 'All children under one login', 'Parent app: Home', 'Adds a guardian', 'Parent app: Settings', 'Office checks and approves, with pickup rights', 'Admin: Students and families']
+    ];
+    return { rows: rows.map((r, i) => ({ f: r[0], a: r[1], as: r[2], b: r[3], bs: r[4], c: r[5], cs: r[6], d: r[7], ds: r[8], bg: i % 2 ? '#FAFBFE' : '#FFFFFF' })) };
+  }
+}
+</script>
+<a href="index.html" id="allscreens" style="position:fixed;right:18px;bottom:18px;z-index:99;display:flex;align-items:center;min-height:42px;padding:0 16px;background:#172042;color:#fff;border-radius:21px;font:700 13px 'Plus Jakarta Sans',system-ui,sans-serif;text-decoration:none;box-shadow:0 8px 20px rgba(23,32,66,.25)">← All screens</a>
+</body>
+</html>
