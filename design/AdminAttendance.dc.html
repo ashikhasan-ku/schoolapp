@@ -23,7 +23,7 @@ body{margin:0}
   <nav aria-label="Admin menu" style="flex: 1 1 240px; box-sizing: border-box; padding: 28px 18px; display: flex; flex-direction: column; gap: 2px; background: #FFFFFF; border-right: 1px solid #E3E7F2">
     <p style="margin: 0; padding: 0 12px; font-size: 19px; font-weight: 800">School admin</p>
     <p style="margin: 2px 0 16px; padding: 0 12px; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
-    <sc-for list="{{menu}}" as="m" hint-placeholder-count="15">
+    <sc-for list="{{menu}}" as="m" hint-placeholder-count="17">
       <a href="{{m.href}}" style="display: flex; align-items: center; min-height: 38px; padding: 0 12px; background: {{m.bg}}; color: {{m.fg}}; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none">{{m.label}}</a>
     </sc-for>
   </nav>
@@ -154,7 +154,7 @@ body{margin:0}
         </sc-if>
         <div style="display: flex; flex-direction: column; gap: 6px; padding-top: 12px; border-top: 1px solid #EEF1F8; font-size: 12px; line-height: 1.45; color: #5A6482">
           <p style="margin: 0"><b style="color: #172042">Where this goes</b></p>
-          <p style="margin: 0">Teacher app: the same register, kept in step both ways.</p>
+          <p style="margin: 0">Staff app: the same register, kept in step both ways.</p>
           <p style="margin: 0">Parent app: arrival time on Home, or an absence note asking for a reason.</p>
           <p style="margin: 0">Approved leave shows as “Leave”, not absent.</p>
         </div>
@@ -171,7 +171,8 @@ class Component extends DCLogic {
     const menu = [
       ['Dashboard', 'AdminDashboard'], ['Emergency alert', 'AEmergency'], ['Communication', 'XAdminComms'], ['Notices', 'AdminNotices'], ['Students and families', 'AFamilies'],
       ['Attendance', 'AdminAttendance'], ['Safe pickup', 'APickup'], ['Results', 'AResults'], ['Routine and calendar', 'ACalendar'], ['Events', 'AEvents'],
-      ['Meals', 'AMeals'], ['Fees', 'AdminFees'], ['Fee setup', 'AFeeSetup'], ['Transport', 'ATransport'], ['Feedback', 'AFeedback']
+      ['Meals', 'AMeals'], ['Fees', 'AdminFees'], ['Fee setup', 'AFeeSetup'], ['Transport', 'ATransport'], ['Feedback', 'AFeedback'],
+      ['Approvals', 'AApprovals'], ['Roles and access', 'ARoles']
     ].map(([label, f]) => ({ label, href: f + '.dc.html', bg: label === active ? '#E9EDFB' : 'transparent', fg: label === active ? '#2F45A0' : '#3E4766' }));
     const st = this.state;
     const chip = (list, key) => list.map((label) => ({ label, bg: label === st[key] ? '#172042' : '#FFFFFF', fg: label === st[key] ? '#FFFFFF' : '#172042', pick: () => this.setState({ [key]: label, saved: false }) }));

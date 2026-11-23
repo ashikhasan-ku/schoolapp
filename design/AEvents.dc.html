@@ -20,7 +20,7 @@ body{margin:0}
   <nav aria-label="Admin menu" style="flex: 1 1 240px; box-sizing: border-box; padding: 28px 18px; display: flex; flex-direction: column; gap: 2px; background: #FFFFFF; border-right: 1px solid #E3E7F2">
     <p style="margin: 0; padding: 0 12px; font-size: 19px; font-weight: 800">School admin</p>
     <p style="margin: 2px 0 16px; padding: 0 12px; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
-    <sc-for list="{{menu}}" as="m" hint-placeholder-count="15">
+    <sc-for list="{{menu}}" as="m" hint-placeholder-count="17">
       <a href="{{m.href}}" style="display: flex; align-items: center; min-height: 38px; padding: 0 12px; background: {{m.bg}}; color: {{m.fg}}; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none">{{m.label}}</a>
     </sc-for>
   </nav>
@@ -77,7 +77,8 @@ class Component extends DCLogic {
     const menu = [
       ['Dashboard', 'AdminDashboard'], ['Emergency alert', 'AEmergency'], ['Communication', 'XAdminComms'], ['Notices', 'AdminNotices'], ['Students and families', 'AFamilies'],
       ['Attendance', 'AdminAttendance'], ['Safe pickup', 'APickup'], ['Results', 'AResults'], ['Routine and calendar', 'ACalendar'], ['Events', 'AEvents'],
-      ['Meals', 'AMeals'], ['Fees', 'AdminFees'], ['Fee setup', 'AFeeSetup'], ['Transport', 'ATransport'], ['Feedback', 'AFeedback']
+      ['Meals', 'AMeals'], ['Fees', 'AdminFees'], ['Fee setup', 'AFeeSetup'], ['Transport', 'ATransport'], ['Feedback', 'AFeedback'],
+      ['Approvals', 'AApprovals'], ['Roles and access', 'ARoles']
     ].map(([label, f]) => ({ label, href: f + '.dc.html', bg: label === active ? '#E9EDFB' : 'transparent', fg: label === active ? '#2F45A0' : '#3E4766' }));
     const data = [
       { name: 'Science fair trip', kind: 'Consent form', when: '18 Nov', who: 'Class IV-B · 42 families', deadline: 'Reply by 17 Nov', l1: 'Said yes', n1: 28, l2: 'Said no', n2: 3, l3: 'No reply yet', n3: 11, total: 42, remindText: '11 families have not replied. Remind them in the app, with SMS backup.' },

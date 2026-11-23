@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390">
+<title>Staff app: Bus trip</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.scroll>*{flex-shrink:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 100vh; height: 100dvh; box-sizing: border-box; display: flex; flex-direction: column; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', system-ui, sans-serif">
+  <div class="scroll" style="flex: 1; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 22px 18px; display: flex; flex-direction: column; gap: 12px">
+    <p style="margin: 0; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
+    <div style="display: flex; flex-wrap: wrap; gap: 6px">
+      <sc-for list="{{roles}}" as="c" hint-placeholder-count="2"><button onClick="{{c.pick}}" style="min-height: 36px; padding: 0 12px; background: {{c.bg}}; color: {{c.fg}}; border: 1px solid #D5DBEE; border-radius: 18px; font: inherit; font-size: 12px; font-weight: 800; cursor: pointer">{{c.label}}</button></sc-for>
+    </div>
+    <div>
+      <h1 style="margin: 0; font-size: 26px; font-weight: 800">Route 4 · home trip</h1>
+      <p style="margin: 2px 0 0; font-size: 14px; color: #5A6482">Bus DHA-11-2045 · driver Abdul Karim · attendant Rupa Akter</p>
+    </div>
+
+    <section style="display: flex; flex-direction: column; gap: 10px; padding: 16px; background: {{tripBg}}; color: #FFFFFF; border-radius: 18px">
+      <p style="margin: 0; font-size: 13px; font-weight: 700; color: {{tripSub}}">{{tripState}}</p>
+      <p style="margin: 0; font-size: 20px; font-weight: 800">{{tripHead}}</p>
+      <sc-if value="{{isDriver}}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{tripBtn}}" style="min-height: 50px; background: #FFFFFF; color: #172042; border: 0; border-radius: 12px; font: inherit; font-size: 15px; font-weight: 800; cursor: pointer">{{tripLabel}}</button>
+      </sc-if>
+      <sc-if value="{{isAtt}}" hint-placeholder-val="{{ false }}">
+        <p style="margin: 0; font-size: 13px; line-height: 1.45; color: #E9EDFB">The driver starts the trip. Live location goes to parents and the transport manager.</p>
+      </sc-if>
+    </section>
+
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <p style="margin: 0; font-size: 16px; font-weight: 800">Students · {{onCount}} of 6 on board</p>
+      <span style="font-size: 12px; color: #5A6482">{{hint}}</span>
+    </div>
+    <sc-for list="{{kids}}" as="k" hint-placeholder-count="6">
+      <div style="display: flex; align-items: center; gap: 10px; min-height: 60px; padding: 8px 12px; background: #FFFFFF; border: 1px solid #E3E7F2; border-radius: 14px">
+        <span style="flex-shrink: 0; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: {{k.avBg}}; color: {{k.avFg}}; border-radius: 50%; font-size: 12px; font-weight: 800">{{k.ini}}</span>
+        <span style="flex: 1; min-width: 0"><span style="display: block; font-size: 14px; font-weight: 800">{{k.name}}</span><span style="display: block; font-size: 12px; color: #5A6482">{{k.stop}}</span></span>
+        <sc-if value="{{k.canAct}}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{k.act}}" style="min-height: 38px; padding: 0 12px; background: {{k.btnBg}}; color: {{k.btnFg}}; border: 1px solid #C9D3F3; border-radius: 10px; font: inherit; font-size: 12px; font-weight: 800; cursor: pointer">{{k.btn}}</button>
+        </sc-if>
+        <sc-if value="{{k.readOnly}}" hint-placeholder-val="{{ false }}">
+          <span style="font-size: 12px; font-weight: 800; color: {{k.stFg}}">{{k.status}}</span>
+        </sc-if>
+      </div>
+    </sc-for>
+    <a href="tel:+8800000000000" style="display: flex; align-items: center; justify-content: center; min-height: 48px; background: #FFFFFF; color: #A8432B; border: 1px solid #F4CFC4; border-radius: 14px; font-size: 14px; font-weight: 800; text-decoration: none">Call the transport office</a>
+    <p style="margin: 0; font-size: 12px; line-height: 1.5; color: #5A6482">Each drop-off tells the parent at once. A student not on board when the bus leaves alerts the transport manager.</p>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  state = { role: 'Bus attendant', trip: 'started', st: { 'Rayan Rahman': 'on', 'Labiba Sultana': 'on', 'Nafis Ahmed': 'on', 'Tahmid Hasan': 'off' } };
+  renderVals() {
+    const s = this.state;
+    const kids = [
+      ['Rayan Rahman', 'VII-A', 'Stop 2 · Road 11, Banani'],
+      ['Labiba Sultana', 'V-C', 'Stop 2 · Road 11, Banani'],
+      ['Nafis Ahmed', 'VII-B', 'Stop 3 · Kamal Ataturk Ave'],
+      ['Tahmid Hasan', 'IV-B', 'Stop 1 · Road 27, Gulshan'],
+      ['Riya Das', 'III-A', 'Stop 4 · Mohakhali DOHS'],
+      ['Arif Karim', 'IV-A', 'Stop 4 · Mohakhali DOHS']
+    ];
+    const att = s.role === 'Bus attendant';
+    const list = kids.map(([name, cls, stop]) => {
+      const v = s.st[name] || 'wait';
+      const next = v === 'wait' ? 'on' : v === 'on' ? 'off' : 'off';
+      return {
+        name: name + ' · ' + cls, stop, ini: name.split(' ').map((w) => w[0]).join(''),
+        avBg: v === 'on' ? '#2F45A0' : v === 'off' ? '#E2F4EE' : '#EEF1F8', avFg: v === 'on' ? '#FFFFFF' : v === 'off' ? '#16705A' : '#5A6482',
+        canAct: att && v !== 'off', readOnly: !att || v === 'off',
+        btn: v === 'wait' ? 'Boarded' : 'Dropped off', btnBg: v === 'wait' ? '#2F45A0' : '#FFFFFF', btnFg: v === 'wait' ? '#FFFFFF' : '#2F45A0',
+        status: v === 'on' ? 'On board' : v === 'off' ? 'Dropped · parent told' : 'Waiting', stFg: v === 'off' ? '#16705A' : v === 'on' ? '#2F45A0' : '#8A5205',
+        act: () => this.setState({ st: { ...s.st, [name]: next } })
+      };
+    });
+    const onCount = Object.values(s.st).filter((v) => v === 'on').length;
+    const started = s.trip === 'started', ended = s.trip === 'ended';
+    return {
+      roles: ['Bus attendant', 'Bus driver'].map((label) => ({ label, bg: label === s.role ? '#172042' : '#FFFFFF', fg: label === s.role ? '#FFFFFF' : '#172042', pick: () => this.setState({ role: label }) })),
+      kids: list, onCount,
+      isDriver: !att, isAtt: att,
+      hint: att ? 'Tap as students get on and off' : 'The attendant marks students',
+      tripBg: ended ? '#16705A' : started ? '#2F45A0' : '#172042',
+      tripSub: '#C9D3F3',
+      tripState: ended ? 'TRIP ENDED · 3:52 PM' : started ? 'TRIP STARTED · 3:05 PM · LIVE LOCATION ON' : 'NOT STARTED',
+      tripHead: ended ? 'All students dropped off' : started ? 'Next stop: Road 11, Banani · about 9 min' : 'Leaves school at 3:05 pm',
+      tripLabel: ended ? 'Trip ended' : started ? 'End trip' : 'Start trip',
+      tripBtn: () => this.setState({ trip: started ? 'ended' : ended ? 'ended' : 'started' })
+    };
+  }
+}
+</script>
+</body>
+</html>

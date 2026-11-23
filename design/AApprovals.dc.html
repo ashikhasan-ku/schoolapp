@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin: Approvals</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Hind+Siliguri:wght@500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.panel{display:flex;flex-direction:column;gap:14px;padding:22px;background:#FFFFFF;border:1px solid #E3E7F2;border-radius:20px}
+.lbl{margin:0;font-size:14px;font-weight:800}
+
+</style>
+</helmet>
+<div style="min-height: 900px; display: flex; flex-wrap: wrap; align-items: stretch; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', system-ui, sans-serif">
+  <nav aria-label="Admin menu" style="flex: 1 1 240px; box-sizing: border-box; padding: 28px 18px; display: flex; flex-direction: column; gap: 2px; background: #FFFFFF; border-right: 1px solid #E3E7F2">
+    <p style="margin: 0; padding: 0 12px; font-size: 19px; font-weight: 800">School admin</p>
+    <p style="margin: 2px 0 16px; padding: 0 12px; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
+    <sc-for list="{{menu}}" as="m" hint-placeholder-count="17">
+      <a href="{{m.href}}" style="display: flex; align-items: center; min-height: 38px; padding: 0 12px; background: {{m.bg}}; color: {{m.fg}}; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none">{{m.label}}</a>
+    </sc-for>
+  </nav>
+  <main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 36px); display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px">
+      <div>
+        <h1 style="margin: 0; font-size: 30px; font-weight: 800">Approvals</h1>
+        <p style="margin: 4px 0 0; font-size: 15px; color: #5A6482">Everything waiting for a decision, routed by the school’s approval rules.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px"><span style="font-size: 13px; font-weight: 700; color: #5A6482">Signed in as</span>
+        <sc-for list="{{who}}" as="c" hint-placeholder-count="4"><button onClick="{{c.pick}}" style="min-height: 40px; padding: 0 14px; background: {{c.bg}}; color: {{c.fg}}; border: 1px solid #D5DBEE; border-radius: 20px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer">{{c.label}}</button></sc-for>
+      </div>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start">
+      <section class="panel" style="flex: 1 1 340px; min-width: 0; gap: 8px">
+        <p class="lbl" style="padding-bottom: 4px">Waiting for you · {{count}}</p>
+        <sc-for list="{{items}}" as="i" hint-placeholder-count="4">
+          <button onClick="{{i.pick}}" style="display: flex; flex-direction: column; gap: 4px; min-height: 64px; padding: 12px 14px; background: {{i.bg}}; border: 2px solid {{i.line}}; border-radius: 14px; font: inherit; text-align: left; cursor: pointer; color: #172042">
+            <span style="display: flex; justify-content: space-between; gap: 8px"><span style="font-size: 12px; font-weight: 800; color: {{i.kfg}}">{{i.kind}}</span><span style="font-size: 12px; font-weight: 700; color: {{i.sfg}}">{{i.status}}</span></span>
+            <span style="font-size: 15px; font-weight: 800">{{i.title}}</span>
+            <span style="font-size: 12px; color: #5A6482">{{i.from}}</span>
+          </button>
+        </sc-for>
+        <sc-if value="{{empty}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 20px; font-size: 14px; color: #5A6482; text-align: center">Nothing waiting for this role.</p></sc-if>
+      </section>
+      <section class="panel" style="flex: 2 1 460px; min-width: 0">
+        <sc-if value="{{has}}" hint-placeholder-val="{{ true }}">
+          <p style="margin: 0; font-size: 13px; font-weight: 800; color: #2F45A0">{{cur.kind}}</p>
+          <h2 style="margin: 0; font-size: 22px; font-weight: 800">{{cur.title}}</h2>
+          <p style="margin: 0; font-size: 15px; line-height: 1.5; color: #3E4766">{{cur.detail}}</p>
+          <p class="lbl">Approval steps</p>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px">
+            <sc-for list="{{cur.steps}}" as="s" hint-placeholder-count="3"><span style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: {{s.bg}}; color: {{s.fg}}; border-radius: 10px; font-size: 13px; font-weight: 700">{{s.label}}</span></sc-for>
+          </div>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 800">Note (optional)<textarea rows="2" style="box-sizing: border-box; padding: 10px 12px; border: 1px solid #D5DBEE; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 500; resize: vertical"></textarea></label>
+          <sc-if value="{{open}}" hint-placeholder-val="{{ true }}">
+            <div style="display: flex; flex-wrap: wrap; gap: 8px">
+              <button onClick="{{approve}}" style="min-height: 48px; padding: 0 20px; background: #16705A; color: #FFFFFF; border: 0; border-radius: 12px; font: inherit; font-size: 15px; font-weight: 800; cursor: pointer">Approve</button>
+              <button onClick="{{back}}" style="min-height: 48px; padding: 0 20px; background: #FFFFFF; color: #A8432B; border: 1px solid #F4CFC4; border-radius: 12px; font: inherit; font-size: 15px; font-weight: 800; cursor: pointer">Send back</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{closed}}" hint-placeholder-val="{{ false }}">
+            <p style="margin: 0; padding: 14px; background: {{resBg}}; border-radius: 12px; font-size: 14px; line-height: 1.45; color: {{resFg}}">{{resText}}</p>
+          </sc-if>
+        </sc-if>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  state = { as: 'Principal', sel: 0, done: {} };
+  renderVals() {
+    const menu = [
+      ['Dashboard', 'AdminDashboard'], ['Emergency alert', 'AEmergency'], ['Communication', 'XAdminComms'], ['Notices', 'AdminNotices'], ['Students and families', 'AFamilies'],
+      ['Attendance', 'AdminAttendance'], ['Safe pickup', 'APickup'], ['Results', 'AResults'], ['Routine and calendar', 'ACalendar'], ['Events', 'AEvents'],
+      ['Meals', 'AMeals'], ['Fees', 'AdminFees'], ['Fee setup', 'AFeeSetup'], ['Transport', 'ATransport'], ['Feedback', 'AFeedback'],
+      ['Approvals', 'AApprovals'], ['Roles and access', 'ARoles']
+    ].map(([label, f]) => ({ label, href: f + '.dc.html', bg: label === 'Approvals' ? '#E9EDFB' : 'transparent', fg: label === 'Approvals' ? '#2F45A0' : '#3E4766' }));
+    const st = this.state;
+    const all = [
+      { to: 'Principal', kind: 'RESULTS RELEASE', title: 'Class test 3 · Class IV, all sections', from: 'Checked by the exam coordinator · today 10:05 am', detail: 'Marks for 126 students in 6 subjects are entered and checked. Approving sends results to parents of Class IV at once.', steps: ['Teachers entered', 'Exam coordinator checked', 'Principal'], ok: 'Released. 126 families can now see the results.' },
+      { to: 'Principal', kind: 'WHOLE-SCHOOL NOTICE', title: 'Winter uniform from 1 December', from: 'Drafted by office staff · yesterday', detail: 'Notice in English and Bangla to all 1,240 families, with the uniform list attached.', steps: ['Office drafted', 'Principal'], ok: 'Approved. The notice goes to all families now.' },
+      { to: 'Section head', kind: 'LEAVE OVER 3 DAYS', title: 'Mahir Chowdhury · IV-B · 5 days', from: 'Parent asked · class teacher agreed', detail: 'Family travel, 24–28 November. Class teacher Ms. Farzana Ahmed has agreed and added the homework plan.', steps: ['Parent asked', 'Class teacher agreed', 'Section head'], ok: 'Approved. The parent and class teacher are told; the days show as Leave.' },
+      { to: 'Section head', kind: 'ATTENDANCE CHANGE', title: 'Samira Islam · IV-B · 12 Nov', from: 'Class teacher asked · after the day closed', detail: 'Marked absent by mistake; she arrived at 8:40 am. The change is logged with the reason.', steps: ['Class teacher asked', 'Section head'], ok: 'Approved. The register now shows Present, and the change is logged.' },
+      { to: 'Accounts head', kind: 'FEE DISCOUNT', title: 'Sibling discount · Rahman family', from: 'Accounts officer · today', detail: '10% off tuition for Rayan Rahman (VII-A) from December, as the second child in the school.', steps: ['Accounts officer', 'Accounts head'], ok: 'Approved. December’s fee for Rayan is updated and the parent is told.' },
+      { to: 'Office', kind: 'NEW PICKUP PERSON', title: 'Jamal Mia · family driver · for Aanya', from: 'Added by Nadia Rahman in the parent app', detail: 'Photo and national ID uploaded. Once approved, he gets a daily pass for Aanya and Rayan.', steps: ['Parent added', 'Office checks ID'], ok: 'Approved. Jamal Mia now has a daily pass, and the parent is told.' }
+    ];
+    const mine = all.map((x, i) => ({ ...x, i })).filter((x) => x.to === st.as);
+    const sel = mine.find((x) => x.i === st.sel) || mine[0];
+    const items = mine.map((x) => { const d = st.done[x.i]; return { ...x, status: d === 'ok' ? 'Approved' : d === 'back' ? 'Sent back' : 'Waiting', sfg: d === 'ok' ? '#16705A' : d === 'back' ? '#A8432B' : '#8A5205', kfg: '#2F45A0', bg: sel && x.i === sel.i ? '#F6F8FE' : '#FFFFFF', line: sel && x.i === sel.i ? '#2F45A0' : '#E3E7F2', pick: () => this.setState({ sel: x.i }) }; });
+    const d = sel ? st.done[sel.i] : null;
+    const cur = sel ? { ...sel, steps: sel.steps.map((label, k) => { const last = k === sel.steps.length - 1; return { label: (last ? (d === 'ok' ? '✓ ' : '') : '✓ ') + label, bg: last ? (d === 'ok' ? '#E2F4EE' : d === 'back' ? '#FCE7E1' : '#FDF0DA') : '#E2F4EE', fg: last ? (d === 'ok' ? '#12503F' : d === 'back' ? '#7E3220' : '#6B4004') : '#12503F' }; }) } : { steps: [] };
+    const mark = (v) => () => this.setState({ done: { ...st.done, [sel.i]: v } });
+    return {
+      menu, items, cur, has: !!sel, empty: !sel, count: mine.filter((x) => !st.done[x.i]).length,
+      who: ['Principal', 'Section head', 'Accounts head', 'Office'].map((label) => ({ label, bg: label === st.as ? '#172042' : '#FFFFFF', fg: label === st.as ? '#FFFFFF' : '#172042', pick: () => this.setState({ as: label, sel: -1 }) })),
+      open: !d, closed: !!d,
+      resBg: d === 'back' ? '#FCE7E1' : '#E2F4EE', resFg: d === 'back' ? '#6A2A1A' : '#12503F',
+      resText: d === 'back' ? 'Sent back with your note. The person who asked can fix it and send it again.' : (sel ? sel.ok : ''),
+      approve: mark('ok'), back: mark('back')
+    };
+  }
+}
+</script>
+</body>
+</html>

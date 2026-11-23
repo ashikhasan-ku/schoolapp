@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin: Roles and access</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Hind+Siliguri:wght@500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.panel{display:flex;flex-direction:column;gap:14px;padding:22px;background:#FFFFFF;border:1px solid #E3E7F2;border-radius:20px}
+.lbl{margin:0;font-size:14px;font-weight:800}
+
+</style>
+</helmet>
+<div style="min-height: 900px; display: flex; flex-wrap: wrap; align-items: stretch; background: #F5F7FC; color: #172042; font-family: 'Plus Jakarta Sans', system-ui, sans-serif">
+  <nav aria-label="Admin menu" style="flex: 1 1 240px; box-sizing: border-box; padding: 28px 18px; display: flex; flex-direction: column; gap: 2px; background: #FFFFFF; border-right: 1px solid #E3E7F2">
+    <p style="margin: 0; padding: 0 12px; font-size: 19px; font-weight: 800">School admin</p>
+    <p style="margin: 2px 0 16px; padding: 0 12px; font-size: 12px; font-weight: 600; color: #2F45A0">Concept · Sample data</p>
+    <sc-for list="{{menu}}" as="m" hint-placeholder-count="17">
+      <a href="{{m.href}}" style="display: flex; align-items: center; min-height: 38px; padding: 0 12px; background: {{m.bg}}; color: {{m.fg}}; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none">{{m.label}}</a>
+    </sc-for>
+  </nav>
+  <main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 32px clamp(16px, 3vw, 36px); display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px">
+      <div>
+        <h1 style="margin: 0; font-size: 30px; font-weight: 800">Roles and access</h1>
+        <p style="margin: 4px 0 0; font-size: 15px; color: #5A6482">Who uses which app, what each role can do, and who approves what.</p>
+      </div>
+      <button style="min-height: 44px; padding: 0 16px; background: #2F45A0; color: #FFFFFF; border: 0; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer">Add a staff member</button>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start">
+      <section class="panel" style="flex: 1 1 300px; min-width: 0; gap: 6px">
+        <p class="lbl" style="padding-bottom: 6px">Roles</p>
+        <sc-for list="{{roles}}" as="r" hint-placeholder-count="16">
+          <button onClick="{{r.pick}}" style="display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 12px; background: {{r.bg}}; border: 2px solid {{r.line}}; border-radius: 12px; font: inherit; text-align: left; cursor: pointer; color: #172042">
+            <span style="flex: 1; min-width: 0"><span style="display: block; font-size: 14px; font-weight: 800">{{r.name}}</span><span style="display: block; font-size: 12px; color: #5A6482">{{r.app}}</span></span>
+            <span style="font-size: 12px; font-weight: 700; color: #5A6482">{{r.count}}</span>
+          </button>
+        </sc-for>
+      </section>
+      <div style="flex: 2 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+        <section class="panel">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 10px">
+            <div><p style="margin: 0; font-size: 13px; font-weight: 800; color: #2F45A0">{{cur.group}}</p><h2 style="margin: 4px 0 0; font-size: 22px; font-weight: 800">{{cur.name}}</h2><p style="margin: 4px 0 0; font-size: 14px; color: #5A6482">Uses: {{cur.app}} · Signs in with {{cur.login}}</p></div>
+            <span style="padding: 6px 12px; background: #E9EDFB; color: #2F45A0; border-radius: 20px; font-size: 12px; font-weight: 800">{{cur.count}}</span>
+          </div>
+          <p class="lbl">Can do</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{cur.can}}" as="x" hint-placeholder-count="5"><span style="padding: 8px 12px; background: #E2F4EE; color: #12503F; border-radius: 10px; font-size: 13px; font-weight: 700">{{x}}</span></sc-for></div>
+          <p class="lbl">Approves</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{cur.approves}}" as="x" hint-placeholder-count="3"><span style="padding: 8px 12px; background: #FDF0DA; color: #6B4004; border-radius: 10px; font-size: 13px; font-weight: 700">{{x}}</span></sc-for></div>
+          <p style="margin: 0; font-size: 13px; color: #5A6482">{{cur.note}}</p>
+        </section>
+        <section class="panel" style="gap: 0; padding: 0; overflow: hidden">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 18px 22px"><p class="lbl" style="font-size: 16px">Approval rules for this school</p><span style="font-size: 12px; color: #5A6482">Each school can change these</span></div>
+          <sc-for list="{{rules}}" as="r" hint-placeholder-count="9">
+            <div style="display: grid; grid-template-columns: 1.3fr 1.3fr 1fr; gap: 10px; align-items: center; padding: 12px 22px; border-top: 1px solid #EEF1F8; font-size: 14px">
+              <span style="font-weight: 700">{{r.what}}</span><span style="color: #3E4766">{{r.chain}}</span>
+              <select style="min-height: 38px; padding: 0 8px; border: 1px solid #D5DBEE; border-radius: 10px; background: #FFFFFF; font: inherit; font-size: 13px"><option>{{r.final}}</option><option>Principal</option><option>Section head</option><option>Accounts head</option><option>Office</option></select>
+            </div>
+          </sc-for>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1120}}'>
+class Component extends DCLogic {
+  state = { sel: 'Principal' };
+  renderVals() {
+    const menu = [
+      ['Dashboard', 'AdminDashboard'], ['Emergency alert', 'AEmergency'], ['Communication', 'XAdminComms'], ['Notices', 'AdminNotices'], ['Students and families', 'AFamilies'],
+      ['Attendance', 'AdminAttendance'], ['Safe pickup', 'APickup'], ['Results', 'AResults'], ['Routine and calendar', 'ACalendar'], ['Events', 'AEvents'],
+      ['Meals', 'AMeals'], ['Fees', 'AdminFees'], ['Fee setup', 'AFeeSetup'], ['Transport', 'ATransport'], ['Feedback', 'AFeedback'],
+      ['Approvals', 'AApprovals'], ['Roles and access', 'ARoles']
+    ].map(([label, f]) => ({ label, href: f + '.dc.html', bg: label === 'Roles and access' ? '#E9EDFB' : 'transparent', fg: label === 'Roles and access' ? '#2F45A0' : '#3E4766' }));
+    const R = [
+      ['School leadership', 'Principal', 'Admin panel', 'email, password and SMS code', '1', ['See everything', 'Send emergency alerts', 'Release results', 'Publish fees'], ['Whole-school notices', 'Results release', 'Event fees'], 'Can hand any approval to the vice principal while away.'],
+      ['School leadership', 'Section head', 'Admin panel and Staff app', 'email, password and SMS code', '4', ['Their section’s attendance, notices and results', 'Message any parent in the section'], ['Leave over 3 days', 'Attendance changes after the day closes', 'Section notices'], 'One per section: Junior, Middle, Senior and Early years.'],
+      ['Office', 'School admin', 'Admin panel', 'email, password and SMS code', '1', ['Add staff and set roles', 'Change approval rules', 'Import students and families'], ['New staff accounts'], 'The only role that can change who has access.'],
+      ['Office', 'Office staff', 'Admin panel', 'email, password and SMS code', '3', ['Families and guardians', 'Draft notices and emergency alerts', 'Events', 'Feedback replies'], ['New guardians and pickup people'], 'Drafts alerts and school-wide notices; leadership sends them.'],
+      ['Academic', 'Class teacher', 'Staff app', 'phone and SMS code', '38', ['Attendance', 'Homework and diary', 'Class photos', 'Parent messages', 'Meeting slots'], ['Leave up to 3 days'], 'Sees one-time pickup codes made for their class.'],
+      ['Academic', 'Subject teacher', 'Staff app', 'phone and SMS code', '24', ['Marks for their subjects', 'Homework', 'Parent messages'], [], 'Marks go to the exam coordinator before release.'],
+      ['Academic', 'Exam coordinator', 'Admin panel', 'email, password and SMS code', '1', ['Results entry for any class', 'Remind teachers about missing marks'], ['Marks before they go to the principal'], 'Checks marks, then sends them for release.'],
+      ['Finance', 'Accounts officer', 'Admin panel', 'email, password and SMS code', '2', ['Fee setup drafts', 'Payment checks and receipts', 'Reminders and exports'], [], 'Cannot publish fees or give discounts alone.'],
+      ['Finance', 'Accounts head', 'Admin panel', 'email, password and SMS code', '1', ['Everything accounts can do', 'Publish fees'], ['Fee plans', 'Discounts, waivers and refunds', 'Event fees'], 'Final say on money; the principal sees a monthly summary.'],
+      ['Operations', 'Transport manager', 'Admin panel', 'email, password and SMS code', '1', ['Routes, stops and buses', 'Live bus map', 'Missing-child alerts'], ['Route changes for a student'], 'Gets an alert if a child is not on the bus as expected.'],
+      ['Operations', 'Bus driver', 'Staff app', 'phone and SMS code', '15', ['Start and end the trip', 'Share live location'], [], 'Sees only their own route. Cannot see parent details.'],
+      ['Operations', 'Bus attendant', 'Staff app', 'phone and SMS code', '15', ['Mark who boards and gets off', 'Call the office'], [], 'Each drop-off tells the parent straight away.'],
+      ['Operations', 'Gate guard', 'Admin panel, Safe pickup page only', 'phone and SMS code', '4', ['Scan daily passes', 'Check one-time codes and ID', 'Hand over a child'], [], 'Sees only the child and the person collecting.'],
+      ['Operations', 'Canteen manager', 'Admin panel, Meals page only', 'email, password and SMS code', '1', ['Weekly menu', 'Meal counts and ratings'], [], 'Menus go live after the office checks them.'],
+      ['Families', 'Parent or guardian', 'Parent app', 'phone and SMS code', '1,240 families', ['Everything for their own children', 'Make one-time pickup codes', 'Add a guardian'], ['One-time pickup codes for their child'], 'A second guardian has the same access once the office approves them.'],
+      ['Families', 'One-time pickup person', 'No app', 'a 6-digit code and their ID at the gate', 'Per day', ['Collect the named child once, today'], [], 'Created by a parent before the cut-off; the code works once.']
+    ];
+    const st = this.state;
+    const roles = R.map(([group, name, app, login, count]) => ({ name, app, count, bg: name === st.sel ? '#F6F8FE' : '#FFFFFF', line: name === st.sel ? '#2F45A0' : 'transparent', pick: () => this.setState({ sel: name }) }));
+    const c = R.find((r) => r[1] === st.sel);
+    const cur = { group: c[0].toUpperCase(), name: c[1], app: c[2], login: c[3], count: c[4] === '1' ? '1 person' : c[4] + (/^[0-9]+$/.test(c[4]) ? ' people' : ''), can: c[5], approves: c[6].length ? c[6] : ['Nothing to approve'], note: c[7] };
+    const rules = [
+      ['New guardian or pickup person', 'Parent asks → office checks ID and photo', 'Office'],
+      ['One-time pickup code', 'Parent makes it before the cut-off', 'Parent only'],
+      ['Leave up to 3 days', 'Parent asks → class teacher', 'Class teacher'],
+      ['Leave over 3 days', 'Parent asks → class teacher → section head', 'Section head'],
+      ['Attendance change after the day closes', 'Class teacher asks → section head', 'Section head'],
+      ['Results release', 'Teacher enters → exam coordinator → principal', 'Principal'],
+      ['Notice to the whole school', 'Office drafts → principal', 'Principal'],
+      ['Fee plan, discount or refund', 'Accounts officer → accounts head', 'Accounts head'],
+      ['Event with a fee', 'Office creates → accounts head → principal', 'Principal']
+    ].map(([what, chain, final]) => ({ what, chain, final }));
+    return { menu, roles, cur, rules };
+  }
+}
+</script>
+</body>
+</html>

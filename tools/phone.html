@@ -28,7 +28,7 @@ iframe{display:block;width:390px;height:844px;border:0;border-radius:40px;backgr
 <body>
 <aside>
   <a class="back" href="index.html">← All apps</a>
-  <div class="tabs"><a id="t-parent" href="phone.html?app=parent&s=XLogin">Parent</a><a id="t-teacher" href="phone.html?app=teacher&s=TLogin">Teacher</a></div>
+  <div class="tabs"><a id="t-parent" href="phone.html?app=parent&s=XLogin">Parent</a><a id="t-teacher" href="phone.html?app=teacher&s=TLogin">Staff</a></div>
   <h1 id="title"></h1>
   <p>Tap inside the phone. Or jump to a screen:</p>
   <nav id="nav"></nav>
@@ -44,7 +44,7 @@ let s = q.get('s'); if (!list.some(x => x[0] === s)) s = list[0][0];
 // On a real phone, skip the frame and open the screen itself.
 if (window.innerWidth < 760) location.replace(s + '.dc.html');
 document.getElementById('t-' + app).classList.add('on');
-document.getElementById('title').textContent = app === 'parent' ? 'Parent app' : 'Teacher app';
+document.getElementById('title').textContent = app === 'parent' ? 'Parent app' : 'Staff app';
 const nav = document.getElementById('nav'), f = document.getElementById('f');
 for (const [file, label] of list) {
   const a = document.createElement('a'); a.textContent = label; a.href = '#'; a.dataset.f = file;
